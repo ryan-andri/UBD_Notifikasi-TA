@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">UBD Notifikasi TA</string>
+    <string name="title_home">Home</string>
+    <string name="title_dosen">Dosen Pembimbing</string>
+    <string name="title_jadwal">Jadwal Ujian</string>
+    <string name="title_notifikasi">Notifikasi</string>
+</resources>
