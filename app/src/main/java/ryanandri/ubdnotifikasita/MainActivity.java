@@ -3,23 +3,21 @@ package ryanandri.ubdnotifikasita;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import ryanandri.ubdnotifikasita.fragments.DosenFragment;
-import ryanandri.ubdnotifikasita.fragments.HomeFragment;
 import ryanandri.ubdnotifikasita.fragments.JadwalFragment;
 import ryanandri.ubdnotifikasita.fragments.NotifikasiFragment;
+import ryanandri.ubdnotifikasita.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private BottomNavigationView navigation;
 
     MenuItem menuItem;
-    HomeFragment homeFragment;
+    ProfileFragment profileFragment;
     DosenFragment dosenFragment;
     JadwalFragment jadwalFragment;
     NotifikasiFragment notifikasiFragment;
@@ -84,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadviewpager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        homeFragment = new HomeFragment();
+        profileFragment = new ProfileFragment();
         dosenFragment = new DosenFragment();
         jadwalFragment = new JadwalFragment();
         notifikasiFragment =  new NotifikasiFragment();
-        viewPagerAdapter.addFragment(homeFragment);
+        viewPagerAdapter.addFragment(profileFragment);
         viewPagerAdapter.addFragment(dosenFragment);
         viewPagerAdapter.addFragment(jadwalFragment);
         viewPagerAdapter.addFragment(notifikasiFragment);
