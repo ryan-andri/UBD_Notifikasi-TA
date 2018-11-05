@@ -4,16 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ryanandri.ubdnotifikasita.R;
+import ryanandri.ubdnotifikasita.adapter.MyAdapter;
+import ryanandri.ubdnotifikasita.models.TitleChild;
+import ryanandri.ubdnotifikasita.models.TitleCreator;
+import ryanandri.ubdnotifikasita.models.TitleParent;
 
 public class DosenFragment extends Fragment {
-    private ViewFlipper viewFlipper;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -22,27 +33,27 @@ public class DosenFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dosen, null);
 
-        viewFlipper = view.findViewById(R.id.slideView);
+        recyclerView = view.findViewById(R.id.mRecycleView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        int gambar[] = {R.drawable.bidar1, R.drawable.bidar4, R.drawable.bidar3};
-        // looping untuk array gambar
-        for (int slide: gambar) {
-            slideshow(slide);
-        }
+        MyAdapter myAdapter = new MyAdapter(getContext(), initData());
+        myAdapter.setParentClickableViewAnimationDefaultDuration();
+        myAdapter.setParentAndIconExpandOnClick(true);
+        recyclerView.setAdapter(myAdapter);
 
         return view;
     }
 
-    public void slideshow(int gambar) {
-        ImageView imageView = new ImageView(getContext());
-        imageView.setBackgroundResource(gambar);
-        viewFlipper.addView(imageView);
-        viewFlipper.setFlipInterval(4000); //4 detik
-        viewFlipper.setAutoStart(true);
-
-        //animasi untuk gambar
-        viewFlipper.setInAnimation(getContext(), android.R.anim.slide_in_left);
-        viewFlipper.setOutAnimation(getContext(), android.R.anim.slide_out_right);
-
+    private List<ParentObject> initData() {
+        TitleCreator titleCreator = TitleCreator.get(getContext());
+        List<TitleParent> titleParents = titleCreator.getAll();
+        List<ParentObject> parentObjects = new ArrayList<>();
+        for (TitleParent titleParent : titleParents) {
+            List<Object> childList = new ArrayList<>();
+            childList.add(new TitleChild("Nama Pembimbing 1"));
+            titleParent.setChildObjectList(childList);
+            parentObjects.add(titleParent);
+        }
+        return parentObjects;
     }
 }
