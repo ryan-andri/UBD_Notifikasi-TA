@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import ryanandri.ubdnotifikasita.fragments.DosenFragment;
 import ryanandri.ubdnotifikasita.fragments.JadwalFragment;
+import ryanandri.ubdnotifikasita.fragments.JudulFragment;
 import ryanandri.ubdnotifikasita.fragments.NotifikasiFragment;
 import ryanandri.ubdnotifikasita.fragments.ProfileFragment;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     MenuItem menuItem;
     ProfileFragment profileFragment;
     DosenFragment dosenFragment;
+    JudulFragment judulFragment;
     JadwalFragment jadwalFragment;
     NotifikasiFragment notifikasiFragment;
 
@@ -41,11 +43,14 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.navigation_dosen:
                                 viewPager.setCurrentItem(1);
                                 break;
-                            case R.id.navigation_jadwal:
+                            case R.id.navigation_judul:
                                 viewPager.setCurrentItem(2);
                                 break;
-                            case R.id.navigation_notifikasi:
+                            case R.id.navigation_jadwal:
                                 viewPager.setCurrentItem(3);
+                                break;
+                            case R.id.navigation_notifikasi:
+                                viewPager.setCurrentItem(4);
                                 break;
                         }
                         return false;
@@ -85,10 +90,12 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         profileFragment = new ProfileFragment();
         dosenFragment = new DosenFragment();
+        judulFragment = new JudulFragment();
         jadwalFragment = new JadwalFragment();
         notifikasiFragment =  new NotifikasiFragment();
         viewPagerAdapter.addFragment(profileFragment);
         viewPagerAdapter.addFragment(dosenFragment);
+        viewPagerAdapter.addFragment(judulFragment);
         viewPagerAdapter.addFragment(jadwalFragment);
         viewPagerAdapter.addFragment(notifikasiFragment);
         viewPager.setAdapter(viewPagerAdapter);
