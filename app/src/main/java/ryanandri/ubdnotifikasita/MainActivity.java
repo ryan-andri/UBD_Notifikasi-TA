@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import ryanandri.ubdnotifikasita.adapter.ViewPagerAdapter;
-import ryanandri.ubdnotifikasita.fragments.DosenFragment;
 import ryanandri.ubdnotifikasita.fragments.JadwalFragment;
 import ryanandri.ubdnotifikasita.fragments.JudulFragment;
 import ryanandri.ubdnotifikasita.fragments.NotifikasiFragment;
@@ -20,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     MenuItem menuItem;
     ProfileFragment profileFragment;
-    DosenFragment dosenFragment;
     JudulFragment judulFragment;
     JadwalFragment jadwalFragment;
     NotifikasiFragment notifikasiFragment;
@@ -41,17 +39,14 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.navigation_home:
                                 viewPager.setCurrentItem(0);
                                 break;
-                            case R.id.navigation_dosen:
+                            case R.id.navigation_judul:
                                 viewPager.setCurrentItem(1);
                                 break;
-                            case R.id.navigation_judul:
+                            case R.id.navigation_jadwal:
                                 viewPager.setCurrentItem(2);
                                 break;
-                            case R.id.navigation_jadwal:
-                                viewPager.setCurrentItem(3);
-                                break;
                             case R.id.navigation_notifikasi:
-                                viewPager.setCurrentItem(4);
+                                viewPager.setCurrentItem(3);
                                 break;
                         }
                         return false;
@@ -90,12 +85,10 @@ public class MainActivity extends AppCompatActivity {
     public void loadviewpager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         profileFragment = new ProfileFragment();
-        dosenFragment = new DosenFragment();
         judulFragment = new JudulFragment();
         jadwalFragment = new JadwalFragment();
         notifikasiFragment =  new NotifikasiFragment();
         viewPagerAdapter.addFragment(profileFragment);
-        viewPagerAdapter.addFragment(dosenFragment);
         viewPagerAdapter.addFragment(judulFragment);
         viewPagerAdapter.addFragment(jadwalFragment);
         viewPagerAdapter.addFragment(notifikasiFragment);
