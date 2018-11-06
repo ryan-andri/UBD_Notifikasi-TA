@@ -1,4 +1,4 @@
-package ryanandri.ubdnotifikasita;
+package ryanandri.ubdnotifikasita.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
