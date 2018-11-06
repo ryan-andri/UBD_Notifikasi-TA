@@ -9,4 +9,7 @@
     <string name="catatan2">2. Pengajuan judul hanya dapat di lakukan 1 kali</string>
     <string name="catatan3">3. Judul tidak bisa di ubah apabila sudah di kirim.</string>
     <string name="judulsudahdikirim">Judul sudah dikirim!\n Form pengajuan judul sudah di tutup.</string>
+
+    <string name="UP"><U>UJIAN PROPOSAL</U></string>
+    <string name="UK"><U>UJIAN KOMPREHENSIF</U></string>
 </resources>
