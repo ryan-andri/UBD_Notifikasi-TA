@@ -6,11 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ryanandri.ubdnotifikasita.session.SessionConfig;
+
 public class LoginActivity extends AppCompatActivity {
+
+    private SessionConfig sessionConfig;
 
     private CoordinatorLayout coordinatorLayout;
     private EditText loginNIM;
@@ -21,6 +26,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sessionConfig = SessionConfig.getInstance(getApplicationContext());
+        if (sessionConfig.IsLogin()) {
+            menujuMainActivity();
+        }
 
         coordinatorLayout = findViewById(R.id.CoordinatorLayout);
 
@@ -49,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             snackbar.show();
             return;
         }
-
+        sessionConfig.setUserLogin(NIM, PASS);
         menujuMainActivity();
     }
 
