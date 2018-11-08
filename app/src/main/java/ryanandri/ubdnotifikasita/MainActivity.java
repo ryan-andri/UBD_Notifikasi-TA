@@ -93,5 +93,9 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(jadwalFragment);
         viewPagerAdapter.addFragment(notifikasiFragment);
         viewPager.setAdapter(viewPagerAdapter);
+
+        // cegah fragment dari reload untuk mengurangi lag.
+        // Nilai di ambil dari jumlah menu.
+        viewPager.setOffscreenPageLimit(4);
     }
 }
