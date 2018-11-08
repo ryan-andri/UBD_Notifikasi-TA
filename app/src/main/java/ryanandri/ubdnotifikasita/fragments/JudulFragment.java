@@ -12,14 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import ryanandri.ubdnotifikasita.R;
 
 public class JudulFragment extends Fragment {
     private CoordinatorLayout snackJudul;
-    private ConstraintLayout formJudul, arsipJudul;
+    private ConstraintLayout formJudul, arsipJudul, loadingJudul;
     private EditText judul1, judul2, judul3;
     private Button kirimJudul;
+
+    private TextView arsipJudul1, arsipJudul2, arsipJudul3;
 
     @Nullable
     @Override
@@ -31,6 +34,7 @@ public class JudulFragment extends Fragment {
         // Parent dengan 2 layout berbeda
         formJudul = view.findViewById(R.id.formJudul);
         arsipJudul = view.findViewById(R.id.arsipJudul);
+        loadingJudul =  view.findViewById(R.id.loadingJudul);
 
         // Snackbar popup
         snackJudul = view.findViewById(R.id.snackJudul);
@@ -38,6 +42,10 @@ public class JudulFragment extends Fragment {
         judul1 = view.findViewById(R.id.inputJudul1);
         judul2 = view.findViewById(R.id.inputJudul2);
         judul3 = view.findViewById(R.id.inputJudul3);
+
+        arsipJudul1 = view.findViewById(R.id.arsipJudul1);
+        arsipJudul2 = view.findViewById(R.id.arsipJudul2);
+        arsipJudul3 = view.findViewById(R.id.arsipJudul3);
 
         kirimJudul = view.findViewById(R.id.kirimJudul);
         kirimJudul.setOnClickListener(
@@ -66,7 +74,21 @@ public class JudulFragment extends Fragment {
             return;
         }
 
+        loadingJudul.setVisibility(View.VISIBLE);
         formJudul.setVisibility(View.GONE);
         arsipJudul.setVisibility(View.VISIBLE);
+        loadFormArsipJudul();
+    }
+
+    public void loadFormArsipJudul() {
+        final String arsipJ1 = judul1.getText().toString();
+        final String arsipJ2 = judul2.getText().toString();
+        final String arsipJ3 = judul3.getText().toString();
+
+        arsipJudul1.setText(arsipJ1);
+        arsipJudul2.setText(arsipJ2);
+        arsipJudul3.setText(arsipJ3);
+
+        loadingJudul.setVisibility(View.GONE);
     }
 }
