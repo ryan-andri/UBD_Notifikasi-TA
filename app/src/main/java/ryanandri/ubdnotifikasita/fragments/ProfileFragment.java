@@ -3,6 +3,7 @@ package ryanandri.ubdnotifikasita.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,8 @@ public class ProfileFragment extends Fragment {
 
     private Button buttonLogout;
 
+    private long mLastClickTime = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,6 +43,9 @@ public class ProfileFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000)
+                            return;
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         logout();
                     }
                 }

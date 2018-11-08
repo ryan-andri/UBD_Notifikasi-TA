@@ -2,6 +2,7 @@ package ryanandri.ubdnotifikasita;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginNIM;
     private EditText loginPASS;
     private Button btnLogin;
+
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +45,10 @@ public class LoginActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // avoid double click!
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000)
+                            return;
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         lakukanLogin();
                     }
                 }
