@@ -29,7 +29,7 @@ public class SessionConfig {
     // START Login User
     public static void setUserLogin(String nim, String password) {
         editor.putString(NIM, nim);
-        editor.putString(PASSWORD, nim);
+        editor.putString(PASSWORD, password);
         editor.putBoolean(IS_LOGIN, true);
         editor.commit();
     }
