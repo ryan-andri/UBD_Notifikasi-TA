@@ -10,6 +10,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/notifikasiLinierLayout"
             android:padding="10dp"
             android:orientation="vertical"
             android:layout_width="match_parent"

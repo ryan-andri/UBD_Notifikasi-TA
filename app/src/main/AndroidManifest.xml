@@ -27,6 +27,12 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            android:name=".ExpandNotif"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
