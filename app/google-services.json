@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "953268391596",
+    "firebase_url": "https://ubd-notifikasita.firebaseio.com",
+    "project_id": "ubd-notifikasita",
+    "storage_bucket": "ubd-notifikasita.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:953268391596:android:c0863294c488e12c",
+        "android_client_info": {
+          "package_name": "ryanandri.ubdnotifikasita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "953268391596-k6v6aoqogo9e2l165gor34efcqek7f0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ryanandri.ubdnotifikasita",
+            "certificate_hash": "080750824665770ad0bc458e862045da1ef194b1"
+          }
+        },
+        {
+          "client_id": "953268391596-c2eo7bv2gnbp2vtrat4d0d4dtb2atqha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfzeUiXhLRjrwovXuzml1RTD5CrvFkcq0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "953268391596-c2eo7bv2gnbp2vtrat4d0d4dtb2atqha.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
