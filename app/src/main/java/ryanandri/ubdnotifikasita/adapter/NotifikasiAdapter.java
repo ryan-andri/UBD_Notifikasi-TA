@@ -55,6 +55,7 @@ public class NotifikasiAdapter extends RecyclerView.Adapter<NotifikasiAdapter.Vi
                         intent.putExtra("head", headNotif);
                         intent.putExtra("tgl", tanggalNotif);
                         intent.putExtra("isi", isiNotifikasi);
+                        intent.putExtra("key_notif", 1);
                         context.startActivity(intent);
                     }
                 }

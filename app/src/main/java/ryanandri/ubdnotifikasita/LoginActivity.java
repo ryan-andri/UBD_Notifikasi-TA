@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import ryanandri.ubdnotifikasita.firebase.FirebaseMessagingService;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class LoginActivity extends AppCompatActivity {
@@ -64,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void menujuMainActivity() {
+        FirebaseMessaging.getInstance().subscribeToTopic("notifikasi");
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

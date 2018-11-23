@@ -1,9 +1,13 @@
 package ryanandri.ubdnotifikasita;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -28,6 +32,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // buat channel untuk oreo ke atas
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String id_channel = getString(R.string.id_channel);
+            String nama_channel = getString(R.string.nama_channel);
+            String desc_channel = getString(R.string.deskripsi_channel);
+
+            NotificationChannel channel = new NotificationChannel(id_channel, nama_channel, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(desc_channel);
+            NotificationManager notificationMgr = getSystemService(NotificationManager.class);
+            notificationMgr.createNotificationChannel(channel);
+        }
 
         SessionConfig sessionConfig = SessionConfig.getInstance(getApplicationContext());
         if (!sessionConfig.IsLogin()) {

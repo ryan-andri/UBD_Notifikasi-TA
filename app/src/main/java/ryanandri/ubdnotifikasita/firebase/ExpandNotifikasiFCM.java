@@ -1,12 +1,13 @@
-package ryanandri.ubdnotifikasita;
+package ryanandri.ubdnotifikasita.firebase;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-public class ExpandNotif extends AppCompatActivity {
+import ryanandri.ubdnotifikasita.R;
 
+public class ExpandNotifikasiFCM extends AppCompatActivity {
     private TextView Head, Tgl, Isi;
 
     @Override
