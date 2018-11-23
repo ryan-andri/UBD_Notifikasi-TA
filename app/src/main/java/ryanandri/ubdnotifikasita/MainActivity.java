@@ -1,5 +1,6 @@
 package ryanandri.ubdnotifikasita;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +13,7 @@ import ryanandri.ubdnotifikasita.fragments.JadwalFragment;
 import ryanandri.ubdnotifikasita.fragments.JudulFragment;
 import ryanandri.ubdnotifikasita.fragments.NotifikasiFragment;
 import ryanandri.ubdnotifikasita.fragments.ProfileFragment;
+import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
@@ -26,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SessionConfig sessionConfig = SessionConfig.getInstance(getApplicationContext());
+        if (!sessionConfig.IsLogin()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         setContentView(R.layout.activity_main);
 

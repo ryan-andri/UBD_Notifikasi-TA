@@ -15,9 +15,6 @@ import android.widget.EditText;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private SessionConfig sessionConfig;
-
     private CoordinatorLayout coordinatorLayout;
     private EditText loginNIM;
     private EditText loginPASS;
@@ -29,11 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        sessionConfig = SessionConfig.getInstance(getApplicationContext());
-        if (sessionConfig.IsLogin()) {
-            menujuMainActivity();
-        }
 
         coordinatorLayout = findViewById(R.id.CoordinatorLayout);
 
@@ -66,12 +58,13 @@ public class LoginActivity extends AppCompatActivity {
             snackbar.show();
             return;
         }
+        SessionConfig sessionConfig = SessionConfig.getInstance(this);
         sessionConfig.setUserLogin(NIM, PASS);
         menujuMainActivity();
     }
 
     public void menujuMainActivity() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
