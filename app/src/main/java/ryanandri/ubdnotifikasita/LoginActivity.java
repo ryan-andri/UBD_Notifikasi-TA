@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // avoid double click!
+                        //
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000)
                             return;
                         mLastClickTime = SystemClock.elapsedRealtime();
@@ -51,18 +51,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void lakukanLogin() {
-        String NIM = loginNIM.getText().toString();
-        String PASS = loginPASS.getText().toString();
+        String nim = loginNIM.getText().toString();
+        String pass = loginPASS.getText().toString();
 
-        if (NIM.isEmpty() || PASS.isEmpty()) {
+        if (nim.isEmpty() || pass.isEmpty()) {
             Snackbar snackbar = Snackbar.make(coordinatorLayout, "Semua kolom harus di isi !", Snackbar.LENGTH_SHORT);
             View snackView = snackbar.getView();
             snackView.setBackgroundColor(getResources().getColor(R.color.colorRed));
             snackbar.show();
             return;
         }
+
         SessionConfig sessionConfig = SessionConfig.getInstance(this);
-        sessionConfig.setUserLogin(NIM, PASS);
+        sessionConfig.setUserLogin(nim, pass);
         menujuMainActivity();
     }
 

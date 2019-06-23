@@ -4,11 +4,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-
 import com.google.firebase.messaging.RemoteMessage;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import ryanandri.ubdnotifikasita.ExpandNotif;
 import ryanandri.ubdnotifikasita.MainActivity;

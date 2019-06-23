@@ -16,9 +16,4 @@
         android:icon="@drawable/ic_jadwal_black_24dp"
         android:title="@string/title_jadwal" />
 
-    <item
-        android:id="@+id/navigation_notifikasi"
-        android:icon="@drawable/ic_notifikasi_black_24dp"
-        android:title="@string/title_notifikasi" />
-
 </menu>
