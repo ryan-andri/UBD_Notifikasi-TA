@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">UBD Notifikasi TA</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_profile">Beranda</string>
     <string name="title_jadwal">Jadwal Ujian</string>
-    <string name="title_notifikasi">Notifikasi</string>
     <string name="title_judul">Pengajuan Judul</string>
     <string name="catatan1">1. Isi form judul sesuai dengan form pengajuan judul yang di ACC kaprodi</string>
     <string name="catatan2">2. Pengajuan judul hanya dapat di lakukan 1 kali</string>
@@ -11,7 +10,7 @@
     <string name="UP"><U>UJIAN PROPOSAL</U></string>
     <string name="UK"><U>UJIAN KOMPREHENSIF</U></string>
 
-    <!-- Channel untuk Notifikasi khusus android O atau slanjutnya -->
+    <!-- Channel untuk Notifikasi khusus android O ke atas -->
     <string name="id_channel">ubd_ta_notifikasi</string>
     <string name="nama_channel">UBD TA Notifikasi</string>
     <string name="deskripsi_channel">Notifikasi Tugas Akhir Universitas Bina Darma</string>

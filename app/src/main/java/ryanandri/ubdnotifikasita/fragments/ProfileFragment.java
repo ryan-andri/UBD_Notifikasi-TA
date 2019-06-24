@@ -22,7 +22,12 @@ import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class ProfileFragment extends Fragment {
     private SessionConfig sessionConfig;
+
     private TextView namaMahasiswa;
+    private TextView nimMahasiswa;
+
+    private TextView sksMahasiswa;
+    private TextView pbb1, pbb2;
 
     private Button buttonLogout;
 
@@ -38,8 +43,25 @@ public class ProfileFragment extends Fragment {
         // Session Configuration.
         sessionConfig = SessionConfig.getInstance(getContext());
 
-        namaMahasiswa = view.findViewById(R.id.mhsNIM);
-        namaMahasiswa.setText(sessionConfig.getNIM());
+        String sesiNama = sessionConfig.getNamaMHS();
+        String sesiNim = sessionConfig.getNIM();
+        int sesiSks = sessionConfig.getJumlahSKS();
+        String sesiPbb1 = sessionConfig.getPembimbing1();
+        String sesiPbb2 = sessionConfig.getPembimbing2();
+
+        namaMahasiswa = view.findViewById(R.id.mhsNAMA);
+        namaMahasiswa.setText(sesiNama);
+
+        nimMahasiswa = view.findViewById(R.id.mhsNIM);
+        nimMahasiswa.setText(sesiNim);
+
+        sksMahasiswa = view.findViewById(R.id.mhsSKS);
+        sksMahasiswa.setText(String.valueOf(sesiSks));
+
+        pbb1 = view.findViewById(R.id.pembimbing1);
+        pbb1.setText(sesiPbb1);
+        pbb2 = view.findViewById(R.id.pembimbing2);
+        pbb2.setText(sesiPbb2);
 
         buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(

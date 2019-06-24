@@ -51,9 +51,7 @@ public class JudulFragment extends Fragment {
         kirimJudul.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        checkInput();
-                    }
+                    public void onClick(View v) { loadFormPengajuanJudul(); }
                 }
         );
 
@@ -62,10 +60,11 @@ public class JudulFragment extends Fragment {
         return view;
     }
 
-    public void checkInput() {
-        String J1 = judul1.getText().toString();
-        String J2 = judul2.getText().toString();
-        String J3 = judul3.getText().toString();
+    public void loadFormPengajuanJudul() {
+        final String J1 = judul1.getText().toString();
+        final String J2 = judul2.getText().toString();
+        final String J3 = judul3.getText().toString();
+
         if (J1.isEmpty() || J2.isEmpty() || J3.isEmpty()) {
             Snackbar snackbar = Snackbar.make(snackJudul, "Semua kolom harus di isi !", Snackbar.LENGTH_SHORT);
             View snackView = snackbar.getView();

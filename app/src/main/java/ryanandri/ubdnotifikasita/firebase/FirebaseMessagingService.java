@@ -2,6 +2,7 @@ package ryanandri.ubdnotifikasita.firebase;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import com.google.firebase.messaging.RemoteMessage;
@@ -32,22 +33,31 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         } else {
             intent = new Intent(this, MainActivity.class);
         }
+
+        Uri soundNotif = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.castor);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         intent.putExtra("head", title);
         intent.putExtra("tgl", tanggal);
         intent.putExtra("isi", Isi);
         intent.putExtra("key_notif", 1);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                                                            intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         String id_channel = getString(R.string.id_channel);
+        long[] vibrate = {0, 600};
         NotificationCompat.Builder nBuilder =
                 new NotificationCompat.Builder(this, id_channel)
-                .setSmallIcon(R.drawable.ic_notifikasi_black_24dp)
-                .setAutoCancel(true)
-                .setContentTitle(title)
-                .setContentText(Isi)
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                        .setSmallIcon(R.drawable.ic_notifikasi_black_24dp)
+                        .setAutoCancel(true)
+                        .setContentTitle(title)
+                        .setContentText(Isi)
+                        .setContentIntent(pendingIntent)
+                        .setSound(soundNotif)
+                        .setVibrate(vibrate)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(1, nBuilder.build());
