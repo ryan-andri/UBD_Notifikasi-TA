@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText loginNIM;
     private EditText loginPASS;
-    private Button btnLogin;
 
     private long mLastClickTime = 0;
 
@@ -70,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             asyncLoginFetchData(nimSesi, passSesi);
         }
 
-        btnLogin = findViewById(R.id.buttonLogin);
+        Button btnLogin = findViewById(R.id.buttonLogin);
         btnLogin.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -154,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadLoadingProgress(false);
-                        tampilkanSnackBar("Error request = " +error.toString());
+                        tampilkanSnackBar("Server tidak merespon.");
                     }
                 })
         {

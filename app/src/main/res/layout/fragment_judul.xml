@@ -267,7 +267,6 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:lines="4"
-                android:text="Pengembangan sistem notifikasi tugas akhir universitas binadarma"
                 android:textSize="14sp"/>
             <!-- End -->
 
@@ -287,7 +286,6 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:lines="4"
-                android:text="Pengembangan sistem notifikasi tugas akhir universitas binadarma"
                 android:textSize="14sp"/>
             <!-- End -->
 
@@ -307,7 +305,6 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:lines="4"
-                android:text="Pengembangan sistem notifikasi tugas akhir universitas binadarma"
                 android:textSize="14sp"/>
             <!-- End -->
         </LinearLayout>

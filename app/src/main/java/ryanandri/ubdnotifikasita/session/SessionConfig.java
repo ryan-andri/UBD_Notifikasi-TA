@@ -21,6 +21,11 @@ public class SessionConfig {
     private static String PEMBIMBING1 = "pembimbing1";
     private static String PEMBIMBING2 = "pembimbing2";
 
+    // Judul
+    private static String JUDUL1 = "judul1";
+    private static String JUDUL2 = "judul2";
+    private static String JUDUL3 = "judul3";
+
     private SessionConfig() {}
 
     public static SessionConfig getInstance(Context context) {
@@ -94,5 +99,25 @@ public class SessionConfig {
 
     public static int getJumlahSKS() {
        return sharedPreferences.getInt(JML_SKS, 0);
+    }
+
+    // set dan get pengajuan judul
+    public static void setJudul(String judul1, String judul2, String judul3) {
+        editor.putString(JUDUL1, judul1);
+        editor.putString(JUDUL2, judul2);
+        editor.putString(JUDUL3, judul3);
+        editor.commit();
+    }
+
+    public static String getJudul1() {
+        return sharedPreferences.getString(JUDUL1, "");
+    }
+
+    public static String getJudul2() {
+        return sharedPreferences.getString(JUDUL2, "");
+    }
+
+    public static String getJudul3() {
+        return sharedPreferences.getString(JUDUL3, "");
     }
 }

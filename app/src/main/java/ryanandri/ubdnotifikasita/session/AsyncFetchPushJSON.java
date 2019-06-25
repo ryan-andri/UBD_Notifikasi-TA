@@ -25,7 +25,7 @@ public class AsyncFetchPushJSON {
         this.context = context;
     }
 
-    public void SyncLogin(final String nim, final String pass) {
+    public void pushDataPengajuanJudul(final String nim, final String pass) {
         sessionConfig = SessionConfig.getInstance(context);
 
         final String nimTrim = nim.trim();
