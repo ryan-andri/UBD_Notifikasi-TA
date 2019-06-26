@@ -120,4 +120,11 @@ public class SessionConfig {
     public static String getJudul3() {
         return sharedPreferences.getString(JUDUL3, "");
     }
+
+    public static void deleteDataJudul() {
+        editor.remove(JUDUL1);
+        editor.remove(JUDUL2);
+        editor.remove(JUDUL3);
+        editor.commit();
+    }
 }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,7 +28,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import ryanandri.ubdnotifikasita.session.AsyncFetchPushJSON;
 import ryanandri.ubdnotifikasita.session.Constant;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
@@ -127,12 +125,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                 sessionConfig.setNamaMHS(namaMhs);
                                 sessionConfig.setJumlahSKS(jmlSks);
-
-                                if (!pembimbing1.isEmpty())
-                                    sessionConfig.setPembimbing1(pembimbing1);
-
-                                if (!pembimbing2.isEmpty())
-                                    sessionConfig.setPembimbing2(pembimbing2);
+                                sessionConfig.setPembimbing1(pembimbing1);
+                                sessionConfig.setPembimbing2(pembimbing2);
 
                                 // simpan sesi pengguna jika sukses login
                                 sessionConfig.setUserLogin(nim, pass);
@@ -153,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadLoadingProgress(false);
-                        tampilkanSnackBar("Server tidak merespon.");
+                        tampilkanSnackBar("Koneksi bermasalah.");
                     }
                 })
         {

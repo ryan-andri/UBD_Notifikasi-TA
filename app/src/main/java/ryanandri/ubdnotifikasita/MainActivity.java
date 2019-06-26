@@ -21,10 +21,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private BottomNavigationView navigation;
 
-    MenuItem menuItem;
-    ProfileFragment profileFragment;
-    JudulFragment judulFragment;
-    JadwalFragment jadwalFragment;
+    private MenuItem menuItem;
+    private ProfileFragment profileFragment;
+    private JudulFragment judulFragment;
+    private JadwalFragment jadwalFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

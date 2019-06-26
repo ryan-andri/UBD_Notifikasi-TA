@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +40,6 @@ public class JudulFragment extends Fragment {
     private EditText judul1, judul2, judul3;
 
     private TextView arsipJudul1, arsipJudul2, arsipJudul3;
-    private String arsipJ1, arsipJ2, arsipJ3;
 
     @Nullable
     @Override
@@ -64,13 +64,16 @@ public class JudulFragment extends Fragment {
         arsipJudul2 = view.findViewById(R.id.arsipJudul2);
         arsipJudul3 = view.findViewById(R.id.arsipJudul3);
 
+        // resync data pengajuan judul
         sessionConfig = SessionConfig.getInstance(getContext());
+        String nim = sessionConfig.getNIM();
+        lakukanSyncDataJudul(nim);
 
-        arsipJ1 = sessionConfig.getJudul1();
-        arsipJ2 = sessionConfig.getJudul2();
-        arsipJ3 = sessionConfig.getJudul3();
+        String arsipJ1cek = sessionConfig.getJudul1();
+        String arsipJ2cek = sessionConfig.getJudul2();
+        String arsipJ3cek = sessionConfig.getJudul3();
 
-        if (!arsipJ1.isEmpty() && !arsipJ2.isEmpty() && !arsipJ3.isEmpty()) {
+        if (!arsipJ1cek.isEmpty() && !arsipJ2cek.isEmpty() && !arsipJ3cek.isEmpty()) {
             formJudul.setVisibility(View.GONE);
             arsipJudul.setVisibility(View.VISIBLE);
             loadFormArsipJudul();
@@ -92,6 +95,7 @@ public class JudulFragment extends Fragment {
         final String nama = sessionConfig.getNamaMHS();
         final String pembimbing1 = sessionConfig.getPembimbing1();
         final String pembimbing2 = sessionConfig.getPembimbing2();
+        final int jmlSks = sessionConfig.getJumlahSKS();
 
         final String J1 = judul1.getText().toString();
         final String J2 = judul2.getText().toString();
@@ -102,8 +106,8 @@ public class JudulFragment extends Fragment {
             return;
         }
 
-        if (pembimbing1.isEmpty() && pembimbing2.isEmpty()) {
-            tampilkanSnackBar("Tidak dapat mengirim karna anda belum mendapatkan pembimbing!");
+        if ((pembimbing1.isEmpty() && pembimbing2.isEmpty()) || jmlSks < 136) {
+            tampilkanSnackBar("Tidak dapat mengirim karna anda belum memenuhi syarat!");
             return;
         }
 
@@ -152,7 +156,7 @@ public class JudulFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         formJudul.setVisibility(View.VISIBLE);
                         loadingJudul.setVisibility(View.GONE);
-                        tampilkanSnackBar("Server tidak merespon!");
+                        tampilkanSnackBar("Koneksi bermasalah!");
                     }
                 })
         {
@@ -172,7 +176,59 @@ public class JudulFragment extends Fragment {
         requestQueue.add(stringRequest);
     }
 
+    public void lakukanSyncDataJudul(final String nim) {
+        final String nimTrim = nim.trim();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.ambil_data_judul,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                String judul1 = "";
+                                String judul2 = "";
+                                String judul3 = "";
+                                JSONArray arrJson = jsonObject.getJSONArray("judul");
+                                for (int i = 0; i < arrJson.length(); i++) {
+                                    jsonObject = arrJson.getJSONObject(i);
+                                    judul1 = jsonObject.getString("judul_1");
+                                    judul2 = jsonObject.getString("judul_2");
+                                    judul3 = jsonObject.getString("judul_3");
+                                }
+
+                                sessionConfig.setJudul(judul1, judul2, judul3);
+                                formJudul.setVisibility(View.GONE);
+                                arsipJudul.setVisibility(View.VISIBLE);
+                                loadFormArsipJudul();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) { }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("nim", nimTrim);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+    }
+
     public void loadFormArsipJudul() {
+        String arsipJ1 = sessionConfig.getJudul1();
+        String arsipJ2 = sessionConfig.getJudul2();
+        String arsipJ3 = sessionConfig.getJudul3();
+
         arsipJudul1.setText(arsipJ1);
         arsipJudul2.setText(arsipJ2);
         arsipJudul3.setText(arsipJ3);
