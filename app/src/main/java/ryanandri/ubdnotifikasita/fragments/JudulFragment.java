@@ -1,5 +1,6 @@
 package ryanandri.ubdnotifikasita.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -65,9 +66,9 @@ public class JudulFragment extends Fragment {
         arsipJudul3 = view.findViewById(R.id.arsipJudul3);
 
         // resync data pengajuan judul
-        sessionConfig = SessionConfig.getInstance(getContext());
+        sessionConfig = SessionConfig.getInstance(view.getContext());
         String nim = sessionConfig.getNIM();
-        lakukanSyncDataJudul(nim);
+        lakukanSyncDataJudul(nim, view.getContext());
 
         String arsipJ1cek = sessionConfig.getJudul1();
         String arsipJ2cek = sessionConfig.getJudul2();
@@ -83,14 +84,14 @@ public class JudulFragment extends Fragment {
         kirimJudul.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) { loadFormPengajuanJudul(); }
+                    public void onClick(View v) { loadFormPengajuanJudul(v.getContext()); }
                 }
         );
 
         return view;
     }
 
-    public void loadFormPengajuanJudul() {
+    public void loadFormPengajuanJudul(Context context) {
         final String nim = sessionConfig.getNIM();
         final String nama = sessionConfig.getNamaMHS();
         final String pembimbing1 = sessionConfig.getPembimbing1();
@@ -113,11 +114,11 @@ public class JudulFragment extends Fragment {
 
         formJudul.setVisibility(View.GONE);
         loadingJudul.setVisibility(View.VISIBLE);
-        pushDataPengajuanJudul(nim, nama, J1, J2, J3);
+        pushDataPengajuanJudul(nim, nama, J1, J2, J3, context);
     }
 
     public void pushDataPengajuanJudul(final String nim, final String nama, final String judul1,
-                                       final String judul2, final String judul3) {
+                                       final String judul2, final String judul3, Context context) {
 
         final String nimTrim = nim.trim();
         final String namaTrim = nama.trim();
@@ -172,11 +173,11 @@ public class JudulFragment extends Fragment {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
 
-    public void lakukanSyncDataJudul(final String nim) {
+    public void lakukanSyncDataJudul(final String nim, Context context) {
         final String nimTrim = nim.trim();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.ambil_data_judul,
                 new Response.Listener<String>(){
@@ -220,7 +221,7 @@ public class JudulFragment extends Fragment {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
 

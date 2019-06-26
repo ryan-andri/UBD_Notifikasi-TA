@@ -3,6 +3,7 @@
     <string name="title_profile">Beranda</string>
     <string name="title_jadwal">Jadwal Ujian</string>
     <string name="title_judul">Pengajuan Judul</string>
+    <string name="title_notifikasi">Notifikasi</string>
     <string name="catatan1">1. Isi form judul sesuai dengan form pengajuan judul yang di ACC kaprodi</string>
     <string name="catatan2">2. Pengajuan judul hanya dapat di lakukan 1 kali</string>
     <string name="catatan3">3. Judul tidak bisa di ubah apabila sudah di kirim.</string>

@@ -32,7 +32,7 @@ public class JadwalFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycleJadwal);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         listItemJadwals = new ArrayList<>();
         ListItemJadwal listItemJadwalUP = new ListItemJadwal(
@@ -51,7 +51,7 @@ public class JadwalFragment extends Fragment {
         listItemJadwals.add(listItemJadwalUP);
         listItemJadwals.add(listItemJadwalKOM);
 
-        adapter = new JadwalAdapter(listItemJadwals, getActivity());
+        adapter = new JadwalAdapter(listItemJadwals, view.getContext());
         recyclerView.setAdapter(adapter);
 
         return view;

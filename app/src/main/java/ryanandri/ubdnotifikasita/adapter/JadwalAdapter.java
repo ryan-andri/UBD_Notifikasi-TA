@@ -14,9 +14,8 @@ import ryanandri.ubdnotifikasita.ListItemJadwal;
 import ryanandri.ubdnotifikasita.R;
 
 public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.ViewHolderJadwal> {
-
-    private List<ListItemJadwal> listItemJadwals;
     private Context context;
+    private List<ListItemJadwal> listItemJadwals;
 
     public JadwalAdapter(List<ListItemJadwal> listItemJadwals, Context context) {
         this.listItemJadwals = listItemJadwals;
@@ -26,8 +25,7 @@ public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolderJadwal onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_jadwal, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_jadwal, parent, false);
         return new ViewHolderJadwal(view);
     }
 

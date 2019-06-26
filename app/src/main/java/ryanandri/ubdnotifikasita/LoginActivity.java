@@ -107,13 +107,13 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
-                        String namaMhs = "";
-                        int jmlSks = 0;
-                        String pembimbing1 = "", pembimbing2 = "";
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
+                                String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
+                                int jmlSks = 0;
+
                                 JSONArray arrJson = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);

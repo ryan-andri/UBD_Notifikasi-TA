@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import ryanandri.ubdnotifikasita.adapter.ViewPagerAdapter;
 import ryanandri.ubdnotifikasita.fragments.JadwalFragment;
 import ryanandri.ubdnotifikasita.fragments.JudulFragment;
+import ryanandri.ubdnotifikasita.fragments.NotifikasiFragment;
 import ryanandri.ubdnotifikasita.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,9 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation;
 
     private MenuItem menuItem;
-    private ProfileFragment profileFragment;
-    private JudulFragment judulFragment;
-    private JadwalFragment jadwalFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.navigation_jadwal:
                                 viewPager.setCurrentItem(2);
                                 break;
+                            case R.id.navigation_notifikasi:
+                                viewPager.setCurrentItem(3);
+                                break;
                         }
                         return false;
                     }
@@ -105,16 +106,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadviewpager(ViewPager viewPager) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        profileFragment = new ProfileFragment();
-        judulFragment = new JudulFragment();
-        jadwalFragment = new JadwalFragment();
-        viewPagerAdapter.addFragment(profileFragment);
-        viewPagerAdapter.addFragment(judulFragment);
-        viewPagerAdapter.addFragment(jadwalFragment);
+        ProfileFragment profileFragment = new ProfileFragment();
+        JudulFragment judulFragment = new JudulFragment();
+        JadwalFragment jadwalFragment = new JadwalFragment();
+        NotifikasiFragment notifikasiFragment = new NotifikasiFragment();
+
+        viewPagerAdapter.addFragment(profileFragment); // 0
+        viewPagerAdapter.addFragment(judulFragment);   // 1
+        viewPagerAdapter.addFragment(jadwalFragment);  // 2
+        viewPagerAdapter.addFragment(notifikasiFragment); // 3
         viewPager.setAdapter(viewPagerAdapter);
 
         // cegah fragment dari reload untuk mengurangi lag.
         // Nilai di ambil dari jumlah menu.
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
     }
 }
