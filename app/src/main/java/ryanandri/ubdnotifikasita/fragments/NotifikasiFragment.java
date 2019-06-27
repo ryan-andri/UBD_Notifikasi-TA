@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,28 +36,45 @@ import ryanandri.ubdnotifikasita.session.Constant;
 public class NotifikasiFragment extends Fragment {
     private List<ListItemNotifikasi> listItemNotifikasis;
 
+    private RecyclerView recyclerView;
+    private RelativeLayout relativeLayout;
+    private ConstraintLayout emptyLayout;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notifikasi, null);
+        final View view = inflater.inflate(R.layout.fragment_notifikasi, null);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycleNotif);
+        recyclerView = view.findViewById(R.id.recycleNotif);
+        relativeLayout = view.findViewById(R.id.listNotifikasi);
+        emptyLayout = view.findViewById(R.id.listNotifKosong);
+        swipeRefreshLayout = view.findViewById(R.id.refreshListNotifikasi);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         // lakukakan sync list notifikasi
         listItemNotifikasis = new ArrayList<>();
-        syncNotifikasiList(getContext());
+        syncNotifikasiList(view.getContext(), false);
 
-        RecyclerView.Adapter adapter = new NotifikasiAdapter(listItemNotifikasis, view.getContext());
-        recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swipeRefreshLayout.setRefreshing(true);
+                        syncNotifikasiList(view.getContext(), true);
+                    }
+                }
+        );
 
         return view;
     }
 
-    public void syncNotifikasiList(Context context) {
+    public void syncNotifikasiList(final Context context, final boolean refresh) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.login,
                 new Response.Listener<String>(){
                     @Override
@@ -73,8 +93,14 @@ public class NotifikasiFragment extends Fragment {
                                     listItemNotifikasis.add(listItemNotifikasi);
                                 }
                             }
+                            if (refresh)
+                                swipeRefreshLayout.setRefreshing(false);
+                            setAdapter(context);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            if (refresh)
+                                swipeRefreshLayout.setRefreshing(false);
+                            setAdapter(context);
                         }
                     }
                 },
@@ -82,11 +108,19 @@ public class NotifikasiFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        if (refresh)
+                            swipeRefreshLayout.setRefreshing(false);
+                        setAdapter(context);
                     }
                 }
         );
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
+    }
+
+    public void setAdapter(Context context) {
+        RecyclerView.Adapter adapter = new NotifikasiAdapter(listItemNotifikasis, context);
+        recyclerView.setAdapter(adapter);
     }
 }

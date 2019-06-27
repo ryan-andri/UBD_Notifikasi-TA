@@ -7,6 +7,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 import ryanandri.ubdnotifikasita.ExpandNotif;
 import ryanandri.ubdnotifikasita.MainActivity;
 import ryanandri.ubdnotifikasita.R;
@@ -15,37 +17,22 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
-        if (remoteMessage.getNotification() != null) {
-            String Title = remoteMessage.getNotification().getTitle();
-            String Isi = remoteMessage.getNotification().getBody();
-            String Tgl = "01/01/0111";
-
-            String click_action =  remoteMessage.getNotification().getClickAction();
-            TampilkanNotifikasi(Title, Isi, Tgl, click_action);
-        }
+        String title = remoteMessage.getData().get("title");
+        String tanggal = remoteMessage.getData().get("tanggal");
+        String isi = remoteMessage.getData().get("isi");
+        TampilkanNotifikasi(title, isi, tanggal);
     }
 
-    public void TampilkanNotifikasi(String title, String Isi, String tanggal, String click_action) {
-        Intent intent;
-        if (click_action.equals("ExpandNotifikasi")) {
-            intent = new Intent(this, ExpandNotif.class);
-        } else {
-            intent = new Intent(this, MainActivity.class);
-        }
-
-        Uri soundNotif = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.castor);
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+    public void TampilkanNotifikasi(String title, String Isi, String tanggal) {
+        Intent intent = new Intent(getApplicationContext(), ExpandNotif.class);
         intent.putExtra("head", title);
         intent.putExtra("tgl", tanggal);
         intent.putExtra("isi", Isi);
         intent.putExtra("key_notif", 1);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                                                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                                                            intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
+        Uri soundNotif = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.castor);
         String id_channel = getString(R.string.id_channel);
         long[] vibrate = {0, 600};
         NotificationCompat.Builder nBuilder =

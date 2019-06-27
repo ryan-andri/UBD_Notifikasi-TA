@@ -84,7 +84,9 @@ public class JudulFragment extends Fragment {
         kirimJudul.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) { loadFormPengajuanJudul(v.getContext()); }
+                    public void onClick(View v) {
+                        loadFormPengajuanJudul(v.getContext());
+                    }
                 }
         );
 
@@ -107,7 +109,7 @@ public class JudulFragment extends Fragment {
             return;
         }
 
-        if ((pembimbing1.isEmpty() && pembimbing2.isEmpty()) || jmlSks < 136) {
+        if ((pembimbing1.isEmpty() && pembimbing2.isEmpty()) || jmlSks < 134) {
             tampilkanSnackBar("Tidak dapat mengirim karna anda belum memenuhi syarat!");
             return;
         }

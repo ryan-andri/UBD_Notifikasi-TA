@@ -1,5 +1,6 @@
 package ryanandri.ubdnotifikasita;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,10 +31,10 @@ public class ExpandNotif extends AppCompatActivity {
     }
 
     public void foregroundNotif() {
-        Bundle bundle = getIntent().getExtras();
-        String head = bundle.getString("head");
-        String tgl = bundle.getString("tgl");
-        String isi = bundle.getString("isi");
+        Intent intent = getIntent();
+        String head = intent.getStringExtra("head");
+        String tgl = intent.getStringExtra("tgl");
+        String isi = intent.getStringExtra("isi");
         Head.setText(head);
         Tgl.setText(tgl);
         Isi.setText(isi);

@@ -44,7 +44,7 @@ public class ExpandNotifikasiFCM extends AppCompatActivity {
 
     public void backgroundNotif() {
         for (String key : getIntent().getExtras().keySet()) {
-            if (key.equals("title")) {
+            if (key.equals("head")) {
                 String head = getIntent().getExtras().getString(key);
                 Head.setText(head);
             } else if (key.equals("tgl")) {
