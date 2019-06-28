@@ -66,6 +66,11 @@ public class NotifikasiFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayout.setRefreshing(true);
+
+                        // cegah duplikasi listview
+                        if (listItemNotifikasis.size() > 0)
+                            listItemNotifikasis.clear();
+
                         syncNotifikasiList(view.getContext(), true);
                     }
                 }
@@ -75,23 +80,19 @@ public class NotifikasiFragment extends Fragment {
     }
 
     public void syncNotifikasiList(final Context context, final boolean refresh) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.login,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.ambil_data_notifikasi,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                JSONArray arrJson = jsonObject.getJSONArray("list_notifikasi");
-                                for (int i = 0; i < arrJson.length(); i++) {
-                                    jsonObject = arrJson.getJSONObject(i);
-                                    String headNotif = jsonObject.getString("head");
-                                    String tanggalNotif = jsonObject.getString("tanggal");
-                                    String bodyNotif = jsonObject.getString("isi");
-                                    ListItemNotifikasi listItemNotifikasi = new ListItemNotifikasi(headNotif, tanggalNotif, bodyNotif);
-                                    listItemNotifikasis.add(listItemNotifikasi);
-                                }
+                            JSONArray arrJson = new JSONArray(response);
+                            for (int i = 0; i < arrJson.length(); i++) {
+                                JSONObject jsonObject  = arrJson.getJSONObject(i);
+                                String headNotif = jsonObject.getString("head");
+                                String tanggalNotif = jsonObject.getString("tanggal");
+                                String bodyNotif = jsonObject.getString("isi");
+                                ListItemNotifikasi listItemNotifikasi = new ListItemNotifikasi(headNotif, tanggalNotif, bodyNotif);
+                                listItemNotifikasis.add(listItemNotifikasi);
                             }
                             if (refresh)
                                 swipeRefreshLayout.setRefreshing(false);

@@ -5,4 +5,5 @@ public class Constant {
     public static final String login = "login.php";
     public static final String ajukan_judul = "pengajuan_judul.php";
     public static final String ambil_data_judul = "ambil_data_judul.php";
+    public static final String ambil_data_notifikasi = "list_notifikasi.php";
 }
