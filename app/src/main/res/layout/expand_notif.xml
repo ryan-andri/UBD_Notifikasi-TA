@@ -18,6 +18,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="175dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/bidar" />
+
             <TextView
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
@@ -27,38 +35,41 @@
                 android:id="@+id/head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Notifikasi pembagian bla bla bla" />
+                android:text="Judul Notifikasi" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Tanggal"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:id="@+id/tgl"
+                android:textColor="@color/colorGreyDark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="11/11/1111" />
+                android:text="Tanggal Notifikasi" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Isi Notifikasi"
+                android:text="Isi notifikasi"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
 
             <TextView
-                android:padding="8dp"
-                android:textColor="@color/colorWhite"
+                android:padding="10dp"
+                android:textColor="@color/colorGreyDark"
                 android:id="@+id/isi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:background="@color/colorPrimary"
-                android:text="qwerty 1234567890 aaadasdasjfaljfjbauigsjldapsgoiabsljhvalbjui jgaijbasviajvsfugi" />
+                android:layout_marginTop="4dp"
+                android:background="@drawable/background_text"
+                android:text="Isi dari notifikasi ..." />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
