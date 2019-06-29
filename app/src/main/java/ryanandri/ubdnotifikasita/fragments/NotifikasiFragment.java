@@ -26,12 +26,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ryanandri.ubdnotifikasita.ListItemNotifikasi;
 import ryanandri.ubdnotifikasita.R;
 import ryanandri.ubdnotifikasita.adapter.NotifikasiAdapter;
 import ryanandri.ubdnotifikasita.session.Constant;
+import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class NotifikasiFragment extends Fragment {
     private List<ListItemNotifikasi> listItemNotifikasis;
@@ -42,12 +45,16 @@ public class NotifikasiFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    private SessionConfig sessionConfig;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_notifikasi, null);
+
+        sessionConfig = SessionConfig.getInstance(view.getContext());
 
         recyclerView = view.findViewById(R.id.recycleNotif);
         relativeLayout = view.findViewById(R.id.listNotifikasi);
@@ -80,7 +87,7 @@ public class NotifikasiFragment extends Fragment {
     }
 
     public void syncNotifikasiList(final Context context, final boolean refresh) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.ambil_data_notifikasi,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.ambil_data_notifikasi,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -108,13 +115,27 @@ public class NotifikasiFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
                         if (refresh)
                             swipeRefreshLayout.setRefreshing(false);
                         setAdapter(context);
                     }
-                }
-        );
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+
+                String tipe_notifikasi = "";
+                String pembimbing1 = sessionConfig.getPembimbing1();
+                String pembimbing2 = sessionConfig.getPembimbing2();
+                if (pembimbing1.isEmpty() && pembimbing2.isEmpty())
+                    tipe_notifikasi = "pembimbing";
+
+                params.put("tipe_notifikasi", tipe_notifikasi);
+
+                return params;
+            }
+        };
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);

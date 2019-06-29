@@ -27,12 +27,10 @@ public class ExpandNotifikasiFCM extends AppCompatActivity {
                 backgroundNotif();
             }
         }
-
     }
 
     public void foregroundNotif() {
         Bundle bundle = getIntent().getExtras();
-
         String head = bundle.getString("head");
         String tgl = bundle.getString("tgl");
         String isi = bundle.getString("isi");

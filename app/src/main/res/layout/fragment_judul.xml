@@ -36,7 +36,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="22dp"
-            android:background="@color/colorGreyLight"
+            android:background="@drawable/background_text"
             app:layout_constraintBottom_toTopOf="@+id/kirimJudul"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -52,7 +52,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
                 android:text="Catatan"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorText"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -69,8 +69,8 @@
                 android:layout_marginBottom="12dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:textColor="@color/colorText"
                 android:text="@string/catatan1"
-                android:textColor="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView3"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,8 +84,8 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:textColor="@color/colorText"
                 android:text="@string/catatan2"
-                android:textColor="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView4"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -99,8 +99,8 @@
                 android:layout_marginBottom="32dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:textColor="@color/colorText"
                 android:text="@string/catatan3"
-                android:textColor="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +191,7 @@
             android:id="@+id/constraintLayout3"
             android:layout_width="0dp"
             android:layout_height="102dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/background_popup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -263,6 +263,8 @@
 
             <TextView
                 android:id="@+id/arsipJudul1"
+                android:textColor="@color/colorGreyDark"
+                android:background="@drawable/background_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -282,6 +284,8 @@
 
             <TextView
                 android:id="@+id/arsipJudul2"
+                android:textColor="@color/colorGreyDark"
+                android:background="@drawable/background_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -301,6 +305,8 @@
 
             <TextView
                 android:id="@+id/arsipJudul3"
+                android:textColor="@color/colorGreyDark"
+                android:background="@drawable/background_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
