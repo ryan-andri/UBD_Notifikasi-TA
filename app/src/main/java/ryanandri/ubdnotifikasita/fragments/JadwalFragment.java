@@ -79,24 +79,36 @@ public class JadwalFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONArray arrJson = new JSONArray(response);
-                            JSONObject jsonObject = arrJson.getJSONObject(0);
-                            String tgl = jsonObject.getString("tanggal");
-                            String waktu = jsonObject.getString("waktu");
-                            String ruangan = jsonObject.getString("ruangan");
-                            String penguji1 = jsonObject.getString("penguji1");
-                            String penguji2 = jsonObject.getString("penguji2");
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                JSONArray arrJson = jsonObject.getJSONArray("jadwal_up");
+                                jsonObject = arrJson.getJSONObject(0);
+                                String tgl = jsonObject.getString("tanggal");
+                                String waktu = jsonObject.getString("waktu");
+                                String ruangan = jsonObject.getString("ruangan");
+                                String penguji1 = jsonObject.getString("penguji1");
+                                String penguji2 = jsonObject.getString("penguji2");
 
-                            sessionConfig.setJadwalUP(tgl, waktu, ruangan, penguji1, penguji2);
+                                sessionConfig.setJadwalUP(tgl, waktu, ruangan, penguji1, penguji2);
 
-                            if (!tgl.isEmpty())
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
+                                if (!tgl.isEmpty())
+                                    FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
 
-                            ListItemJadwal listItemJadwal = new ListItemJadwal(
-                                    "UJIAN PROPOSAL", tgl, waktu, ruangan, penguji1, penguji2
-                            );
-                            listItemJadwals.add(listItemJadwal);
-                            setAdapterJadwal(context);
+                                ListItemJadwal listItemJadwal = new ListItemJadwal(
+                                        "UJIAN PROPOSAL", tgl, waktu, ruangan, penguji1, penguji2
+                                );
+                                listItemJadwals.add(listItemJadwal);
+                                setAdapterJadwal(context);
+                            } else {
+                                sessionConfig.deleteJadwalUP();
+                                ListItemJadwal listItemJadwal = new ListItemJadwal(
+                                        "UJIAN PROPOSAL", "Belum Ada", "Belum Ada",
+                                        "Belum Ada", "Belum Ada", "Belum Ada"
+                                );
+                                listItemJadwals.add(listItemJadwal);
+                                setAdapterJadwal(context);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             ListItemJadwal listItemJadwal = new ListItemJadwal(

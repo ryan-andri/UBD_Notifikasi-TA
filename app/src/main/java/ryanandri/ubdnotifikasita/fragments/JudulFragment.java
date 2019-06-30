@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -138,8 +139,9 @@ public class JudulFragment extends Fragment {
                             if (success.equals("1")) {
                                 loadingJudul.setVisibility(View.GONE);
                                 arsipJudul.setVisibility(View.VISIBLE);
-                                tampilkanSnackBar("Data berhasil di masukan!");
+                                tampilkanSnackBar("Judul berhasil dikirim!");
                                 sessionConfig.setJudul(judul1Trim, judul2Trim, judul3Trim);
+                                FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                                 loadFormArsipJudul();
                             } else {
                                 formJudul.setVisibility(View.VISIBLE);

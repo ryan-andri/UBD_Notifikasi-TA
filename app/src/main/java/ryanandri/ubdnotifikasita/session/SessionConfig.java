@@ -152,6 +152,15 @@ public class SessionConfig {
         editor.commit();
     }
 
+    public static void deleteJadwalUP() {
+        editor.remove(TGL_UP);
+        editor.remove(WAKTU_UP);
+        editor.remove(RUANG_UP);
+        editor.remove(PENGUJI1_UP);
+        editor.remove(PENGUJI2_UP);
+        editor.commit();
+    }
+
     public static String getTglUP() {
         return sharedPreferences.getString(TGL_UP, "");
     }
