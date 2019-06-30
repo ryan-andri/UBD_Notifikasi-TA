@@ -182,6 +182,9 @@ public class ProfileFragment extends Fragment {
         String sesiPbb1 = sessionConfig.getPembimbing1();
         String sesiPbb2 = sessionConfig.getPembimbing2();
 
+        if (!sesiPbb1.isEmpty() && !sesiPbb2.isEmpty())
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
+
         namaMahasiswa.setText(sesiNama);
         nimMahasiswa.setText(sesiNim);
         sksMahasiswa.setText(String.valueOf(sesiSks));
@@ -190,10 +193,16 @@ public class ProfileFragment extends Fragment {
     }
 
     public void logout(final Context context) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("notifikasi");
+        unsubNotifikasi();
         sessionConfig.setUserLogout();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
         ((Activity) context).finish();
+    }
+
+    public void unsubNotifikasi() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
     }
 }

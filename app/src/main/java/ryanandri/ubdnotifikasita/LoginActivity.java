@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // simpan sesi pengguna jika sukses login
                                 sessionConfig.setUserLogin(nim, pass);
 
-                                menujuMainActivity();
+                                menujuMainActivity(pembimbing1, pembimbing2);
                             } else {
                                 loadLoadingProgress(false);
                                 tampilkanSnackBar("Nim atau password salah.");
@@ -164,9 +164,11 @@ public class LoginActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void menujuMainActivity() {
+    public void menujuMainActivity(String pembimbing1, String pembimbing2) {
+        if (pembimbing1.isEmpty() && pembimbing2.isEmpty())
+            FirebaseMessaging.getInstance().subscribeToTopic("pembimbing");
+
         Intent intent = new Intent(this, MainActivity.class);
-        FirebaseMessaging.getInstance().subscribeToTopic("notifikasi");
         startActivity(intent);
         finish();
     }

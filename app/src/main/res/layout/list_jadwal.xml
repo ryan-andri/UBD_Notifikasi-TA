@@ -21,7 +21,6 @@
 
             <TextView
                 android:id="@+id/headJadwal"
-                android:text="@string/UP"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="30dp"
@@ -41,7 +40,7 @@
 
             <TextView
                 android:id="@+id/tglJadwal"
-                android:text="01/01/1111"
+                android:text="Belum Ada"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -66,7 +65,7 @@
 
             <TextView
                 android:id="@+id/waktuJadwal"
-                android:text="08.00"
+                android:text="Belum Ada"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -91,7 +90,7 @@
 
             <TextView
                 android:id="@+id/ruangJadwal"
-                android:text="404"
+                android:text="Belum Ada"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -116,7 +115,7 @@
 
             <TextView
                 android:id="@+id/penguji1Jadwal"
-                android:text="Nama Dosen penguji 1"
+                android:text="Belum Ada"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -142,7 +141,7 @@
             <TextView
                 android:id="@+id/penguji2Jadwal"
                 android:layout_marginTop="5dp"
-                android:text="Nama Dosen penguji 2"
+                android:text="Belum Ada"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
