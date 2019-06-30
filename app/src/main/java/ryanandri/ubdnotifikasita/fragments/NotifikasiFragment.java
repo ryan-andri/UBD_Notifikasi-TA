@@ -58,7 +58,6 @@ public class NotifikasiFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycleNotif);
         relativeLayout = view.findViewById(R.id.listNotifikasi);
-        emptyLayout = view.findViewById(R.id.listNotifKosong);
         swipeRefreshLayout = view.findViewById(R.id.refreshListNotifikasi);
 
         recyclerView.setHasFixedSize(true);
@@ -87,7 +86,7 @@ public class NotifikasiFragment extends Fragment {
     }
 
     public void syncNotifikasiList(final Context context, final boolean refresh) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.ambil_data_notifikasi,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.ambil_data_notifikasi,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -101,41 +100,27 @@ public class NotifikasiFragment extends Fragment {
                                 ListItemNotifikasi listItemNotifikasi = new ListItemNotifikasi(headNotif, tanggalNotif, bodyNotif);
                                 listItemNotifikasis.add(listItemNotifikasi);
                             }
+                            setAdapter(context);
                             if (refresh)
                                 swipeRefreshLayout.setRefreshing(false);
-                            setAdapter(context);
                         } catch (JSONException e) {
                             e.printStackTrace();
+
+                            setAdapter(context);
                             if (refresh)
                                 swipeRefreshLayout.setRefreshing(false);
-                            setAdapter(context);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+
+                        setAdapter(context);
                         if (refresh)
                             swipeRefreshLayout.setRefreshing(false);
-                        setAdapter(context);
                     }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-
-                String tipe_notifikasi = "";
-                String pembimbing1 = sessionConfig.getPembimbing1();
-                String pembimbing2 = sessionConfig.getPembimbing2();
-                if (pembimbing1.isEmpty() && pembimbing2.isEmpty())
-                    tipe_notifikasi = "pembimbing";
-
-                params.put("tipe_notifikasi", tipe_notifikasi);
-
-                return params;
-            }
-        };
+                });
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);

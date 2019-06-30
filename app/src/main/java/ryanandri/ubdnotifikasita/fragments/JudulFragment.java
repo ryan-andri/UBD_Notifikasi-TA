@@ -141,8 +141,8 @@ public class JudulFragment extends Fragment {
                                 arsipJudul.setVisibility(View.VISIBLE);
                                 tampilkanSnackBar("Judul berhasil dikirim!");
                                 sessionConfig.setJudul(judul1Trim, judul2Trim, judul3Trim);
-                                FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                                 loadFormArsipJudul();
+                                FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                             } else {
                                 formJudul.setVisibility(View.VISIBLE);
                                 loadingJudul.setVisibility(View.GONE);
