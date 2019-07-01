@@ -71,16 +71,6 @@ public class JudulFragment extends Fragment {
         String nim = sessionConfig.getNIM();
         lakukanSyncDataJudul(nim, view.getContext());
 
-        String arsipJ1cek = sessionConfig.getJudul1();
-        String arsipJ2cek = sessionConfig.getJudul2();
-        String arsipJ3cek = sessionConfig.getJudul3();
-
-        if (!arsipJ1cek.isEmpty() && !arsipJ2cek.isEmpty() && !arsipJ3cek.isEmpty()) {
-            formJudul.setVisibility(View.GONE);
-            arsipJudul.setVisibility(View.VISIBLE);
-            loadFormArsipJudul();
-        }
-
         Button kirimJudul = view.findViewById(R.id.kirimJudul);
         kirimJudul.setOnClickListener(
                 new View.OnClickListener() {
@@ -202,13 +192,21 @@ public class JudulFragment extends Fragment {
                                     judul3 = jsonObject.getString("judul_3");
                                 }
 
-                                sessionConfig.setJudul(judul1, judul2, judul3);
-                                formJudul.setVisibility(View.GONE);
-                                arsipJudul.setVisibility(View.VISIBLE);
+                                if (!judul1.isEmpty() && !judul2.isEmpty() && !judul3.isEmpty()) {
+                                    sessionConfig.setJudul(judul1, judul2, judul3);
+                                    formJudul.setVisibility(View.GONE);
+                                    arsipJudul.setVisibility(View.VISIBLE);
+                                } else {
+                                    sessionConfig.deleteDataJudul();
+                                }
+
                                 loadFormArsipJudul();
+                            } else {
+                                sessionConfig.deleteDataJudul();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            sessionConfig.deleteDataJudul();
                         }
                     }
                 },
@@ -234,9 +232,11 @@ public class JudulFragment extends Fragment {
         String arsipJ2 = sessionConfig.getJudul2();
         String arsipJ3 = sessionConfig.getJudul3();
 
-        arsipJudul1.setText(arsipJ1);
-        arsipJudul2.setText(arsipJ2);
-        arsipJudul3.setText(arsipJ3);
+        if (!arsipJ1.isEmpty() && !arsipJ2.isEmpty() && !arsipJ3.isEmpty()) {
+            arsipJudul1.setText(arsipJ1);
+            arsipJudul2.setText(arsipJ2);
+            arsipJudul3.setText(arsipJ3);
+        }
     }
 
     public void tampilkanSnackBar(String isiPesan) {
