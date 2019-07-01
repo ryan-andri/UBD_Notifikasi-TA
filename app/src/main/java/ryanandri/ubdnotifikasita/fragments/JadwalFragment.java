@@ -92,8 +92,10 @@ public class JadwalFragment extends Fragment {
 
                                 sessionConfig.setJadwalUP(tgl, waktu, ruangan, penguji1, penguji2);
 
-                                if (!tgl.isEmpty())
+                                if (!tgl.isEmpty()) {
                                     FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
+                                    FirebaseMessaging.getInstance().subscribeToTopic("jadwal_kompre");
+                                }
 
                                 ListItemJadwal listItemJadwal = new ListItemJadwal(
                                         "UJIAN PROPOSAL", tgl, waktu, ruangan, penguji1, penguji2
@@ -150,26 +152,38 @@ public class JadwalFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONArray arrJson = new JSONArray(response);
-                            JSONObject jsonObject = arrJson.getJSONObject(0);
-                            String tgl = jsonObject.getString("tanggal");
-                            String waktu = jsonObject.getString("waktu");
-                            String ruangan = jsonObject.getString("ruangan");
-                            String penguji1 = jsonObject.getString("penguji1");
-                            String penguji2 = jsonObject.getString("penguji2");
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success");
+                            if (success.equals("1")) {
+                                JSONArray arrJson = jsonObject.getJSONArray("jadwal_kompre");
+                                jsonObject = arrJson.getJSONObject(0);
+                                String tgl = jsonObject.getString("tanggal");
+                                String waktu = jsonObject.getString("waktu");
+                                String ruangan = jsonObject.getString("ruangan");
+                                String penguji1 = jsonObject.getString("penguji1");
+                                String penguji2 = jsonObject.getString("penguji2");
 
-                            if (!tgl.isEmpty()) {
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
-                                FirebaseMessaging.getInstance().subscribeToTopic("jadwal_kompre");
+                                sessionConfig.setJadwalKOMPRE(tgl, waktu, ruangan, penguji1, penguji2);
+
+                                if (!tgl.isEmpty()) {
+                                    FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
+                                    FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
+                                }
+
+                                ListItemJadwal listItemJadwal = new ListItemJadwal(
+                                        "UJIAN KOMPREHENSIF", tgl, waktu, ruangan, penguji1, penguji2
+                                );
+                                listItemJadwals.add(listItemJadwal);
+                                setAdapterJadwal(context);
+                            } else {
+                                sessionConfig.deleteJadwalKOMPRE();
+                                ListItemJadwal listItemJadwal = new ListItemJadwal(
+                                        "UJIAN KOMPREHENSIF", "Belum Ada", "Belum Ada",
+                                        "Belum Ada", "Belum Ada", "Belum Ada"
+                                );
+                                listItemJadwals.add(listItemJadwal);
+                                setAdapterJadwal(context);
                             }
-
-                            sessionConfig.setJadwalKOMPRE(tgl, waktu, ruangan, penguji1, penguji2);
-
-                            ListItemJadwal listItemJadwal = new ListItemJadwal(
-                                    "UJIAN KOMPREHENSIF", tgl, waktu, ruangan, penguji1, penguji2
-                            );
-                            listItemJadwals.add(listItemJadwal);
-                            setAdapterJadwal(context);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             ListItemJadwal listItemJadwal = new ListItemJadwal(

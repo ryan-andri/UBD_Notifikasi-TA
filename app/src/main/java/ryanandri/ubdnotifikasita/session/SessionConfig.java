@@ -202,4 +202,13 @@ public class SessionConfig {
     public static String getPengji2KOMPRE() {
         return sharedPreferences.getString(PENGUJI2_KOMPRE, "");
     }
+
+    public static void deleteJadwalKOMPRE() {
+        editor.remove(TGL_KOMPRE);
+        editor.remove(WAKTU_KOMPRE);
+        editor.remove(RUANG_KOMPRE);
+        editor.remove(PENGUJI1_KOMPRE);
+        editor.remove(PENGUJI2_KOMPRE);
+        editor.commit();
+    }
 }

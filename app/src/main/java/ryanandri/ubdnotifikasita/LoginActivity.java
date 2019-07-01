@@ -133,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 menujuMainActivity(pembimbing1, pembimbing2);
                             } else {
+                                sessionConfig.setUserLogout();
                                 loadLoadingProgress(false);
                                 tampilkanSnackBar("Nim atau password salah.");
                             }
