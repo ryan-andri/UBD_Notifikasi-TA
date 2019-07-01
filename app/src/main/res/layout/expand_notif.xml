@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_margin="10dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
@@ -71,5 +71,5 @@
                 android:background="@drawable/background_text"
                 android:text="Isi dari notifikasi ..." />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
