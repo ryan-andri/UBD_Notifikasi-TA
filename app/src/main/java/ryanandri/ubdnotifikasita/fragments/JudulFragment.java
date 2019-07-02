@@ -96,12 +96,12 @@ public class JudulFragment extends Fragment {
         final String J3 = judul3.getText().toString();
 
         if (J1.isEmpty() || J2.isEmpty() || J3.isEmpty()) {
-            tampilkanSnackBar("Semua kolom harus di isi !");
+            tampilkanSnackBar("Semua kolom harus di isi !", context);
             return;
         }
 
         if ((pembimbing1.isEmpty() && pembimbing2.isEmpty()) || jmlSks < 134) {
-            tampilkanSnackBar("Tidak dapat mengirim karna anda belum memenuhi syarat!");
+            tampilkanSnackBar("Tidak dapat mengirim karna anda belum memenuhi syarat!", context);
             return;
         }
 
@@ -111,7 +111,7 @@ public class JudulFragment extends Fragment {
     }
 
     public void pushDataPengajuanJudul(final String nim, final String nama, final String judul1,
-                                       final String judul2, final String judul3, Context context) {
+                                       final String judul2, final String judul3, final Context context) {
 
         final String nimTrim = nim.trim();
         final String namaTrim = nama.trim();
@@ -129,20 +129,20 @@ public class JudulFragment extends Fragment {
                             if (success.equals("1")) {
                                 loadingJudul.setVisibility(View.GONE);
                                 arsipJudul.setVisibility(View.VISIBLE);
-                                tampilkanSnackBar("Judul berhasil dikirim!");
+                                tampilkanSnackBar("Judul berhasil dikirim!", context);
                                 sessionConfig.setJudul(judul1Trim, judul2Trim, judul3Trim);
                                 loadFormArsipJudul();
                                 FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                             } else {
                                 formJudul.setVisibility(View.VISIBLE);
                                 loadingJudul.setVisibility(View.GONE);
-                                tampilkanSnackBar("ada kesalahan!");
+                                tampilkanSnackBar("ada kesalahan!", context);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             formJudul.setVisibility(View.VISIBLE);
                             loadingJudul.setVisibility(View.GONE);
-                            tampilkanSnackBar("ada kesalahan!");
+                            tampilkanSnackBar("ada kesalahan!", context);
                         }
                     }
                 },
@@ -151,7 +151,7 @@ public class JudulFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         formJudul.setVisibility(View.VISIBLE);
                         loadingJudul.setVisibility(View.GONE);
-                        tampilkanSnackBar("Koneksi bermasalah!");
+                        tampilkanSnackBar("Koneksi bermasalah!", context);
                     }
                 })
         {
@@ -239,10 +239,10 @@ public class JudulFragment extends Fragment {
         }
     }
 
-    public void tampilkanSnackBar(String isiPesan) {
+    public void tampilkanSnackBar(String isiPesan, Context context) {
         Snackbar snackbar = Snackbar.make(snackJudul, isiPesan, Snackbar.LENGTH_SHORT);
         View snackView = snackbar.getView();
-        snackView.setBackgroundColor(getResources().getColor(R.color.colorRed));
+        snackView.setBackgroundColor(context.getColor(R.color.colorRed));
         snackbar.show();
     }
 }

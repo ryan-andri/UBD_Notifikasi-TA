@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -34,8 +33,8 @@ import ryanandri.ubdnotifikasita.session.SessionConfig;
 public class LoginActivity extends AppCompatActivity {
     private SessionConfig sessionConfig;
 
-    private CoordinatorLayout coordinatorLayout;
-    private LinearLayout formLogin;
+    private ConstraintLayout constraintLayoutLogin;
+    private ConstraintLayout formLogin;
     private ConstraintLayout formLoading;
 
     private EditText loginNIM;
@@ -51,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // untuk snackbar pop-up
-        coordinatorLayout = findViewById(R.id.CoordinatorLayout);
+        constraintLayoutLogin = findViewById(R.id.constraintLayoutLogin);
 
         formLogin = findViewById(R.id.formLogin);
         formLoading = findViewById(R.id.loadingWidget);
@@ -186,9 +185,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void tampilkanSnackBar(String isiPesan) {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, isiPesan, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(constraintLayoutLogin, isiPesan, Snackbar.LENGTH_SHORT);
         View snackView = snackbar.getView();
-        snackView.setBackgroundColor(getResources().getColor(R.color.colorRed));
+        snackView.setBackgroundColor(getColor(R.color.colorRed));
         snackbar.show();
     }
 }
