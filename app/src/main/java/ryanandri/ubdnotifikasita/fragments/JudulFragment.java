@@ -37,7 +37,7 @@ import ryanandri.ubdnotifikasita.session.SessionConfig;
 public class JudulFragment extends Fragment {
     private SessionConfig sessionConfig;
 
-    private CoordinatorLayout snackJudul;
+    private ConstraintLayout snackJudul;
     private ConstraintLayout formJudul, arsipJudul, loadingJudul;
     private EditText judul1, judul2, judul3;
 

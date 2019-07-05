@@ -3,6 +3,7 @@ package ryanandri.ubdnotifikasita;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.media.AudioAttributes;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             String desc_channel = getString(R.string.deskripsi_channel);
 
             long[] vibrate = {0, 600};
-            Uri uri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.castor);
+            Uri uri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.voila);
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -50,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
             channel.setVibrationPattern(vibrate);
 
             NotificationManager notificationMgr = getSystemService(NotificationManager.class);
-            notificationMgr.createNotificationChannel(channel);
+            if (notificationMgr != null) {
+                notificationMgr.createNotificationChannel(channel);
+            }
         }
 
         setContentView(R.layout.activity_main);

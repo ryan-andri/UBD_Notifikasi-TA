@@ -29,7 +29,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                                                 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Uri soundNotif = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.castor);
+        Uri soundNotif = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.voila);
         String id_channel = getString(R.string.id_channel);
         long[] vibrate = {0, 600};
         NotificationCompat.Builder nBuilder =
