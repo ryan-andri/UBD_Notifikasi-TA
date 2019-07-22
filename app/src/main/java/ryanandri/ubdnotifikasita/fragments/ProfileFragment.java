@@ -38,13 +38,9 @@ import ryanandri.ubdnotifikasita.session.Constant;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class ProfileFragment extends Fragment {
-    private TextView namaMahasiswa, nimMahasiswa, sksMahasiswa;
-    private TextView pbb1, pbb2;
-
+    private TextView namaMahasiswa, nimMahasiswa, pbb1, pbb2;
     private SessionConfig sessionConfig;
-
     private long mLastClickTime = 0;
-
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
@@ -59,11 +55,8 @@ public class ProfileFragment extends Fragment {
 
         namaMahasiswa = view.findViewById(R.id.mhsNAMA);
         nimMahasiswa = view.findViewById(R.id.mhsNIM);
-        sksMahasiswa = view.findViewById(R.id.mhsSKS);
         pbb1 = view.findViewById(R.id.pembimbing1);
         pbb2 = view.findViewById(R.id.pembimbing2);
-
-        setDataProfile();
 
         Button buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(
@@ -88,6 +81,8 @@ public class ProfileFragment extends Fragment {
                     }
                 }
         );
+
+        setDataProfile();
 
         return view;
     }
@@ -126,18 +121,15 @@ public class ProfileFragment extends Fragment {
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
-                                int jmlSks = 0;
                                 JSONArray arrJson = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);
-                                    namaMhs = jsonObject.getString("nama");
-                                    jmlSks = jsonObject.getInt("sks");
-                                    pembimbing1 = jsonObject.getString("pembimbing1");
-                                    pembimbing2 = jsonObject.getString("pembimbing2");
+                                    namaMhs = jsonObject.getString("nama_mhs");
+                                    pembimbing1 = jsonObject.getString("nama_pbb1");
+                                    pembimbing2 = jsonObject.getString("nama_pbb2");
                                 }
 
                                 sessionConfig.setNamaMHS(namaMhs);
-                                sessionConfig.setJumlahSKS(jmlSks);
                                 sessionConfig.setPembimbing1(pembimbing1);
                                 sessionConfig.setPembimbing2(pembimbing2);
 
@@ -145,12 +137,10 @@ public class ProfileFragment extends Fragment {
                                 swipeRefreshLayout.setRefreshing(false);
                             } else {
                                 swipeRefreshLayout.setRefreshing(false);
-                                logout(context);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             swipeRefreshLayout.setRefreshing(false);
-                            logout(context);
                         }
                     }
                 },
@@ -165,7 +155,7 @@ public class ProfileFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim", nimTrim);
+                params.put("nim_mhs", nimTrim);
                 params.put("password", passTrim);
                 return params;
             }
@@ -178,16 +168,17 @@ public class ProfileFragment extends Fragment {
     public void setDataProfile() {
         String sesiNama = sessionConfig.getNamaMHS();
         String sesiNim = sessionConfig.getNIM();
-        int sesiSks = sessionConfig.getJumlahSKS();
         String sesiPbb1 = sessionConfig.getPembimbing1();
         String sesiPbb2 = sessionConfig.getPembimbing2();
 
-        if (!sesiPbb1.isEmpty() && !sesiPbb2.isEmpty())
+        if (sesiPbb1.isEmpty() && sesiPbb2.isEmpty()) {
+            FirebaseMessaging.getInstance().subscribeToTopic("pembimbing");
+        } else {
             FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
+        }
 
         namaMahasiswa.setText(sesiNama);
         nimMahasiswa.setText(sesiNim);
-        sksMahasiswa.setText(String.valueOf(sesiSks));
         pbb1.setText(sesiPbb1);
         pbb2.setText(sesiPbb2);
     }

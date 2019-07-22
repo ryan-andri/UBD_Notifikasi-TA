@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,14 +31,8 @@ import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class LoginActivity extends AppCompatActivity {
     private SessionConfig sessionConfig;
-
-    private ConstraintLayout constraintLayoutLogin;
-    private ConstraintLayout formLogin;
-    private ConstraintLayout formLoading;
-
-    private EditText loginNIM;
-    private EditText loginPASS;
-
+    private ConstraintLayout constraintLayoutLogin, formLogin, formLoading;
+    private EditText loginNIM, loginPASS;
     private long mLastClickTime = 0;
 
     @Override
@@ -49,22 +42,18 @@ public class LoginActivity extends AppCompatActivity {
         // set layout login
         setContentView(R.layout.activity_login);
 
+        sessionConfig = SessionConfig.getInstance(this);
+
         // untuk snackbar pop-up
         constraintLayoutLogin = findViewById(R.id.constraintLayoutLogin);
 
         formLogin = findViewById(R.id.formLogin);
         formLoading = findViewById(R.id.loadingWidget);
-
         loginNIM = findViewById(R.id.loginNIM);
         loginPASS = findViewById(R.id.loginPASS);
 
         // cek pengguna sudah login sebelumnya
-        sessionConfig = SessionConfig.getInstance(this);
-        if (sessionConfig.IsLogin()) {
-            String nimSesi = sessionConfig.getNIM();
-            String passSesi = sessionConfig.getPASSWORD();
-            asyncLoginFetchData(nimSesi, passSesi);
-        }
+        if (sessionConfig.IsLogin()) menujuMainActivity();
 
         Button btnLogin = findViewById(R.id.buttonLogin);
         btnLogin.setOnClickListener(
@@ -111,26 +100,22 @@ public class LoginActivity extends AppCompatActivity {
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
                                 String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
-                                int jmlSks = 0;
-
                                 JSONArray arrJson = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);
-                                    namaMhs = jsonObject.getString("nama");
-                                    jmlSks = jsonObject.getInt("sks");
-                                    pembimbing1 = jsonObject.getString("pembimbing1");
-                                    pembimbing2 = jsonObject.getString("pembimbing2");
+                                    namaMhs = jsonObject.getString("nama_mhs");
+                                    pembimbing1 = jsonObject.getString("nama_pbb1");
+                                    pembimbing2 = jsonObject.getString("nama_pbb2");
                                 }
 
                                 sessionConfig.setNamaMHS(namaMhs);
-                                sessionConfig.setJumlahSKS(jmlSks);
                                 sessionConfig.setPembimbing1(pembimbing1);
                                 sessionConfig.setPembimbing2(pembimbing2);
 
                                 // simpan sesi pengguna jika sukses login
                                 sessionConfig.setUserLogin(nim, pass);
 
-                                menujuMainActivity(pembimbing1, pembimbing2);
+                                menujuMainActivity();
                             } else {
                                 sessionConfig.setUserLogout();
                                 loadLoadingProgress(false);
@@ -155,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim", nimTrim);
+                params.put("nim_mhs", nimTrim);
                 params.put("password", passTrim);
                 return params;
             }
@@ -165,10 +150,7 @@ public class LoginActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void menujuMainActivity(String pembimbing1, String pembimbing2) {
-        if (pembimbing1.isEmpty() && pembimbing2.isEmpty())
-            FirebaseMessaging.getInstance().subscribeToTopic("pembimbing");
-
+    public void menujuMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

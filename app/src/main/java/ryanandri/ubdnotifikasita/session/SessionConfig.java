@@ -51,7 +51,7 @@ public class SessionConfig {
         return sessionConfig;
     }
 
-    // START Login User
+    // START Login Mahasiswa
     public static void setUserLogin(String nim, String password) {
         editor.putString(NIM, nim);
         editor.putString(PASSWORD, password);
@@ -67,7 +67,7 @@ public class SessionConfig {
         editor.clear();
         editor.commit();
     }
-    // END Login User
+    // END login Mahasiswa
 
     // get nama nim dan passowrd
     public static String getNamaMHS() {

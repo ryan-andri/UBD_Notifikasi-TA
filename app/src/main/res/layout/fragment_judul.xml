@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
         android:id="@+id/formJudul"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -85,7 +86,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
-            android:hint="Masukkan Judul 1"
+            android:hint="Masukkan Judul Penelitian yang sudah di ACC"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/judulGL2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +100,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
-            android:hint="Masukkan Judul 2"
+            android:hint="Arsip Pengajuan Judul 1"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/judulGL3"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +114,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
-            android:hint="Masukkan Judul 3"
+            android:hint="Arsip Pengajuan Judul 2"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/judulGL4"
             app:layout_constraintEnd_toEndOf="parent"
@@ -241,14 +242,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:visibility="gone"
         android:id="@+id/arsipJudul"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/arsipGL1"
@@ -307,10 +310,10 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="60dp"
-            android:layout_height="36dp"
+            android:layout_width="69dp"
+            android:layout_height="47dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/textView9"
@@ -324,27 +327,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:gravity="center"
             android:text="@string/judulsudahdikirim"
             android:textColor="@color/colorWhite"
             app:layout_constraintBottom_toTopOf="@+id/arsipGL2"
             app:layout_constraintEnd_toEndOf="@+id/view6"
             app:layout_constraintHorizontal_bias="0.506"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="2dp"
-            android:text="JUDUL 1"
+            android:gravity="center"
+            android:text="JUDUL PENELITIAN"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/arsipJudul1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -357,19 +361,30 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="9dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/background_popup"
+            android:gravity="center"
             android:lines="4"
             android:padding="8dp"
-            android:text="Judul 1 .........................."
-            android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toTopOf="@+id/arsipGL3"
+            android:text="ISI Judul Penelitian dari mahasiswa"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/view9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <View
+            android:id="@+id/view9"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorGreyLight"
+            app:layout_constraintBottom_toTopOf="@+id/arsipGL3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/arsipJudul1" />
 
         <TextView
             android:id="@+id/textView11"
@@ -378,35 +393,47 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="2dp"
-            android:text="JUDUL 2"
+            android:gravity="center"
+            android:text="ARSIP PENGAJUAN JUDUL 1"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/arsipJudul2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/arsipGL3" />
+            app:layout_constraintTop_toBottomOf="@+id/arsipGL3" />
 
         <TextView
             android:id="@+id/arsipJudul2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/background_popup"
-            android:lines="4"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:lines="3"
             android:padding="8dp"
-            android:text="Judul 2 .........................."
-            android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toTopOf="@+id/arsipGL4"
+            android:text="Arsip Pengajuan Judul 1"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/view10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+        <View
+            android:id="@+id/view10"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorGreyLight"
+            app:layout_constraintBottom_toTopOf="@+id/arsipGL4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/arsipJudul2" />
 
         <TextView
             android:id="@+id/textView12"
@@ -415,35 +442,47 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="2dp"
-            android:text="JUDUL 3"
+            android:text="ARSIP PENGAJUAN JUDUL 2"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/arsipJudul3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/arsipGL4" />
+            app:layout_constraintTop_toBottomOf="@+id/arsipGL4" />
 
         <TextView
             android:id="@+id/arsipJudul3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/background_popup"
-            android:lines="4"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:lines="3"
             android:padding="8dp"
-            android:text="Judul 3 .........................."
-            android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toTopOf="@+id/arsipGL5"
+            android:text="Arsip Pengajuan Judul 2"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/view11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+
+        <View
+            android:id="@+id/view11"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorGreyLight"
+            app:layout_constraintBottom_toTopOf="@+id/arsipGL5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/arsipJudul3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
