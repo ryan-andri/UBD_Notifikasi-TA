@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -112,14 +111,13 @@ public class LoginActivity extends AppCompatActivity {
                             if (success.equals("1")) {
                                 String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
                                 int jmlSks = 0;
-
                                 JSONArray arrJson = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);
-                                    namaMhs = jsonObject.getString("nama");
-                                    jmlSks = jsonObject.getInt("sks");
-                                    pembimbing1 = jsonObject.getString("pembimbing1");
-                                    pembimbing2 = jsonObject.getString("pembimbing2");
+                                    namaMhs = jsonObject.getString("nama_mhs");
+                                    jmlSks = jsonObject.getInt("total_sks");
+                                    pembimbing1 = jsonObject.getString("nama_pbb1");
+                                    pembimbing2 = jsonObject.getString("nama_pbb2");
                                 }
 
                                 sessionConfig.setNamaMHS(namaMhs);
@@ -155,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim", nimTrim);
+                params.put("nim_mhs", nimTrim);
                 params.put("password", passTrim);
                 return params;
             }

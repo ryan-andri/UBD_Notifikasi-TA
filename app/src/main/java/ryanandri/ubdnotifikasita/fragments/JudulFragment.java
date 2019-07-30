@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -84,9 +83,8 @@ public class JudulFragment extends Fragment {
         return view;
     }
 
-    public void loadFormPengajuanJudul(Context context) {
+    private void loadFormPengajuanJudul(Context context) {
         final String nim = sessionConfig.getNIM();
-        final String nama = sessionConfig.getNamaMHS();
         final String pembimbing1 = sessionConfig.getPembimbing1();
         final String pembimbing2 = sessionConfig.getPembimbing2();
         final int jmlSks = sessionConfig.getJumlahSKS();
@@ -107,19 +105,18 @@ public class JudulFragment extends Fragment {
 
         formJudul.setVisibility(View.GONE);
         loadingJudul.setVisibility(View.VISIBLE);
-        pushDataPengajuanJudul(nim, nama, J1, J2, J3, context);
+        pushDataPengajuanJudul(nim, J1, J2, J3, context);
     }
 
-    public void pushDataPengajuanJudul(final String nim, final String nama, final String judul1,
+    private void pushDataPengajuanJudul(final String nim, final String judul1,
                                        final String judul2, final String judul3, final Context context) {
 
         final String nimTrim = nim.trim();
-        final String namaTrim = nama.trim();
         final String judul1Trim = judul1.trim();
         final String judul2Trim = judul2.trim();
         final String judul3Trim = judul3.trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.ajukan_judul,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.input_judul,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -158,11 +155,10 @@ public class JudulFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim", nimTrim);
-                params.put("nama", namaTrim);
-                params.put("judul1", judul1Trim);
-                params.put("judul2", judul2Trim);
-                params.put("judul3", judul3Trim);
+                params.put("nim_mhs", nimTrim);
+                params.put("judul_1", judul1Trim);
+                params.put("judul_2", judul2Trim);
+                params.put("judul_3", judul3Trim);
                 return params;
             }
         };
@@ -171,9 +167,9 @@ public class JudulFragment extends Fragment {
         requestQueue.add(stringRequest);
     }
 
-    public void lakukanSyncDataJudul(final String nim, Context context) {
+    private void lakukanSyncDataJudul(final String nim, Context context) {
         final String nimTrim = nim.trim();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.ambil_data_judul,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.data_judul,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -181,9 +177,7 @@ public class JudulFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                String judul1 = "";
-                                String judul2 = "";
-                                String judul3 = "";
+                                String judul1 = "", judul2 = "", judul3 = "";
                                 JSONArray arrJson = jsonObject.getJSONArray("judul");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);
@@ -194,10 +188,12 @@ public class JudulFragment extends Fragment {
 
                                 if (!judul1.isEmpty() && !judul2.isEmpty() && !judul3.isEmpty()) {
                                     sessionConfig.setJudul(judul1, judul2, judul3);
+                                    FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                                     formJudul.setVisibility(View.GONE);
                                     arsipJudul.setVisibility(View.VISIBLE);
                                 } else {
                                     sessionConfig.deleteDataJudul();
+                                    FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
                                 }
 
                                 loadFormArsipJudul();
@@ -218,7 +214,7 @@ public class JudulFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim", nimTrim);
+                params.put("nim_mhs", nimTrim);
                 return params;
             }
         };
@@ -227,7 +223,7 @@ public class JudulFragment extends Fragment {
         requestQueue.add(stringRequest);
     }
 
-    public void loadFormArsipJudul() {
+    private void loadFormArsipJudul() {
         String arsipJ1 = sessionConfig.getJudul1();
         String arsipJ2 = sessionConfig.getJudul2();
         String arsipJ3 = sessionConfig.getJudul3();
@@ -239,7 +235,7 @@ public class JudulFragment extends Fragment {
         }
     }
 
-    public void tampilkanSnackBar(String isiPesan, Context context) {
+    private void tampilkanSnackBar(String isiPesan, Context context) {
         Snackbar snackbar = Snackbar.make(snackJudul, isiPesan, Snackbar.LENGTH_SHORT);
         View snackView = snackbar.getView();
         snackView.setBackgroundColor(context.getColor(R.color.colorRed));

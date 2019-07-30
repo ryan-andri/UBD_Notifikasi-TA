@@ -84,7 +84,8 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayout.setRefreshing(true);
-                        lakukanRefresData(sessionConfig.getNIM(), sessionConfig.getPASSWORD(), view.getContext());
+                        lakukanRefreshData(sessionConfig.getNIM(),
+                                sessionConfig.getPASSWORD(), view.getContext());
                     }
                 }
         );
@@ -112,7 +113,7 @@ public class ProfileFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void lakukanRefresData(final String nim, final String pass, final Context context) {
+    public void lakukanRefreshData(final String nim, final String pass, final Context context) {
 
         final String nimTrim = nim.trim();
         final String passTrim = pass.trim();
@@ -130,10 +131,10 @@ public class ProfileFragment extends Fragment {
                                 JSONArray arrJson = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);
-                                    namaMhs = jsonObject.getString("nama");
-                                    jmlSks = jsonObject.getInt("sks");
-                                    pembimbing1 = jsonObject.getString("pembimbing1");
-                                    pembimbing2 = jsonObject.getString("pembimbing2");
+                                    namaMhs = jsonObject.getString("nama_mhs");
+                                    jmlSks = jsonObject.getInt("total_sks");
+                                    pembimbing1 = jsonObject.getString("nama_pbb1");
+                                    pembimbing2 = jsonObject.getString("nama_pbb2");
                                 }
 
                                 sessionConfig.setNamaMHS(namaMhs);
@@ -142,11 +143,11 @@ public class ProfileFragment extends Fragment {
                                 sessionConfig.setPembimbing2(pembimbing2);
 
                                 setDataProfile();
-                                swipeRefreshLayout.setRefreshing(false);
                             } else {
-                                swipeRefreshLayout.setRefreshing(false);
+                                // logout jika ada perubahan
                                 logout(context);
                             }
+                            swipeRefreshLayout.setRefreshing(false);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             swipeRefreshLayout.setRefreshing(false);
@@ -165,7 +166,7 @@ public class ProfileFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim", nimTrim);
+                params.put("nim_mhs", nimTrim);
                 params.put("password", passTrim);
                 return params;
             }
@@ -182,8 +183,8 @@ public class ProfileFragment extends Fragment {
         String sesiPbb1 = sessionConfig.getPembimbing1();
         String sesiPbb2 = sessionConfig.getPembimbing2();
 
-        if (!sesiPbb1.isEmpty() && !sesiPbb2.isEmpty())
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
+        // hentikan notifikasi pembimbing jika sudah ada pembimbing
+        if (!sesiPbb1.isEmpty()) FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
 
         namaMahasiswa.setText(sesiNama);
         nimMahasiswa.setText(sesiNim);

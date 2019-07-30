@@ -3,7 +3,6 @@ package ryanandri.ubdnotifikasita;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.media.AudioAttributes;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_main);
+
         // buat channel untuk oreo ke atas
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String id_channel = getString(R.string.id_channel);
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
             NotificationChannel channel = new NotificationChannel(id_channel,
-                                                nama_channel, NotificationManager.IMPORTANCE_HIGH);
+                    nama_channel, NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription(desc_channel);
             channel.setSound(uri, audioAttributes);
             channel.enableLights(true);
@@ -55,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 notificationMgr.createNotificationChannel(channel);
             }
         }
-
-        setContentView(R.layout.activity_main);
 
         viewPager = findViewById(R.id.viewpager);
         navigation = findViewById(R.id.navigation);

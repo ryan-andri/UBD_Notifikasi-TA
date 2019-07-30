@@ -32,13 +32,15 @@ public class SessionConfig {
     private static String RUANG_UP = "ruang_up";
     private static String PENGUJI1_UP = "penguji1_up";
     private static String PENGUJI2_UP = "penguji2_up";
+    private static String NILAI_UP = "nilai_up";
 
-    // jadwal proposal
+    // jadwal Komprehensif
     private static String TGL_KOMPRE = "tanggal_kompre";
     private static String WAKTU_KOMPRE = "waktu_kompre";
     private static String RUANG_KOMPRE = "ruang_kompre";
     private static String PENGUJI1_KOMPRE = "penguji1_kompre";
     private static String PENGUJI2_KOMPRE = "penguji2_kompre";
+    private static String NILAI_KOMPRE = "nilai_kompre";
 
     private SessionConfig() {}
 
@@ -123,17 +125,11 @@ public class SessionConfig {
         editor.commit();
     }
 
-    public static String getJudul1() {
-        return sharedPreferences.getString(JUDUL1, "");
-    }
+    public static String getJudul1() { return sharedPreferences.getString(JUDUL1, ""); }
 
-    public static String getJudul2() {
-        return sharedPreferences.getString(JUDUL2, "");
-    }
+    public static String getJudul2() { return sharedPreferences.getString(JUDUL2, ""); }
 
-    public static String getJudul3() {
-        return sharedPreferences.getString(JUDUL3, "");
-    }
+    public static String getJudul3() { return sharedPreferences.getString(JUDUL3, ""); }
 
     public static void deleteDataJudul() {
         editor.remove(JUDUL1);
@@ -143,12 +139,14 @@ public class SessionConfig {
     }
 
     // set dan get data jadwal proposal
-    public static void setJadwalUP(String tgl, String waktu, String ruang, String penguji1, String penguji2) {
+    public static void setJadwalUP(String tgl, String waktu, String ruang,
+                                   String penguji1, String penguji2, String nilai) {
         editor.putString(TGL_UP, tgl);
         editor.putString(WAKTU_UP, waktu);
         editor.putString(RUANG_UP, ruang);
         editor.putString(PENGUJI1_UP, penguji1);
         editor.putString(PENGUJI2_UP, penguji2);
+        editor.putString(NILAI_UP, nilai);
         editor.commit();
     }
 
@@ -158,50 +156,36 @@ public class SessionConfig {
         editor.remove(RUANG_UP);
         editor.remove(PENGUJI1_UP);
         editor.remove(PENGUJI2_UP);
+        editor.remove(NILAI_UP);
         editor.commit();
     }
 
-    public static String getTglUP() {
-        return sharedPreferences.getString(TGL_UP, "");
-    }
-    public static String getWktUP() {
-        return sharedPreferences.getString(WAKTU_UP, "");
-    }
-    public static String getRuangUP() {
-        return sharedPreferences.getString(RUANG_UP, "");
-    }
-    public static String getPengji1UP() {
-        return sharedPreferences.getString(PENGUJI1_UP, "");
-    }
-    public static String getPengji2UP() {
-        return sharedPreferences.getString(PENGUJI2_UP, "");
-    }
+    public static String getTglUP() { return sharedPreferences.getString(TGL_UP, ""); }
+    public static String getWktUP() { return sharedPreferences.getString(WAKTU_UP, ""); }
+    public static String getRuangUP() { return sharedPreferences.getString(RUANG_UP, ""); }
+    public static String getPengji1UP() { return sharedPreferences.getString(PENGUJI1_UP, ""); }
+    public static String getPengji2UP() { return sharedPreferences.getString(PENGUJI2_UP, ""); }
+    public static String getNilaiUP() { return sharedPreferences.getString(NILAI_UP, ""); }
 
-    // set dan get data jadwal proposal
-    public static void setJadwalKOMPRE(String tgl, String waktu, String ruang, String penguji1, String penguji2) {
+
+    // set dan get data jadwal Komprehensif
+    public static void setJadwalKOMPRE(String tgl, String waktu, String ruang,
+                                       String penguji1, String penguji2, String nilai) {
         editor.putString(TGL_KOMPRE, tgl);
         editor.putString(WAKTU_KOMPRE, waktu);
         editor.putString(RUANG_KOMPRE, ruang);
         editor.putString(PENGUJI1_KOMPRE, penguji1);
         editor.putString(PENGUJI2_KOMPRE, penguji2);
+        editor.putString(NILAI_KOMPRE, nilai);
         editor.commit();
     }
 
-    public static String getTglKOMPRE() {
-        return sharedPreferences.getString(TGL_KOMPRE, "");
-    }
-    public static String getWktKOMPRE() {
-        return sharedPreferences.getString(WAKTU_KOMPRE, "");
-    }
-    public static String getRuangKOMPRE() {
-        return sharedPreferences.getString(RUANG_KOMPRE, "");
-    }
-    public static String getPengji1KOMPRE() {
-        return sharedPreferences.getString(PENGUJI1_KOMPRE, "");
-    }
-    public static String getPengji2KOMPRE() {
-        return sharedPreferences.getString(PENGUJI2_KOMPRE, "");
-    }
+    public static String getTglKOMPRE() { return sharedPreferences.getString(TGL_KOMPRE, ""); }
+    public static String getWktKOMPRE() { return sharedPreferences.getString(WAKTU_KOMPRE, ""); }
+    public static String getRuangKOMPRE() { return sharedPreferences.getString(RUANG_KOMPRE, ""); }
+    public static String getPengji1KOMPRE() { return sharedPreferences.getString(PENGUJI1_KOMPRE, ""); }
+    public static String getPengji2KOMPRE() { return sharedPreferences.getString(PENGUJI2_KOMPRE, ""); }
+    public static String getNilaiKompre() { return sharedPreferences.getString(NILAI_KOMPRE, ""); }
 
     public static void deleteJadwalKOMPRE() {
         editor.remove(TGL_KOMPRE);
@@ -209,6 +193,7 @@ public class SessionConfig {
         editor.remove(RUANG_KOMPRE);
         editor.remove(PENGUJI1_KOMPRE);
         editor.remove(PENGUJI2_KOMPRE);
+        editor.remove(NILAI_KOMPRE);
         editor.commit();
     }
 }
