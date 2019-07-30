@@ -38,7 +38,7 @@ import ryanandri.ubdnotifikasita.session.Constant;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class ProfileFragment extends Fragment {
-    private TextView namaMahasiswa, nimMahasiswa, pbb1, pbb2;
+    private TextView namaMahasiswa, nimMahasiswa, pbb1, pbb2, jmlSks;
     private SessionConfig sessionConfig;
     private long mLastClickTime = 0;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -55,8 +55,11 @@ public class ProfileFragment extends Fragment {
 
         namaMahasiswa = view.findViewById(R.id.mhsNAMA);
         nimMahasiswa = view.findViewById(R.id.mhsNIM);
+        jmlSks = view.findViewById(R.id.mhsSKS);
         pbb1 = view.findViewById(R.id.pembimbing1);
         pbb2 = view.findViewById(R.id.pembimbing2);
+
+        setDataProfile();
 
         Button buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(
@@ -77,12 +80,11 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayout.setRefreshing(true);
-                        lakukanRefresData(sessionConfig.getNIM(), sessionConfig.getPASSWORD(), view.getContext());
+                        lakukanRefreshData(sessionConfig.getNIM(),
+                                sessionConfig.getPASSWORD(), view.getContext());
                     }
                 }
         );
-
-        setDataProfile();
 
         return view;
     }
@@ -107,7 +109,7 @@ public class ProfileFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void lakukanRefresData(final String nim, final String pass, final Context context) {
+    public void lakukanRefreshData(final String nim, final String pass, final Context context) {
 
         final String nimTrim = nim.trim();
         final String passTrim = pass.trim();
@@ -120,24 +122,17 @@ public class ProfileFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
                                 JSONArray arrJson = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);
-                                    namaMhs = jsonObject.getString("nama_mhs");
-                                    pembimbing1 = jsonObject.getString("nama_pbb1");
-                                    pembimbing2 = jsonObject.getString("nama_pbb2");
+                                    sessionConfig.setNamaMHS(jsonObject.getString("nama_mhs"));
+                                    sessionConfig.setJumlahSKS(jsonObject.getInt("total_sks"));
+                                    sessionConfig.setPembimbing1(jsonObject.getString("nama_pbb1"));
+                                    sessionConfig.setPembimbing2(jsonObject.getString("nama_pbb2"));
                                 }
-
-                                sessionConfig.setNamaMHS(namaMhs);
-                                sessionConfig.setPembimbing1(pembimbing1);
-                                sessionConfig.setPembimbing2(pembimbing2);
-
                                 setDataProfile();
-                                swipeRefreshLayout.setRefreshing(false);
-                            } else {
-                                swipeRefreshLayout.setRefreshing(false);
                             }
+                            swipeRefreshLayout.setRefreshing(false);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             swipeRefreshLayout.setRefreshing(false);
@@ -168,10 +163,11 @@ public class ProfileFragment extends Fragment {
     public void setDataProfile() {
         String sesiNama = sessionConfig.getNamaMHS();
         String sesiNim = sessionConfig.getNIM();
+        int sesiSks = sessionConfig.getJmlSks();
         String sesiPbb1 = sessionConfig.getPembimbing1();
         String sesiPbb2 = sessionConfig.getPembimbing2();
 
-        if (sesiPbb1.isEmpty() && sesiPbb2.isEmpty()) {
+        if (sesiPbb1.isEmpty()) {
             FirebaseMessaging.getInstance().subscribeToTopic("pembimbing");
         } else {
             FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
@@ -179,6 +175,7 @@ public class ProfileFragment extends Fragment {
 
         namaMahasiswa.setText(sesiNama);
         nimMahasiswa.setText(sesiNim);
+        jmlSks.setText(sesiSks);
         pbb1.setText(sesiPbb1);
         pbb2.setText(sesiPbb2);
     }
@@ -195,5 +192,7 @@ public class ProfileFragment extends Fragment {
         FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_up");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_kompre");
     }
 }

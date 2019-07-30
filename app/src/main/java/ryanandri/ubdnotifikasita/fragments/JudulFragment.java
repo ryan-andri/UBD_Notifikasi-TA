@@ -86,9 +86,7 @@ public class JudulFragment extends Fragment {
 
     public void loadFormPengajuanJudul(Context context) {
         final String nim = sessionConfig.getNIM();
-        final String nama = sessionConfig.getNamaMHS();
         final String pembimbing1 = sessionConfig.getPembimbing1();
-        final String pembimbing2 = sessionConfig.getPembimbing2();
         final int jmlSks = sessionConfig.getJumlahSKS();
 
         final String J1 = judul1.getText().toString();
@@ -100,26 +98,25 @@ public class JudulFragment extends Fragment {
             return;
         }
 
-        if ((pembimbing1.isEmpty() && pembimbing2.isEmpty()) || jmlSks < 134) {
+        if (pembimbing1.isEmpty()|| jmlSks < 134) {
             tampilkanSnackBar("Tidak dapat mengirim karna anda belum memenuhi syarat!", context);
             return;
         }
 
         formJudul.setVisibility(View.GONE);
         loadingJudul.setVisibility(View.VISIBLE);
-        pushDataPengajuanJudul(nim, nama, J1, J2, J3, context);
+        pushDataPengajuanJudul(nim, J1, J2, J3, context);
     }
 
-    public void pushDataPengajuanJudul(final String nim, final String nama, final String judul1,
+    public void pushDataPengajuanJudul(final String nim, final String judul1,
                                        final String judul2, final String judul3, final Context context) {
 
         final String nimTrim = nim.trim();
-        final String namaTrim = nama.trim();
         final String judul1Trim = judul1.trim();
         final String judul2Trim = judul2.trim();
         final String judul3Trim = judul3.trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.ajukan_judul,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.input_judul,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -159,7 +156,6 @@ public class JudulFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("nim", nimTrim);
-                params.put("nama", namaTrim);
                 params.put("judul1", judul1Trim);
                 params.put("judul2", judul2Trim);
                 params.put("judul3", judul3Trim);
@@ -181,9 +177,7 @@ public class JudulFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                String judul1 = "";
-                                String judul2 = "";
-                                String judul3 = "";
+                                String judul1 = "", judul2 = "", judul3 = "";
                                 JSONArray arrJson = jsonObject.getJSONArray("judul");
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);

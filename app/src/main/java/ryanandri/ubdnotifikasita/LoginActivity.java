@@ -1,6 +1,11 @@
 package ryanandri.ubdnotifikasita;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.annotation.Nullable;
@@ -39,10 +44,38 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sessionConfig = SessionConfig.getInstance(this);
+        if (sessionConfig.IsLogin()) menujuMainActivity();
+
         // set layout login
         setContentView(R.layout.activity_login);
 
-        sessionConfig = SessionConfig.getInstance(this);
+        // buat channel untuk oreo ke atas
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String id_channel = getString(R.string.id_channel);
+            String nama_channel = getString(R.string.nama_channel);
+            String desc_channel = getString(R.string.deskripsi_channel);
+
+            long[] vibrate = {0, 600};
+            Uri uri = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.voila);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+
+            NotificationChannel channel = new NotificationChannel(id_channel,
+                    nama_channel, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(desc_channel);
+            channel.setSound(uri, audioAttributes);
+            channel.enableLights(true);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(vibrate);
+
+            NotificationManager notificationMgr = getSystemService(NotificationManager.class);
+            if (notificationMgr != null) {
+                notificationMgr.createNotificationChannel(channel);
+            }
+        }
 
         // untuk snackbar pop-up
         constraintLayoutLogin = findViewById(R.id.constraintLayoutLogin);
@@ -51,9 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         formLoading = findViewById(R.id.loadingWidget);
         loginNIM = findViewById(R.id.loginNIM);
         loginPASS = findViewById(R.id.loginPASS);
-
-        // cek pengguna sudah login sebelumnya
-        if (sessionConfig.IsLogin()) menujuMainActivity();
 
         Button btnLogin = findViewById(R.id.buttonLogin);
         btnLogin.setOnClickListener(
@@ -99,18 +129,21 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success");
                             if (success.equals("1")) {
-                                String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
                                 JSONArray arrJson = jsonObject.getJSONArray("data");
+
                                 for (int i = 0; i < arrJson.length(); i++) {
                                     jsonObject = arrJson.getJSONObject(i);
-                                    namaMhs = jsonObject.getString("nama_mhs");
-                                    pembimbing1 = jsonObject.getString("nama_pbb1");
-                                    pembimbing2 = jsonObject.getString("nama_pbb2");
-                                }
+                                    // data untuk profile
+                                    sessionConfig.setNamaMHS(jsonObject.getString("nama_mhs"));
+                                    sessionConfig.setJumlahSKS(jsonObject.getInt("total_sks"));
+                                    sessionConfig.setPembimbing1(jsonObject.getString("nama_pbb1"));
+                                    sessionConfig.setPembimbing2(jsonObject.getString("nama_pbb2"));
 
-                                sessionConfig.setNamaMHS(namaMhs);
-                                sessionConfig.setPembimbing1(pembimbing1);
-                                sessionConfig.setPembimbing2(pembimbing2);
+                                    // data untuk judul
+                                    sessionConfig.setJudul(jsonObject.getString("judul_1"),
+                                            jsonObject.getString("judul_2"),
+                                            jsonObject.getString("judul_3"));
+                                }
 
                                 // simpan sesi pengguna jika sukses login
                                 sessionConfig.setUserLogin(nim, pass);

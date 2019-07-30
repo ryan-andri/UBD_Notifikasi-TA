@@ -105,6 +105,10 @@ public class SessionConfig {
         return sharedPreferences.getString(PEMBIMBING2, "");
     }
 
+    public static int getJmlSks() {
+        return sharedPreferences.getInt(JML_SKS, 0);
+    }
+
     // set dan get jumlah sks
     public static void setJumlahSKS(int sks) {
         editor.putInt(JML_SKS, sks);
