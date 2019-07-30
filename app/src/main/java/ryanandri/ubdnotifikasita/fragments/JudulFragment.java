@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
@@ -37,7 +38,8 @@ public class JudulFragment extends Fragment {
     private SessionConfig sessionConfig;
 
     private ConstraintLayout snackJudul;
-    private ConstraintLayout formJudul, arsipJudul, loadingJudul;
+    private ConstraintLayout formJudul, loadingJudul;
+    private CardView arsipJudul;
     private EditText judul1, judul2, judul3;
 
     private TextView arsipJudul1, arsipJudul2, arsipJudul3;

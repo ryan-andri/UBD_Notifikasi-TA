@@ -39,7 +39,6 @@ public class NotifikasiFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RelativeLayout relativeLayout;
-    private ConstraintLayout emptyLayout;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 

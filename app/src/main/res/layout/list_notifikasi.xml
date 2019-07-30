@@ -14,41 +14,41 @@
 
         <LinearLayout
             android:id="@+id/notifikasiLinierLayout"
-            android:padding="6dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="6dp">
 
             <TextView
                 android:id="@+id/headNotif"
-                android:text="Notifikasi"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorGreyLight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"/>
+                android:layout_marginBottom="2dp"
+                android:text="Notifikasi"
+                android:textColor="@color/colorGreyLight"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tanggalNotif"
-                android:text="11/01/1111"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp" />
+                android:layout_marginBottom="2dp"
+                android:text="11/01/1111"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/isiNotif"
-                android:text="Notifikasi untuk ..."
-                android:textSize="14sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp" />
+                android:layout_marginBottom="2dp"
+                android:text="Notifikasi untuk ..."
+                android:textSize="14sp" />
 
         </LinearLayout>
 

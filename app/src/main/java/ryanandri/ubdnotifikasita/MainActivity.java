@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import ryanandri.ubdnotifikasita.adapter.ViewPagerAdapter;
 import ryanandri.ubdnotifikasita.fragments.JadwalFragment;
 import ryanandri.ubdnotifikasita.fragments.JudulFragment;
+import ryanandri.ubdnotifikasita.fragments.NilaiFragment;
 import ryanandri.ubdnotifikasita.fragments.NotifikasiFragment;
 import ryanandri.ubdnotifikasita.fragments.ProfileFragment;
 
@@ -73,8 +74,11 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.navigation_jadwal:
                                 viewPager.setCurrentItem(2);
                                 break;
-                            case R.id.navigation_notifikasi:
+                            case R.id.navigation_nilai:
                                 viewPager.setCurrentItem(3);
+                                break;
+                            case R.id.navigation_notifikasi:
+                                viewPager.setCurrentItem(4);
                                 break;
                         }
                         return false;
@@ -111,16 +115,18 @@ public class MainActivity extends AppCompatActivity {
         ProfileFragment profileFragment = new ProfileFragment();
         JudulFragment judulFragment = new JudulFragment();
         JadwalFragment jadwalFragment = new JadwalFragment();
+        NilaiFragment nilaiFragment = new NilaiFragment();
         NotifikasiFragment notifikasiFragment = new NotifikasiFragment();
 
         viewPagerAdapter.addFragment(profileFragment); // 0
         viewPagerAdapter.addFragment(judulFragment);   // 1
         viewPagerAdapter.addFragment(jadwalFragment);  // 2
-        viewPagerAdapter.addFragment(notifikasiFragment); // 3
+        viewPagerAdapter.addFragment(nilaiFragment); // 3
+        viewPagerAdapter.addFragment(notifikasiFragment); // 4
         viewPager.setAdapter(viewPagerAdapter);
 
         // cegah fragment dari reload untuk mengurangi lag.
         // Nilai di ambil dari jumlah menu.
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(5);
     }
 }
