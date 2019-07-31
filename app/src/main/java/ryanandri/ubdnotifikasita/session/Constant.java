@@ -7,4 +7,5 @@ public class Constant {
     public static final String data_judul = "data_judul.php";
     public static final String ambil_data_notifikasi = "list_notifikasi.php";
     public static final String jadwal_ujian = "jadwal_ujian.php";
+    public static final String nilai_ujian = "nilai_ujian.php";
 }

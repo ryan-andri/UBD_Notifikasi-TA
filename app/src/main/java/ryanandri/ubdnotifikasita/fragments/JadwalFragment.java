@@ -81,14 +81,6 @@ public class JadwalFragment extends Fragment {
                             String ruangan_up = jsonObject.getString("ruangan_up");
                             String penguji1_up = jsonObject.getString("penguji1_up");
                             String penguji2_up = jsonObject.getString("penguji2_up");
-                            String nilai_up = jsonObject.getString("nilai_up");
-
-                            sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
-                                                                                penguji1_up, penguji2_up, nilai_up);
-
-                            if (!tgl_up.isEmpty()) {
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
-                            }
 
                             // jadwal Ujian Komprehensif
                             String tanggal_kompre = jsonObject.getString("tanggal_kompre");
@@ -96,14 +88,12 @@ public class JadwalFragment extends Fragment {
                             String ruangan_kompre = jsonObject.getString("ruangan_kompre");
                             String penguji1_kompre = jsonObject.getString("penguji1_kompre");
                             String penguji2_kompre = jsonObject.getString("penguji2_kompre");
-                            String nilai_kompre = jsonObject.getString("nilai_kompre");
+
+                            sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
+                                        penguji1_up, penguji2_up);
 
                             sessionConfig.setJadwalKOMPRE(tanggal_kompre, waktu_kompre,ruangan_kompre,
-                                                                                penguji1_kompre, penguji2_kompre, nilai_kompre);
-
-                            if (!tanggal_kompre.isEmpty()) {
-                                FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
-                            }
+                                        penguji1_kompre, penguji2_kompre);
 
                             if (tgl_up.isEmpty()) {
                                 ListItemJadwal listItemJadwalUP = new ListItemJadwal(

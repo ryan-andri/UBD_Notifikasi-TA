@@ -205,5 +205,7 @@ public class ProfileFragment extends Fragment {
         FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_up");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_kompre");
     }
 }
