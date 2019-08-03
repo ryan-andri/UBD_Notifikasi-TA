@@ -101,6 +101,8 @@ public class NilaiFragment extends Fragment {
 
                             if (refresh)
                                 swipeRefreshLayout.setRefreshing(false);
+
+                            setHasilUjian();
                         }
                     }
                 },
@@ -151,6 +153,7 @@ public class NilaiFragment extends Fragment {
                 statusUP.setText("TIDAK LULUS");
 
             FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_up");
+            FirebaseMessaging.getInstance().subscribeToTopic("jadwal_kompre");
         }
 
         // status kompre
@@ -161,6 +164,7 @@ public class NilaiFragment extends Fragment {
             else
                 statusKompre.setText("TIDAK LULUS");
 
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
             FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_kompre");
         }
     }

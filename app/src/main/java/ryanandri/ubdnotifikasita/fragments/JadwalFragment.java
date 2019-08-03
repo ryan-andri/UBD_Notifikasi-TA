@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,8 @@ public class JadwalFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private List<ListItemJadwal> listItemJadwals;
 
+    private SwipeRefreshLayout swipeRefreshLayoutJadwal;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -60,12 +64,27 @@ public class JadwalFragment extends Fragment {
             FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
 
         listItemJadwals = new ArrayList<>();
-        syncDataJadwalUjian(view.getContext());
+        syncDataJadwalUjian(view.getContext(), false);
+
+        swipeRefreshLayoutJadwal = view.findViewById(R.id.refreshJadwal);
+        swipeRefreshLayoutJadwal.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swipeRefreshLayoutJadwal.setRefreshing(true);
+
+                        // cegah duplikasi
+                        if (listItemJadwals.size() > 0) listItemJadwals.clear();
+
+                        syncDataJadwalUjian(view.getContext(), true);
+                    }
+                }
+        );
 
         return view;
     }
 
-    public void syncDataJadwalUjian(final Context context) {
+    public void syncDataJadwalUjian(final Context context, final boolean refreh) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.jadwal_ujian,
                 new Response.Listener<String>(){
                     @Override
@@ -121,17 +140,20 @@ public class JadwalFragment extends Fragment {
                                 );
                                 listItemJadwals.add(listItemJadwalKompre);
                             }
-                            setAdapterJadwal(context);
+
+                            setAdapterJadwal(context, refreh);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            setJadwalBelumAda(context);
+
+                            setJadwalBelumAda(context, refreh);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        setJadwalBelumAda(context);
+
+                        setJadwalBelumAda(context, refreh);
                     }
                 })
         {
@@ -147,7 +169,7 @@ public class JadwalFragment extends Fragment {
         requestQueue.add(stringRequest);
     }
 
-    public void setJadwalBelumAda(Context context) {
+    public void setJadwalBelumAda(Context context, boolean refreh) {
         ListItemJadwal listItemJadwalUP = new ListItemJadwal(
                 "UJIAN PROPOSAL", "Belum Ada", "Belum Ada",
                 "Belum Ada", "Belum Ada", "Belum Ada"
@@ -158,12 +180,15 @@ public class JadwalFragment extends Fragment {
         );
         listItemJadwals.add(listItemJadwalUP);
         listItemJadwals.add(listItemJadwalKompre);
-        setAdapterJadwal(context);
+        setAdapterJadwal(context, refreh);
     }
 
-    public void setAdapterJadwal(Context context) {
+    public void setAdapterJadwal(Context context, boolean refreh) {
         adapter = new JadwalAdapter(listItemJadwals, context);
         recyclerView.setAdapter(adapter);
+
+        if (refreh)
+            swipeRefreshLayoutJadwal.setRefreshing(false);
     }
 
 }

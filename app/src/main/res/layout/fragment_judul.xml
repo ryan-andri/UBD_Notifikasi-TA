@@ -86,7 +86,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
-            android:hint="Masukkan Judul Penelitian yang sudah di ACC"
+            android:hint="Masukkan Judul Penelitian"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/judulGL2"
             app:layout_constraintEnd_toEndOf="parent"
