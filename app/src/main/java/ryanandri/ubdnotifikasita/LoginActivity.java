@@ -11,25 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import ryanandri.ubdnotifikasita.session.Constant;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
+import ryanandri.ubdnotifikasita.interfaces.LoginCallBack;
 
 public class LoginActivity extends AppCompatActivity {
+    private VolleySingleExecute volleySingleExecute;
+
     private SessionConfig sessionConfig;
 
     private ConstraintLayout constraintLayoutLogin;
@@ -44,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        volleySingleExecute = new VolleySingleExecute(this);
 
         // set layout login
         setContentView(R.layout.activity_login);
@@ -62,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         if (sessionConfig.IsLogin()) {
             String nimSesi = sessionConfig.getNIM();
             String passSesi = sessionConfig.getPASSWORD();
-            asyncLoginFetchData(nimSesi, passSesi);
+            antrianLogin(nimSesi, passSesi);
         }
 
         Button btnLogin = findViewById(R.id.buttonLogin);
@@ -90,77 +86,56 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // lakukan async dan fetch data
-        asyncLoginFetchData(nim, pass);
+        antrianLogin(nim, pass);
     }
 
-    public void asyncLoginFetchData(final String nim, final String pass) {
-
-        final String nimTrim = nim.trim();
-        final String passTrim = pass.trim();
-
+    public void antrianLogin(final String nim, final String pass) {
         loadLoadingProgress(true);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.login,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
-                                int jmlSks = 0;
-                                JSONArray arrJson = jsonObject.getJSONArray("data");
-                                for (int i = 0; i < arrJson.length(); i++) {
-                                    jsonObject = arrJson.getJSONObject(i);
-                                    namaMhs = jsonObject.getString("nama_mhs");
-                                    jmlSks = jsonObject.getInt("total_sks");
-                                    pembimbing1 = jsonObject.getString("nama_pbb1");
-                                    pembimbing2 = jsonObject.getString("nama_pbb2");
-                                }
-
-                                sessionConfig.setNamaMHS(namaMhs);
-                                sessionConfig.setJumlahSKS(jmlSks);
-                                sessionConfig.setPembimbing1(pembimbing1);
-                                sessionConfig.setPembimbing2(pembimbing2);
-
-                                // simpan sesi pengguna jika sukses login
-                                sessionConfig.setUserLogin(nim, pass);
-
-                                menujuMainActivity(pembimbing1, pembimbing2);
-                            } else {
-                                sessionConfig.setUserLogout();
-                                loadLoadingProgress(false);
-                                tampilkanSnackBar("Nim atau password salah.");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            loadLoadingProgress(false);
-                            tampilkanSnackBar("Nim atau password salah.");
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        loadLoadingProgress(false);
-                        tampilkanSnackBar("Koneksi bermasalah = " + error.toString());
-                    }
-                })
-        {
+        volleySingleExecute.asyncLoginFetchData(nim, pass, new LoginCallBack() {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", nimTrim);
-                params.put("password", passTrim);
-                return params;
-            }
-        };
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String success = jsonObject.getString("success");
+                    if (success.equals("1")) {
+                        String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
+                        int jmlSks = 0;
+                        JSONArray arrJson = jsonObject.getJSONArray("data");
+                        for (int i = 0; i < arrJson.length(); i++) {
+                            jsonObject = arrJson.getJSONObject(i);
+                            namaMhs = jsonObject.getString("nama_mhs");
+                            jmlSks = jsonObject.getInt("total_sks");
+                            pembimbing1 = jsonObject.getString("nama_pbb1");
+                            pembimbing2 = jsonObject.getString("nama_pbb2");
+                        }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+                        sessionConfig.setNamaMHS(namaMhs);
+                        sessionConfig.setJumlahSKS(jmlSks);
+                        sessionConfig.setPembimbing1(pembimbing1);
+                        sessionConfig.setPembimbing2(pembimbing2);
+
+                        // simpan sesi pengguna jika sukses login
+                        sessionConfig.setUserLogin(nim, pass);
+
+                        menujuMainActivity(pembimbing1, pembimbing2);
+                    } else {
+                        sessionConfig.setUserLogout();
+                        loadLoadingProgress(false);
+                        tampilkanSnackBar("Nim atau password salah.");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    loadLoadingProgress(false);
+                    tampilkanSnackBar("Nim atau password salah.");
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                loadLoadingProgress(false);
+            }
+        });
     }
 
     public void menujuMainActivity(String pembimbing1, String pembimbing2) {
