@@ -12,7 +12,11 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
+import ryanandri.ubdnotifikasita.interfaces.JadwalCallBack;
+import ryanandri.ubdnotifikasita.interfaces.JudulCallBack;
 import ryanandri.ubdnotifikasita.interfaces.LoginCallBack;
+import ryanandri.ubdnotifikasita.interfaces.NilaiCallBack;
+import ryanandri.ubdnotifikasita.interfaces.NotifikasiCallBack;
 import ryanandri.ubdnotifikasita.session.Constant;
 
 public class VolleySingleExecute {
@@ -22,6 +26,7 @@ public class VolleySingleExecute {
         this.context = ctx;
     }
 
+    // async login activity
     public void asyncLoginFetchData(final String nim, final String pass,
                                     final LoginCallBack interfaceRespones) {
 
@@ -38,7 +43,7 @@ public class VolleySingleExecute {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        interfaceRespones.onErrorResponse(error);
+                        interfaceRespones.onErrorLogin(error);
                     }
                 })
         {
@@ -50,6 +55,144 @@ public class VolleySingleExecute {
                 return params;
             }
         };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    // sync judul
+    public void judulSync(final String nim, boolean input,
+                          final String judul1Trim, final String judul2Trim, final String judul3Trim,
+                          final JudulCallBack interfaceRespones) {
+        final String nimTrim = nim.trim();
+        StringRequest stringRequest = null;
+
+        if (input) {
+            stringRequest = new StringRequest(Request.Method.POST, Constant.URL + Constant.input_judul,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            interfaceRespones.onSuccess(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            interfaceRespones.onErrorJudul(error);
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("nim_mhs", nimTrim);
+                    params.put("judul_1", judul1Trim);
+                    params.put("judul_2", judul2Trim);
+                    params.put("judul_3", judul3Trim);
+                    return params;
+                }
+            };
+        } else {
+            stringRequest = new StringRequest(Request.Method.POST, Constant.URL + Constant.data_judul,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            interfaceRespones.onSuccess(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            interfaceRespones.onErrorJudul(error);
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("nim_mhs", nimTrim);
+                    return params;
+                }
+            };
+        }
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    // async login activity
+    public void asyncJadwal(final String nim, final JadwalCallBack interfaceRespones) {
+        final String nimTrim = nim.trim();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.jadwal_ujian,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        interfaceRespones.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        interfaceRespones.onErrorJadwal(error);
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("nim_mhs", nimTrim);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    // async nilai fragment
+    public void asyncNilai(final String nim, final NilaiCallBack interfaceRespones) {
+        final String nimTrim = nim.trim();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.nilai_ujian,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        interfaceRespones.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        interfaceRespones.onErrorNilai(error);
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("nim_mhs", nimTrim);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    // async nilai fragment
+    public void asyncNotifikasiList(final NotifikasiCallBack interfaceRespones) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.ambil_data_notifikasi,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        interfaceRespones.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        interfaceRespones.onErrorNotifikasi(error);
+                    }
+                });
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);

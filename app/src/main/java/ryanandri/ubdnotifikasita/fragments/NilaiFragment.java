@@ -12,32 +12,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ryanandri.ubdnotifikasita.R;
-import ryanandri.ubdnotifikasita.session.Constant;
+import ryanandri.ubdnotifikasita.VolleySingleExecute;
+import ryanandri.ubdnotifikasita.interfaces.NilaiCallBack;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class NilaiFragment extends Fragment {
-
+    private Context context;
+    private VolleySingleExecute volleySingleExecute;
     private TextView tglUP, nilaiUP, statusUP;
     private TextView tglKompre, nilaiKompre, statusKompre;
-
     private SwipeRefreshLayout swipeRefreshLayout;
-
     private SessionConfig sessionConfig;
 
     @Nullable
@@ -47,7 +39,10 @@ public class NilaiFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_nilai, null);
 
-        sessionConfig = SessionConfig.getInstance(view.getContext());
+        context = view.getContext();
+
+        volleySingleExecute = new VolleySingleExecute(context);
+        sessionConfig = SessionConfig.getInstance(context);
 
         // Proposal
         tglUP = view.findViewById(R.id.tanggalUjianUP);
@@ -59,7 +54,7 @@ public class NilaiFragment extends Fragment {
         statusKompre = view.findViewById(R.id.statusKompre);
 
         //set view
-        syncDataNilaiUjian(view.getContext(), false);
+        syncDataNilaiUjian(false);
 
         swipeRefreshLayout = view.findViewById(R.id.refreshStatus);
         swipeRefreshLayout.setOnRefreshListener(
@@ -67,7 +62,7 @@ public class NilaiFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayout.setRefreshing(true);
-                        syncDataNilaiUjian(view.getContext(), true);
+                        syncDataNilaiUjian(true);
                     }
                 }
         );
@@ -75,55 +70,42 @@ public class NilaiFragment extends Fragment {
         return view;
     }
 
-    public void syncDataNilaiUjian(final Context context, final boolean refresh) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.nilai_ujian,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray arrJson = jsonObject.getJSONArray("nilai_ujian");
-                            jsonObject = arrJson.getJSONObject(0);
-
-                            String nilai_up = jsonObject.getString("nilai_up");
-                            String nilai_kompre = jsonObject.getString("nilai_kompre");
-
-                            sessionConfig.setNilaiUp(nilai_up);
-                            sessionConfig.setNilaiKompre(nilai_kompre);
-
-                            if (refresh)
-                                swipeRefreshLayout.setRefreshing(false);
-
-                            setHasilUjian();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-                            if (refresh)
-                                swipeRefreshLayout.setRefreshing(false);
-
-                            setHasilUjian();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (refresh)
-                            swipeRefreshLayout.setRefreshing(false);
-                    }
-                })
-        {
+    private void syncDataNilaiUjian(final boolean refresh) {
+        volleySingleExecute.asyncNilai(sessionConfig.getNIM(), new NilaiCallBack() {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", sessionConfig.getNIM());
-                return params;
-            }
-        };
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray arrJson = jsonObject.getJSONArray("nilai_ujian");
+                    jsonObject = arrJson.getJSONObject(0);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+                    String nilai_up = jsonObject.getString("nilai_up");
+                    String nilai_kompre = jsonObject.getString("nilai_kompre");
+
+                    sessionConfig.setNilaiUp(nilai_up);
+                    sessionConfig.setNilaiKompre(nilai_kompre);
+
+                    if (refresh)
+                        swipeRefreshLayout.setRefreshing(false);
+
+                    setHasilUjian();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                    if (refresh)
+                        swipeRefreshLayout.setRefreshing(false);
+
+                    setHasilUjian();
+                }
+            }
+
+            @Override
+            public void onErrorNilai(VolleyError error) {
+                if (refresh)
+                    swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void setHasilUjian() {

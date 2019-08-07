@@ -15,23 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ryanandri.ubdnotifikasita.R;
-import ryanandri.ubdnotifikasita.session.Constant;
+import ryanandri.ubdnotifikasita.VolleySingleExecute;
+import ryanandri.ubdnotifikasita.interfaces.JudulCallBack;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class JudulFragment extends Fragment {
@@ -44,12 +38,20 @@ public class JudulFragment extends Fragment {
 
     private TextView arsipJudul1, arsipJudul2, arsipJudul3;
 
+    private VolleySingleExecute volleySingleExecute;
+
+    private Context context;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_judul, null);
+
+        context = view.getContext();
+
+        volleySingleExecute = new VolleySingleExecute(view.getContext());
 
         // Parent dengan 2 layout berbeda
         formJudul = view.findViewById(R.id.formJudul);
@@ -70,14 +72,14 @@ public class JudulFragment extends Fragment {
         // resync data pengajuan judul
         sessionConfig = SessionConfig.getInstance(view.getContext());
         String nim = sessionConfig.getNIM();
-        lakukanSyncDataJudul(nim, view.getContext());
+        synDataJudul(nim, "", "", "", false);
 
         Button kirimJudul = view.findViewById(R.id.kirimJudul);
         kirimJudul.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        loadFormPengajuanJudul(v.getContext());
+                        loadFormPengajuanJudul();
                     }
                 }
         );
@@ -85,7 +87,7 @@ public class JudulFragment extends Fragment {
         return view;
     }
 
-    private void loadFormPengajuanJudul(Context context) {
+    private void loadFormPengajuanJudul() {
         final String nim = sessionConfig.getNIM();
         final String pembimbing1 = sessionConfig.getPembimbing1();
         final String pembimbing2 = sessionConfig.getPembimbing2();
@@ -107,122 +109,79 @@ public class JudulFragment extends Fragment {
 
         formJudul.setVisibility(View.GONE);
         loadingJudul.setVisibility(View.VISIBLE);
-        pushDataPengajuanJudul(nim, J1, J2, J3, context);
+        synDataJudul(nim, J1, J2, J3, true);
     }
 
-    private void pushDataPengajuanJudul(final String nim, final String judul1,
-                                       final String judul2, final String judul3, final Context context) {
+    private void synDataJudul(final String nim, final String judul1,
+                              final String judul2, final String judul3,
+                              final boolean input) {
 
         final String nimTrim = nim.trim();
         final String judul1Trim = judul1.trim();
         final String judul2Trim = judul2.trim();
         final String judul3Trim = judul3.trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.input_judul,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                loadingJudul.setVisibility(View.GONE);
-                                arsipJudul.setVisibility(View.VISIBLE);
-                                tampilkanSnackBar("Judul berhasil dikirim!", context);
-                                sessionConfig.setJudul(judul1Trim, judul2Trim, judul3Trim);
-                                loadFormArsipJudul();
-                                FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
-                            } else {
-                                formJudul.setVisibility(View.VISIBLE);
-                                loadingJudul.setVisibility(View.GONE);
-                                tampilkanSnackBar("ada kesalahan!", context);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        volleySingleExecute.judulSync(nimTrim, input, judul1Trim, judul2Trim, judul3Trim, new JudulCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String success = jsonObject.getString("success");
+
+                    if (input) {
+                        if (success.equals("1")) {
+                            loadingJudul.setVisibility(View.GONE);
+                            arsipJudul.setVisibility(View.VISIBLE);
+                            tampilkanSnackBar("Judul berhasil dikirim!", context);
+                            sessionConfig.setJudul(judul1Trim, judul2Trim, judul3Trim);
+                            loadFormArsipJudul();
+                            FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
+                        } else {
                             formJudul.setVisibility(View.VISIBLE);
                             loadingJudul.setVisibility(View.GONE);
                             tampilkanSnackBar("ada kesalahan!", context);
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        formJudul.setVisibility(View.VISIBLE);
-                        loadingJudul.setVisibility(View.GONE);
-                        tampilkanSnackBar("Koneksi bermasalah!", context);
-                    }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", nimTrim);
-                params.put("judul_1", judul1Trim);
-                params.put("judul_2", judul2Trim);
-                params.put("judul_3", judul3Trim);
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-    }
-
-    private void lakukanSyncDataJudul(final String nim, Context context) {
-        final String nimTrim = nim.trim();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.data_judul,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String success = jsonObject.getString("success");
-                            if (success.equals("1")) {
-                                String judul1 = "", judul2 = "", judul3 = "";
-                                JSONArray arrJson = jsonObject.getJSONArray("judul");
-                                for (int i = 0; i < arrJson.length(); i++) {
-                                    jsonObject = arrJson.getJSONObject(i);
-                                    judul1 = jsonObject.getString("judul_1");
-                                    judul2 = jsonObject.getString("judul_2");
-                                    judul3 = jsonObject.getString("judul_3");
-                                }
-
-                                if (!judul1.isEmpty() && !judul2.isEmpty() && !judul3.isEmpty()) {
-                                    sessionConfig.setJudul(judul1, judul2, judul3);
-                                    FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
-                                    formJudul.setVisibility(View.GONE);
-                                    arsipJudul.setVisibility(View.VISIBLE);
-                                } else {
-                                    sessionConfig.deleteDataJudul();
-                                    FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
-                                }
-
-                                loadFormArsipJudul();
+                    } else {
+                        if (success.equals("1")) {
+                            String judul1 = "", judul2 = "", judul3 = "";
+                            JSONArray arrJson = jsonObject.getJSONArray("judul");
+                            for (int i = 0; i < arrJson.length(); i++) {
+                                jsonObject = arrJson.getJSONObject(i);
+                                judul1 = jsonObject.getString("judul_1");
+                                judul2 = jsonObject.getString("judul_2");
+                                judul3 = jsonObject.getString("judul_3");
+                            }
+                            if (!judul1.isEmpty() && !judul2.isEmpty() && !judul3.isEmpty()) {
+                                sessionConfig.setJudul(judul1, judul2, judul3);
+                                FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
+                                formJudul.setVisibility(View.GONE);
+                                arsipJudul.setVisibility(View.VISIBLE);
                             } else {
                                 sessionConfig.deleteDataJudul();
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            loadFormArsipJudul();
+                        } else {
                             sessionConfig.deleteDataJudul();
                         }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) { }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", nimTrim);
-                return params;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    if (input) {
+                        formJudul.setVisibility(View.VISIBLE);
+                        loadingJudul.setVisibility(View.GONE);
+                        tampilkanSnackBar("ada kesalahan!", context);
+                    } else {
+                        sessionConfig.deleteDataJudul();
+                    }
+                }
             }
-        };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+            @Override
+            public void onErrorJudul(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
     }
 
     private void loadFormArsipJudul() {

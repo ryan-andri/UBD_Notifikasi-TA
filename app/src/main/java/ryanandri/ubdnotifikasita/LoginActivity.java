@@ -23,15 +23,9 @@ import ryanandri.ubdnotifikasita.interfaces.LoginCallBack;
 
 public class LoginActivity extends AppCompatActivity {
     private VolleySingleExecute volleySingleExecute;
-
     private SessionConfig sessionConfig;
-
-    private ConstraintLayout constraintLayoutLogin;
-    private ConstraintLayout formLogin;
-    private ConstraintLayout formLoading;
-
-    private EditText loginNIM;
-    private EditText loginPASS;
+    private ConstraintLayout constraintLayoutLogin, formLogin, formLoading;
+    private EditText loginNIM, loginPASS;
 
     private long mLastClickTime = 0;
 
@@ -131,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorLogin(VolleyError error) {
                 error.printStackTrace();
                 loadLoadingProgress(false);
             }

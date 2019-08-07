@@ -2,7 +2,7 @@ package ryanandri.ubdnotifikasita.interfaces;
 
 import com.android.volley.VolleyError;
 
-public interface LoginCallBack {
+public interface JadwalCallBack {
     void onSuccess(String result);
-    void onErrorLogin(VolleyError error);
+    void onErrorJadwal(VolleyError error);
 }

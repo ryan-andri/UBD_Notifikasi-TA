@@ -13,12 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
@@ -26,24 +22,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ryanandri.ubdnotifikasita.ListItemJadwal;
 import ryanandri.ubdnotifikasita.R;
+import ryanandri.ubdnotifikasita.VolleySingleExecute;
 import ryanandri.ubdnotifikasita.adapter.JadwalAdapter;
-import ryanandri.ubdnotifikasita.session.Constant;
+import ryanandri.ubdnotifikasita.interfaces.JadwalCallBack;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class JadwalFragment extends Fragment {
-
+    private Context context;
+    private VolleySingleExecute volleySingleExecute;
     private SessionConfig sessionConfig;
-
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
     private List<ListItemJadwal> listItemJadwals;
-
     private SwipeRefreshLayout swipeRefreshLayoutJadwal;
 
     @Nullable
@@ -52,6 +45,10 @@ public class JadwalFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_jadwal, null);
+
+        context = view.getContext();
+
+        volleySingleExecute = new VolleySingleExecute(view.getContext());
 
         sessionConfig = SessionConfig.getInstance(view.getContext());
 
@@ -64,7 +61,7 @@ public class JadwalFragment extends Fragment {
             FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
 
         listItemJadwals = new ArrayList<>();
-        syncDataJadwalUjian(view.getContext(), false);
+        syncDataJadwalUjian(false);
 
         swipeRefreshLayoutJadwal = view.findViewById(R.id.refreshJadwal);
         swipeRefreshLayoutJadwal.setOnRefreshListener(
@@ -76,7 +73,7 @@ public class JadwalFragment extends Fragment {
                         // cegah duplikasi
                         if (listItemJadwals.size() > 0) listItemJadwals.clear();
 
-                        syncDataJadwalUjian(view.getContext(), true);
+                        syncDataJadwalUjian(true);
                     }
                 }
         );
@@ -84,92 +81,76 @@ public class JadwalFragment extends Fragment {
         return view;
     }
 
-    public void syncDataJadwalUjian(final Context context, final boolean refreh) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.jadwal_ujian,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray arrJson = jsonObject.getJSONArray("jadwal_ujian");
-                            jsonObject = arrJson.getJSONObject(0);
-
-                            // jadwal Ujian Proposal
-                            String tgl_up = jsonObject.getString("tanggal_up");
-                            String waktu_up = jsonObject.getString("waktu_up");
-                            String ruangan_up = jsonObject.getString("ruangan_up");
-                            String penguji1_up = jsonObject.getString("penguji1_up");
-                            String penguji2_up = jsonObject.getString("penguji2_up");
-
-                            // jadwal Ujian Komprehensif
-                            String tanggal_kompre = jsonObject.getString("tanggal_kompre");
-                            String waktu_kompre = jsonObject.getString("waktu_kompre");
-                            String ruangan_kompre = jsonObject.getString("ruangan_kompre");
-                            String penguji1_kompre = jsonObject.getString("penguji1_kompre");
-                            String penguji2_kompre = jsonObject.getString("penguji2_kompre");
-
-                            sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
-                                        penguji1_up, penguji2_up);
-
-                            sessionConfig.setJadwalKOMPRE(tanggal_kompre, waktu_kompre,ruangan_kompre,
-                                        penguji1_kompre, penguji2_kompre);
-
-                            if (tgl_up.isEmpty()) {
-                                ListItemJadwal listItemJadwalUP = new ListItemJadwal(
-                                        "UJIAN PROPOSAL", "Belum Ada", "Belum Ada",
-                                        "Belum Ada", "Belum Ada", "Belum Ada"
-                                );
-                                listItemJadwals.add(listItemJadwalUP);
-                            } else {
-                                ListItemJadwal listItemJadwalUP = new ListItemJadwal(
-                                        "UJIAN PROPOSAL", tgl_up, waktu_up, ruangan_up, penguji1_up, penguji2_up
-                                );
-                                listItemJadwals.add(listItemJadwalUP);
-                            }
-
-                            if (tanggal_kompre.isEmpty()) {
-                                ListItemJadwal listItemJadwalKompre = new ListItemJadwal(
-                                        "UJIAN KOMPREHENSIF", "Belum Ada", "Belum Ada",
-                                        "Belum Ada", "Belum Ada", "Belum Ada"
-                                );
-                                listItemJadwals.add(listItemJadwalKompre);
-                            } else {
-                                ListItemJadwal listItemJadwalKompre = new ListItemJadwal(
-                                        "UJIAN KOMPREHENSIF", tanggal_kompre, waktu_kompre,
-                                        ruangan_kompre, penguji1_kompre, penguji2_kompre
-                                );
-                                listItemJadwals.add(listItemJadwalKompre);
-                            }
-
-                            setAdapterJadwal(context, refreh);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-                            setJadwalBelumAda(context, refreh);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        setJadwalBelumAda(context, refreh);
-                    }
-                })
-        {
+    private void syncDataJadwalUjian(final boolean refreh) {
+        volleySingleExecute.asyncJadwal(sessionConfig.getNIM(), new JadwalCallBack() {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", sessionConfig.getNIM());
-                return params;
-            }
-        };
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray arrJson = jsonObject.getJSONArray("jadwal_ujian");
+                    jsonObject = arrJson.getJSONObject(0);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+                    // jadwal Ujian Proposal
+                    String tgl_up = jsonObject.getString("tanggal_up");
+                    String waktu_up = jsonObject.getString("waktu_up");
+                    String ruangan_up = jsonObject.getString("ruangan_up");
+                    String penguji1_up = jsonObject.getString("penguji1_up");
+                    String penguji2_up = jsonObject.getString("penguji2_up");
+
+                    // jadwal Ujian Komprehensif
+                    String tanggal_kompre = jsonObject.getString("tanggal_kompre");
+                    String waktu_kompre = jsonObject.getString("waktu_kompre");
+                    String ruangan_kompre = jsonObject.getString("ruangan_kompre");
+                    String penguji1_kompre = jsonObject.getString("penguji1_kompre");
+                    String penguji2_kompre = jsonObject.getString("penguji2_kompre");
+
+                    sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
+                            penguji1_up, penguji2_up);
+
+                    sessionConfig.setJadwalKOMPRE(tanggal_kompre, waktu_kompre,ruangan_kompre,
+                            penguji1_kompre, penguji2_kompre);
+
+                    if (tgl_up.isEmpty()) {
+                        ListItemJadwal listItemJadwalUP = new ListItemJadwal(
+                                "UJIAN PROPOSAL", "Belum Ada", "Belum Ada",
+                                "Belum Ada", "Belum Ada", "Belum Ada"
+                        );
+                        listItemJadwals.add(listItemJadwalUP);
+                    } else {
+                        ListItemJadwal listItemJadwalUP = new ListItemJadwal(
+                                "UJIAN PROPOSAL", tgl_up, waktu_up, ruangan_up, penguji1_up, penguji2_up
+                        );
+                        listItemJadwals.add(listItemJadwalUP);
+                    }
+
+                    if (tanggal_kompre.isEmpty()) {
+                        ListItemJadwal listItemJadwalKompre = new ListItemJadwal(
+                                "UJIAN KOMPREHENSIF", "Belum Ada", "Belum Ada",
+                                "Belum Ada", "Belum Ada", "Belum Ada"
+                        );
+                        listItemJadwals.add(listItemJadwalKompre);
+                    } else {
+                        ListItemJadwal listItemJadwalKompre = new ListItemJadwal(
+                                "UJIAN KOMPREHENSIF", tanggal_kompre, waktu_kompre,
+                                ruangan_kompre, penguji1_kompre, penguji2_kompre
+                        );
+                        listItemJadwals.add(listItemJadwalKompre);
+                    }
+                    setAdapterJadwal(refreh);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    setJadwalBelumAda(refreh);
+                }
+            }
+
+            @Override
+            public void onErrorJadwal(VolleyError error) {
+                setJadwalBelumAda(refreh);
+            }
+        });
     }
 
-    public void setJadwalBelumAda(Context context, boolean refreh) {
+    private void setJadwalBelumAda(boolean refreh) {
         ListItemJadwal listItemJadwalUP = new ListItemJadwal(
                 "UJIAN PROPOSAL", "Belum Ada", "Belum Ada",
                 "Belum Ada", "Belum Ada", "Belum Ada"
@@ -180,11 +161,11 @@ public class JadwalFragment extends Fragment {
         );
         listItemJadwals.add(listItemJadwalUP);
         listItemJadwals.add(listItemJadwalKompre);
-        setAdapterJadwal(context, refreh);
+        setAdapterJadwal(refreh);
     }
 
-    public void setAdapterJadwal(Context context, boolean refreh) {
-        adapter = new JadwalAdapter(listItemJadwals, context);
+    private void setAdapterJadwal(boolean refreh) {
+        RecyclerView.Adapter adapter = new JadwalAdapter(listItemJadwals, context);
         recyclerView.setAdapter(adapter);
 
         if (refreh)
