@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_profile, null);
+        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         context = view.getContext();
 
@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayout.setRefreshing(true);
-                        lakukanRefreshData(sessionConfig.getNIM(), sessionConfig.getPASSWORD());
+                        lakukanRefreshData(SessionConfig.getNIM(), SessionConfig.getPASSWORD());
                     }
                 }
         );
@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    public void Konfirmasilogout() {
+    private void Konfirmasilogout() {
         AlertDialog.Builder dialogLogout = new AlertDialog.Builder(context);
         dialogLogout.setMessage("Anda ingin logout ?");
         dialogLogout.setPositiveButton("iya", new DialogInterface.OnClickListener() {
@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void lakukanRefreshData(final String nim, final String pass) {
+    private void lakukanRefreshData(final String nim, final String pass) {
         volleySingleExecute.asyncLoginFetchData(nim, pass, new LoginCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -127,10 +127,10 @@ public class ProfileFragment extends Fragment {
                             pembimbing2 = jsonObject.getString("nama_pbb2");
                         }
 
-                        sessionConfig.setNamaMHS(namaMhs);
-                        sessionConfig.setJumlahSKS(jmlSks);
-                        sessionConfig.setPembimbing1(pembimbing1);
-                        sessionConfig.setPembimbing2(pembimbing2);
+                        SessionConfig.setNamaMHS(namaMhs);
+                        SessionConfig.setJumlahSKS(jmlSks);
+                        SessionConfig.setPembimbing1(pembimbing1);
+                        SessionConfig.setPembimbing2(pembimbing2);
 
                         setDataProfile();
                     } else {
@@ -153,12 +153,12 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void setDataProfile() {
-        String sesiNama = sessionConfig.getNamaMHS();
-        String sesiNim = sessionConfig.getNIM();
-        int sesiSks = sessionConfig.getJumlahSKS();
-        String sesiPbb1 = sessionConfig.getPembimbing1();
-        String sesiPbb2 = sessionConfig.getPembimbing2();
+    private void setDataProfile() {
+        String sesiNama = SessionConfig.getNamaMHS();
+        String sesiNim = SessionConfig.getNIM();
+        int sesiSks = SessionConfig.getJumlahSKS();
+        String sesiPbb1 = SessionConfig.getPembimbing1();
+        String sesiPbb2 = SessionConfig.getPembimbing2();
 
         // hentikan notifikasi pembimbing jika sudah ada pembimbing
         if (!sesiPbb1.isEmpty()) FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
@@ -170,7 +170,7 @@ public class ProfileFragment extends Fragment {
         pbb2.setText(sesiPbb2);
     }
 
-    public void logout() {
+    private void logout() {
         unsubNotifikasi();
         sessionConfig.setUserLogout();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -178,7 +178,7 @@ public class ProfileFragment extends Fragment {
         ((Activity) context).finish();
     }
 
-    public void unsubNotifikasi() {
+    private void unsubNotifikasi() {
         FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");

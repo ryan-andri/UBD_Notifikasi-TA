@@ -47,7 +47,7 @@ public class JudulFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_judul, null);
+        View view = inflater.inflate(R.layout.fragment_judul, container, false);
 
         context = view.getContext();
 
@@ -71,7 +71,7 @@ public class JudulFragment extends Fragment {
 
         // resync data pengajuan judul
         sessionConfig = SessionConfig.getInstance(view.getContext());
-        String nim = sessionConfig.getNIM();
+        String nim = SessionConfig.getNIM();
         synDataJudul(nim, "", "", "", false);
 
         Button kirimJudul = view.findViewById(R.id.kirimJudul);
@@ -88,10 +88,10 @@ public class JudulFragment extends Fragment {
     }
 
     private void loadFormPengajuanJudul() {
-        final String nim = sessionConfig.getNIM();
-        final String pembimbing1 = sessionConfig.getPembimbing1();
-        final String pembimbing2 = sessionConfig.getPembimbing2();
-        final int jmlSks = sessionConfig.getJumlahSKS();
+        final String nim = SessionConfig.getNIM();
+        final String pembimbing1 = SessionConfig.getPembimbing1();
+        final String pembimbing2 = SessionConfig.getPembimbing2();
+        final int jmlSks = SessionConfig.getJumlahSKS();
 
         final String J1 = judul1.getText().toString();
         final String J2 = judul2.getText().toString();
@@ -133,7 +133,7 @@ public class JudulFragment extends Fragment {
                             loadingJudul.setVisibility(View.GONE);
                             arsipJudul.setVisibility(View.VISIBLE);
                             tampilkanSnackBar("Judul berhasil dikirim!", context);
-                            sessionConfig.setJudul(judul1Trim, judul2Trim, judul3Trim);
+                            SessionConfig.setJudul(judul1Trim, judul2Trim, judul3Trim);
                             loadFormArsipJudul();
                             FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                         } else {
@@ -152,17 +152,17 @@ public class JudulFragment extends Fragment {
                                 judul3 = jsonObject.getString("judul_3");
                             }
                             if (!judul1.isEmpty() && !judul2.isEmpty() && !judul3.isEmpty()) {
-                                sessionConfig.setJudul(judul1, judul2, judul3);
+                                SessionConfig.setJudul(judul1, judul2, judul3);
                                 FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                                 formJudul.setVisibility(View.GONE);
                                 arsipJudul.setVisibility(View.VISIBLE);
                             } else {
-                                sessionConfig.deleteDataJudul();
+                                SessionConfig.deleteDataJudul();
                                 FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
                             }
                             loadFormArsipJudul();
                         } else {
-                            sessionConfig.deleteDataJudul();
+                            SessionConfig.deleteDataJudul();
                         }
                     }
                 } catch (JSONException e) {
@@ -172,7 +172,7 @@ public class JudulFragment extends Fragment {
                         loadingJudul.setVisibility(View.GONE);
                         tampilkanSnackBar("ada kesalahan!", context);
                     } else {
-                        sessionConfig.deleteDataJudul();
+                        SessionConfig.deleteDataJudul();
                     }
                 }
             }
@@ -185,9 +185,9 @@ public class JudulFragment extends Fragment {
     }
 
     private void loadFormArsipJudul() {
-        String arsipJ1 = sessionConfig.getJudul1();
-        String arsipJ2 = sessionConfig.getJudul2();
-        String arsipJ3 = sessionConfig.getJudul3();
+        String arsipJ1 = SessionConfig.getJudul1();
+        String arsipJ2 = SessionConfig.getJudul2();
+        String arsipJ3 = SessionConfig.getJudul3();
 
         if (!arsipJ1.isEmpty() && !arsipJ2.isEmpty() && !arsipJ3.isEmpty()) {
             arsipJudul1.setText(arsipJ1);

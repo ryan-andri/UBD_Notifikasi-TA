@@ -40,14 +40,13 @@ public class NotifikasiFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_notifikasi, null);
+        final View view = inflater.inflate(R.layout.fragment_notifikasi, container, false);
 
         context = view.getContext();
 
         volleySingleExecute = new VolleySingleExecute(context);
 
         recyclerView = view.findViewById(R.id.recycleNotif);
-        RelativeLayout relativeLayout = view.findViewById(R.id.listNotifikasi);
         swipeRefreshLayout = view.findViewById(R.id.refreshListNotifikasi);
 
         recyclerView.setHasFixedSize(true);

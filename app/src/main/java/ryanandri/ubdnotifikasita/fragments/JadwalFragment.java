@@ -44,7 +44,8 @@ public class JadwalFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_jadwal, null);
+
+        final View view = inflater.inflate(R.layout.fragment_jadwal, container, false);
 
         context = view.getContext();
 
@@ -56,8 +57,8 @@ public class JadwalFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        if (!sessionConfig.getPembimbing1().isEmpty()
-                && !sessionConfig.getJudul1().isEmpty())
+        if (!SessionConfig.getPembimbing1().isEmpty()
+                && !SessionConfig.getJudul1().isEmpty())
             FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
 
         listItemJadwals = new ArrayList<>();
@@ -82,7 +83,7 @@ public class JadwalFragment extends Fragment {
     }
 
     private void syncDataJadwalUjian(final boolean refreh) {
-        volleySingleExecute.asyncJadwal(sessionConfig.getNIM(), new JadwalCallBack() {
+        volleySingleExecute.asyncJadwal(SessionConfig.getNIM(), new JadwalCallBack() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -104,10 +105,10 @@ public class JadwalFragment extends Fragment {
                     String penguji1_kompre = jsonObject.getString("penguji1_kompre");
                     String penguji2_kompre = jsonObject.getString("penguji2_kompre");
 
-                    sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
+                    SessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
                             penguji1_up, penguji2_up);
 
-                    sessionConfig.setJadwalKOMPRE(tanggal_kompre, waktu_kompre,ruangan_kompre,
+                    SessionConfig.setJadwalKOMPRE(tanggal_kompre, waktu_kompre,ruangan_kompre,
                             penguji1_kompre, penguji2_kompre);
 
                     if (tgl_up.isEmpty()) {

@@ -49,9 +49,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // cek pengguna sudah login sebelumnya
         sessionConfig = SessionConfig.getInstance(this);
-        if (sessionConfig.IsLogin()) {
-            String nimSesi = sessionConfig.getNIM();
-            String passSesi = sessionConfig.getPASSWORD();
+        if (SessionConfig.IsLogin()) {
+            String nimSesi = SessionConfig.getNIM();
+            String passSesi = SessionConfig.getPASSWORD();
             antrianLogin(nimSesi, passSesi);
         }
 
@@ -103,13 +103,13 @@ public class LoginActivity extends AppCompatActivity {
                             pembimbing2 = jsonObject.getString("nama_pbb2");
                         }
 
-                        sessionConfig.setNamaMHS(namaMhs);
-                        sessionConfig.setJumlahSKS(jmlSks);
-                        sessionConfig.setPembimbing1(pembimbing1);
-                        sessionConfig.setPembimbing2(pembimbing2);
+                        SessionConfig.setNamaMHS(namaMhs);
+                        SessionConfig.setJumlahSKS(jmlSks);
+                        SessionConfig.setPembimbing1(pembimbing1);
+                        SessionConfig.setPembimbing2(pembimbing2);
 
                         // simpan sesi pengguna jika sukses login
-                        sessionConfig.setUserLogin(nim, pass);
+                        SessionConfig.setUserLogin(nim, pass);
 
                         menujuMainActivity(pembimbing1, pembimbing2);
                     } else {

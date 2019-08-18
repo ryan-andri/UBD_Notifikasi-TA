@@ -107,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        loadviewpager(viewPager);
+        loadviewpager();
     }
 
-    public void loadviewpager(ViewPager viewPager) {
+    public void loadviewpager() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         ProfileFragment profileFragment = new ProfileFragment();
         JudulFragment judulFragment = new JudulFragment();

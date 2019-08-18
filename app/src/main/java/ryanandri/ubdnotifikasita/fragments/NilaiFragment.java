@@ -37,7 +37,8 @@ public class NilaiFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_nilai, null);
+
+        final View view = inflater.inflate(R.layout.fragment_nilai, container, false);
 
         context = view.getContext();
 
@@ -71,7 +72,7 @@ public class NilaiFragment extends Fragment {
     }
 
     private void syncDataNilaiUjian(final boolean refresh) {
-        volleySingleExecute.asyncNilai(sessionConfig.getNIM(), new NilaiCallBack() {
+        volleySingleExecute.asyncNilai(SessionConfig.getNIM(), new NilaiCallBack() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -82,8 +83,8 @@ public class NilaiFragment extends Fragment {
                     String nilai_up = jsonObject.getString("nilai_up");
                     String nilai_kompre = jsonObject.getString("nilai_kompre");
 
-                    sessionConfig.setNilaiUp(nilai_up);
-                    sessionConfig.setNilaiKompre(nilai_kompre);
+                    SessionConfig.setNilaiUp(nilai_up);
+                    SessionConfig.setNilaiKompre(nilai_kompre);
 
                     if (refresh)
                         swipeRefreshLayout.setRefreshing(false);
@@ -109,10 +110,10 @@ public class NilaiFragment extends Fragment {
     }
 
     private void setHasilUjian() {
-        String sesiTglUP = sessionConfig.getTglUP();
-        String sesiNilaiUP = sessionConfig.getNilaiUP();
-        String sesiTglKompre = sessionConfig.getTglKOMPRE();
-        String sesiNilaiKompre = sessionConfig.getNilaiKompre();
+        String sesiTglUP = SessionConfig.getTglUP();
+        String sesiNilaiUP = SessionConfig.getNilaiUP();
+        String sesiTglKompre = SessionConfig.getTglKOMPRE();
+        String sesiNilaiKompre = SessionConfig.getNilaiKompre();
 
         if (!sesiTglUP.isEmpty()) {
             tglUP.setText(sesiTglUP);
