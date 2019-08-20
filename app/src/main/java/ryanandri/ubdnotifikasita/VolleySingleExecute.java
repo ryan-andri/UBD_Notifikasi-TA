@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ryanandri.ubdnotifikasita.interfaces.JadwalCallBack;
-import ryanandri.ubdnotifikasita.interfaces.JudulCallBack;
 import ryanandri.ubdnotifikasita.interfaces.LoginCallBack;
 import ryanandri.ubdnotifikasita.interfaces.NilaiCallBack;
 import ryanandri.ubdnotifikasita.interfaces.NotifikasiCallBack;
@@ -55,64 +54,6 @@ public class VolleySingleExecute {
                 return params;
             }
         };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-    }
-
-    // sync judul
-    public void judulSync(final String nim, boolean input,
-                          final String judul1Trim, final String judul2Trim, final String judul3Trim,
-                          final JudulCallBack interfaceRespones) {
-        final String nimTrim = nim.trim();
-        StringRequest stringRequest = null;
-
-        if (input) {
-            stringRequest = new StringRequest(Request.Method.POST, Constant.URL + Constant.input_judul,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            interfaceRespones.onSuccess(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            interfaceRespones.onErrorJudul(error);
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("nim_mhs", nimTrim);
-                    params.put("judul_1", judul1Trim);
-                    params.put("judul_2", judul2Trim);
-                    params.put("judul_3", judul3Trim);
-                    return params;
-                }
-            };
-        } else {
-            stringRequest = new StringRequest(Request.Method.POST, Constant.URL + Constant.data_judul,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            interfaceRespones.onSuccess(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            interfaceRespones.onErrorJudul(error);
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("nim_mhs", nimTrim);
-                    return params;
-                }
-            };
-        }
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);

@@ -17,13 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <!-- Channel untuk Notifikasi khusus android O atau slanjutnya -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/id_channel"/>
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notifikasi_black_24dp" />
 
         <!-- Aktifitas Utama -->
         <activity
@@ -37,13 +30,27 @@
             </intent-filter>
         </activity>
 
-        <!-- Aktifitas Lainnya -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/id_channel"/>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notifikasi_black_24dp" />
+
+        <service android:name=".firebase.FirebaseMessagingService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
         </activity>
+
         <activity
             android:name=".ExpandNotif"
             android:screenOrientation="portrait"
@@ -54,12 +61,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Service untuk Firebase -->
-        <service android:name=".firebase.FirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
     </application>
 
 </manifest>
