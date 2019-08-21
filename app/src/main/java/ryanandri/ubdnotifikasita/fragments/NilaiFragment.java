@@ -25,7 +25,6 @@ import ryanandri.ubdnotifikasita.interfaces.NilaiCallBack;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class NilaiFragment extends Fragment {
-    private Context context;
     private VolleySingleExecute volleySingleExecute;
     private TextView tglUP, nilaiUP, statusUP;
     private TextView tglKompre, nilaiKompre, statusKompre;
@@ -40,10 +39,8 @@ public class NilaiFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_nilai, container, false);
 
-        context = view.getContext();
-
-        volleySingleExecute = new VolleySingleExecute(context);
-        sessionConfig = SessionConfig.getInstance(context);
+        volleySingleExecute = new VolleySingleExecute(view.getContext());
+        sessionConfig = SessionConfig.getInstance(view.getContext());
 
         // Proposal
         tglUP = view.findViewById(R.id.tanggalUjianUP);
@@ -72,7 +69,7 @@ public class NilaiFragment extends Fragment {
     }
 
     private void syncDataNilaiUjian(final boolean refresh) {
-        volleySingleExecute.asyncNilai(SessionConfig.getNIM(), new NilaiCallBack() {
+        volleySingleExecute.asyncNilai(sessionConfig.getNIM(), new NilaiCallBack() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -83,8 +80,8 @@ public class NilaiFragment extends Fragment {
                     String nilai_up = jsonObject.getString("nilai_up");
                     String nilai_kompre = jsonObject.getString("nilai_kompre");
 
-                    SessionConfig.setNilaiUp(nilai_up);
-                    SessionConfig.setNilaiKompre(nilai_kompre);
+                    sessionConfig.setNilaiUp(nilai_up);
+                    sessionConfig.setNilaiKompre(nilai_kompre);
 
                     if (refresh)
                         swipeRefreshLayout.setRefreshing(false);
@@ -110,10 +107,10 @@ public class NilaiFragment extends Fragment {
     }
 
     private void setHasilUjian() {
-        String sesiTglUP = SessionConfig.getTglUP();
-        String sesiNilaiUP = SessionConfig.getNilaiUP();
-        String sesiTglKompre = SessionConfig.getTglKOMPRE();
-        String sesiNilaiKompre = SessionConfig.getNilaiKompre();
+        String sesiTglUP = sessionConfig.getTglUP();
+        String sesiNilaiUP = sessionConfig.getNilaiUP();
+        String sesiTglKompre = sessionConfig.getTglKOMPRE();
+        String sesiNilaiKompre = sessionConfig.getNilaiKompre();
 
         if (!sesiTglUP.isEmpty()) {
             tglUP.setText(sesiTglUP);

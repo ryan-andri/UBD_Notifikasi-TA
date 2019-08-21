@@ -43,15 +43,14 @@ public class LoginActivity extends AppCompatActivity {
 
         formLogin = findViewById(R.id.formLogin);
         formLoading = findViewById(R.id.loadingWidget);
-
         loginNIM = findViewById(R.id.loginNIM);
         loginPASS = findViewById(R.id.loginPASS);
 
         // cek pengguna sudah login sebelumnya
         sessionConfig = SessionConfig.getInstance(this);
-        if (SessionConfig.IsLogin()) {
-            String nimSesi = SessionConfig.getNIM();
-            String passSesi = SessionConfig.getPASSWORD();
+        if (sessionConfig.IsLogin()) {
+            String nimSesi = sessionConfig.getNIM();
+            String passSesi = sessionConfig.getPASSWORD();
             antrianLogin(nimSesi, passSesi);
         }
 
@@ -103,24 +102,24 @@ public class LoginActivity extends AppCompatActivity {
                             pembimbing2 = jsonObject.getString("nama_pbb2");
                         }
 
-                        SessionConfig.setNamaMHS(namaMhs);
-                        SessionConfig.setJumlahSKS(jmlSks);
-                        SessionConfig.setPembimbing1(pembimbing1);
-                        SessionConfig.setPembimbing2(pembimbing2);
+                        sessionConfig.setNamaMHS(namaMhs);
+                        sessionConfig.setJumlahSKS(jmlSks);
+                        sessionConfig.setPembimbing1(pembimbing1);
+                        sessionConfig.setPembimbing2(pembimbing2);
 
                         // simpan sesi pengguna jika sukses login
-                        SessionConfig.setUserLogin(nim, pass);
+                        sessionConfig.setUserLogin(nim, pass);
 
                         menujuMainActivity(pembimbing1, pembimbing2);
                     } else {
                         sessionConfig.setUserLogout();
                         loadLoadingProgress(false);
-                        tampilkanSnackBar("Nim atau password salah.");
+                        tampilkanSnackBar("Nim atau Password salah, silahkan hubungi PPM.");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     loadLoadingProgress(false);
-                    tampilkanSnackBar("Nim atau password salah.");
+                    tampilkanSnackBar("Nim atau Password salah, silahkan hubungi PPM.");
                 }
             }
 

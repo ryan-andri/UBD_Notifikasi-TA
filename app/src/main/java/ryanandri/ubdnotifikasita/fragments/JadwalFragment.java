@@ -1,43 +1,34 @@
 package ryanandri.ubdnotifikasita.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ryanandri.ubdnotifikasita.ListItemJadwal;
 import ryanandri.ubdnotifikasita.R;
 import ryanandri.ubdnotifikasita.VolleySingleExecute;
-import ryanandri.ubdnotifikasita.adapter.JadwalAdapter;
 import ryanandri.ubdnotifikasita.interfaces.JadwalCallBack;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class JadwalFragment extends Fragment {
-    private Context context;
     private VolleySingleExecute volleySingleExecute;
     private SessionConfig sessionConfig;
-    private RecyclerView recyclerView;
-    private List<ListItemJadwal> listItemJadwals;
     private SwipeRefreshLayout swipeRefreshLayoutJadwal;
+
+    private TextView tglUP, wktUP, rgnUP, pgj1UP, pgj2UP;
+    private TextView tglUK, wktUK, rgnUK, pgj1UK, pgj2UK;
 
     @Nullable
     @Override
@@ -47,33 +38,20 @@ public class JadwalFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_jadwal, container, false);
 
-        context = view.getContext();
-
         volleySingleExecute = new VolleySingleExecute(view.getContext());
-
         sessionConfig = SessionConfig.getInstance(view.getContext());
 
-        recyclerView = view.findViewById(R.id.recycleJadwal);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-        if (!SessionConfig.getPembimbing1().isEmpty()
-                && !SessionConfig.getJudul1().isEmpty())
-            FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
-
-        listItemJadwals = new ArrayList<>();
-        syncDataJadwalUjian(false);
+        setTextView(view);
 
         swipeRefreshLayoutJadwal = view.findViewById(R.id.refreshJadwal);
+
+        syncDataJadwalUjian(false);
+
         swipeRefreshLayoutJadwal.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayoutJadwal.setRefreshing(true);
-
-                        // cegah duplikasi
-                        if (listItemJadwals.size() > 0) listItemJadwals.clear();
-
                         syncDataJadwalUjian(true);
                     }
                 }
@@ -82,8 +60,21 @@ public class JadwalFragment extends Fragment {
         return view;
     }
 
+    private void setTextView(View view) {
+        tglUP = view.findViewById(R.id.tglUp);
+        wktUP = view.findViewById(R.id.wktUp);
+        rgnUP = view.findViewById(R.id.ruangUp);
+        pgj1UP = view.findViewById(R.id.penguji1Up);
+        pgj2UP = view.findViewById(R.id.penguji2Up);
+        tglUK = view.findViewById(R.id.tglUk);
+        wktUK = view.findViewById(R.id.wktUk);
+        rgnUK = view.findViewById(R.id.ruangUk);
+        pgj1UK = view.findViewById(R.id.penguji1Uk);
+        pgj2UK = view.findViewById(R.id.penguji2Uk);
+    }
+
     private void syncDataJadwalUjian(final boolean refreh) {
-        volleySingleExecute.asyncJadwal(SessionConfig.getNIM(), new JadwalCallBack() {
+        volleySingleExecute.asyncJadwal(sessionConfig.getNIM(), new JadwalCallBack() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -105,72 +96,61 @@ public class JadwalFragment extends Fragment {
                     String penguji1_kompre = jsonObject.getString("penguji1_kompre");
                     String penguji2_kompre = jsonObject.getString("penguji2_kompre");
 
-                    SessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
+                    sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
                             penguji1_up, penguji2_up);
-
-                    SessionConfig.setJadwalKOMPRE(tanggal_kompre, waktu_kompre,ruangan_kompre,
+                    sessionConfig.setJadwalKOMPRE(tanggal_kompre, waktu_kompre, ruangan_kompre,
                             penguji1_kompre, penguji2_kompre);
 
-                    if (tgl_up.isEmpty()) {
-                        ListItemJadwal listItemJadwalUP = new ListItemJadwal(
-                                "UJIAN PROPOSAL", "Belum Ada", "Belum Ada",
-                                "Belum Ada", "Belum Ada", "Belum Ada"
-                        );
-                        listItemJadwals.add(listItemJadwalUP);
+                    // set Jadwal Ujian UP
+                    if (!tgl_up.isEmpty()) {
+                        setJadwalUP(tgl_up, waktu_up,
+                                ruangan_up, penguji1_up, penguji2_up, refreh);
                     } else {
-                        ListItemJadwal listItemJadwalUP = new ListItemJadwal(
-                                "UJIAN PROPOSAL", tgl_up, waktu_up, ruangan_up, penguji1_up, penguji2_up
-                        );
-                        listItemJadwals.add(listItemJadwalUP);
+                        setJadwalUP("Belum Ada", "Belum Ada",
+                                "Belum Ada","Belum Ada", "Belum Ada", refreh);
                     }
 
-                    if (tanggal_kompre.isEmpty()) {
-                        ListItemJadwal listItemJadwalKompre = new ListItemJadwal(
-                                "UJIAN KOMPREHENSIF", "Belum Ada", "Belum Ada",
-                                "Belum Ada", "Belum Ada", "Belum Ada"
-                        );
-                        listItemJadwals.add(listItemJadwalKompre);
+                    // set Jadwal Ujian UK
+                    if (!tanggal_kompre.isEmpty()) {
+                        setJadwalKompre(tanggal_kompre, waktu_kompre,
+                                ruangan_kompre, penguji1_kompre, penguji2_kompre, refreh);
                     } else {
-                        ListItemJadwal listItemJadwalKompre = new ListItemJadwal(
-                                "UJIAN KOMPREHENSIF", tanggal_kompre, waktu_kompre,
-                                ruangan_kompre, penguji1_kompre, penguji2_kompre
-                        );
-                        listItemJadwals.add(listItemJadwalKompre);
+                        setJadwalKompre("Belum Ada", "Belum Ada",
+                                "Belum Ada","Belum Ada", "Belum Ada", refreh);
                     }
-                    setAdapterJadwal(refreh);
+
+                    swipeRefreshLayoutJadwal.setRefreshing(false);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    setJadwalBelumAda(refreh);
+                    if (refreh) swipeRefreshLayoutJadwal.setRefreshing(false);
                 }
             }
 
             @Override
             public void onErrorJadwal(VolleyError error) {
-                setJadwalBelumAda(refreh);
+                if (refreh) swipeRefreshLayoutJadwal.setRefreshing(false);
             }
         });
     }
 
-    private void setJadwalBelumAda(boolean refreh) {
-        ListItemJadwal listItemJadwalUP = new ListItemJadwal(
-                "UJIAN PROPOSAL", "Belum Ada", "Belum Ada",
-                "Belum Ada", "Belum Ada", "Belum Ada"
-        );
-        ListItemJadwal listItemJadwalKompre = new ListItemJadwal(
-                "UJIAN KOMPREHENSIF", "Belum Ada", "Belum Ada",
-                "Belum Ada", "Belum Ada", "Belum Ada"
-        );
-        listItemJadwals.add(listItemJadwalUP);
-        listItemJadwals.add(listItemJadwalKompre);
-        setAdapterJadwal(refreh);
+    private void setJadwalUP(String tgl, String wkt,
+                             String ruang, String pgj1, String pgj2, boolean refresh) {
+        tglUP.setText(tgl);
+        wktUP.setText(wkt);
+        rgnUP.setText(ruang);
+        pgj1UP.setText(pgj1);
+        pgj2UP.setText(pgj2);
+
     }
 
-    private void setAdapterJadwal(boolean refreh) {
-        RecyclerView.Adapter adapter = new JadwalAdapter(listItemJadwals, context);
-        recyclerView.setAdapter(adapter);
-
-        if (refreh)
-            swipeRefreshLayoutJadwal.setRefreshing(false);
+    private void setJadwalKompre(String tgl, String wkt,
+                                 String ruang, String pgj1, String pgj2, boolean refresh) {
+        tglUK.setText(tgl);
+        wktUK.setText(wkt);
+        rgnUK.setText(ruang);
+        pgj1UK.setText(pgj1);
+        pgj2UK.setText(pgj2);
     }
 
 }

@@ -30,7 +30,7 @@ import ryanandri.ubdnotifikasita.VolleySingleExecute;
 import ryanandri.ubdnotifikasita.interfaces.LoginCallBack;
 import ryanandri.ubdnotifikasita.session.SessionConfig;
 
-public class ProfileFragment extends Fragment {
+public class BerandaFragment extends Fragment {
     private Context context;
     private TextView namaMahasiswa, nimMahasiswa, sksMahasiswa, pbb1, pbb2;
     private SessionConfig sessionConfig;
@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayout.setRefreshing(true);
-                        lakukanRefreshData(SessionConfig.getNIM(), SessionConfig.getPASSWORD());
+                        lakukanRefreshData(sessionConfig.getNIM(), sessionConfig.getPASSWORD());
                     }
                 }
         );
@@ -127,10 +127,10 @@ public class ProfileFragment extends Fragment {
                             pembimbing2 = jsonObject.getString("nama_pbb2");
                         }
 
-                        SessionConfig.setNamaMHS(namaMhs);
-                        SessionConfig.setJumlahSKS(jmlSks);
-                        SessionConfig.setPembimbing1(pembimbing1);
-                        SessionConfig.setPembimbing2(pembimbing2);
+                        sessionConfig.setNamaMHS(namaMhs);
+                        sessionConfig.setJumlahSKS(jmlSks);
+                        sessionConfig.setPembimbing1(pembimbing1);
+                        sessionConfig.setPembimbing2(pembimbing2);
 
                         setDataProfile();
                     } else {
@@ -154,11 +154,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setDataProfile() {
-        String sesiNama = SessionConfig.getNamaMHS();
-        String sesiNim = SessionConfig.getNIM();
-        int sesiSks = SessionConfig.getJumlahSKS();
-        String sesiPbb1 = SessionConfig.getPembimbing1();
-        String sesiPbb2 = SessionConfig.getPembimbing2();
+        String sesiNama = sessionConfig.getNamaMHS();
+        String sesiNim = sessionConfig.getNIM();
+        int sesiSks = sessionConfig.getJumlahSKS();
+        String sesiPbb1 = sessionConfig.getPembimbing1();
+        String sesiPbb2 = sessionConfig.getPembimbing2();
 
         // hentikan notifikasi pembimbing jika sudah ada pembimbing
         if (!sesiPbb1.isEmpty()) FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");

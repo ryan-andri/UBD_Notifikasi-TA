@@ -1,5 +1,6 @@
 package ryanandri.ubdnotifikasita.session;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -44,6 +45,7 @@ public class SessionConfig {
 
     private SessionConfig() {}
 
+    @SuppressLint("CommitPrefEdits")
     public static SessionConfig getInstance(Context context) {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(SESSION_CONFIG, Context.MODE_PRIVATE);
@@ -54,14 +56,14 @@ public class SessionConfig {
     }
 
     // START Login User
-    public static void setUserLogin(String nim, String password) {
+    public void setUserLogin(String nim, String password) {
         editor.putString(NIM, nim);
         editor.putString(PASSWORD, password);
         editor.putBoolean(IS_LOGIN, true);
         editor.commit();
     }
 
-    public static boolean IsLogin() {
+    public boolean IsLogin() {
         return sharedPreferences.getBoolean(IS_LOGIN, false);
     }
 
@@ -72,74 +74,55 @@ public class SessionConfig {
     // END Login User
 
     // get nama nim dan passowrd
-    public static String getNamaMHS() {
+    public String getNamaMHS() {
         return sharedPreferences.getString(NAMA_MHS, "");
     }
-    public static void setNamaMHS(String namaMhs) {
+    public void setNamaMHS(String namaMhs) {
         editor.putString(NAMA_MHS, namaMhs);
         editor.commit();
     }
 
-    public static String getNIM() {
+    public String getNIM() {
         return sharedPreferences.getString(NIM, "");
     }
 
-    public static String getPASSWORD() {
+    public String getPASSWORD() {
         return sharedPreferences.getString(PASSWORD, "");
     }
 
     // set dan get nama pembimbing 1 dan 2
-    public static void setPembimbing1(String pbb1) {
+    public void setPembimbing1(String pbb1) {
         editor.putString(PEMBIMBING1, pbb1);
         editor.commit();
     }
 
-    public static void setPembimbing2(String pbb2) {
+    public void setPembimbing2(String pbb2) {
         editor.putString(PEMBIMBING2, pbb2);
         editor.commit();
     }
 
-    public static String getPembimbing1() {
+    public String getPembimbing1() {
         return sharedPreferences.getString(PEMBIMBING1, "");
     }
 
-    public static String getPembimbing2() {
+    public String getPembimbing2() {
         return sharedPreferences.getString(PEMBIMBING2, "");
     }
 
     // set dan get jumlah sks
-    public static void setJumlahSKS(int sks) {
+    public void setJumlahSKS(int sks) {
         editor.putInt(JML_SKS, sks);
         editor.commit();
     }
 
-    public static int getJumlahSKS() {
+    public int getJumlahSKS() {
        return sharedPreferences.getInt(JML_SKS, 0);
     }
 
-    // set dan get pengajuan judul
-    public static void setJudul(String judul1, String judul2, String judul3) {
-        editor.putString(JUDUL1, judul1);
-        editor.putString(JUDUL2, judul2);
-        editor.putString(JUDUL3, judul3);
-        editor.commit();
-    }
-
-    public static String getJudul1() { return sharedPreferences.getString(JUDUL1, ""); }
-
-    public static String getJudul2() { return sharedPreferences.getString(JUDUL2, ""); }
-
-    public static String getJudul3() { return sharedPreferences.getString(JUDUL3, ""); }
-
-    public static void deleteDataJudul() {
-        editor.remove(JUDUL1);
-        editor.remove(JUDUL2);
-        editor.remove(JUDUL3);
-        editor.commit();
-    }
+    public String getJudul1() { return sharedPreferences.getString(JUDUL1, ""); }
 
     // set dan get data jadwal proposal
-    public static void setJadwalUP(String tgl, String waktu, String ruang,
+    public void setJadwalUP(String tgl, String waktu, String ruang,
                                    String penguji1, String penguji2) {
         editor.putString(TGL_UP, tgl);
         editor.putString(WAKTU_UP, waktu);
@@ -149,31 +132,16 @@ public class SessionConfig {
         editor.commit();
     }
 
-    public static void deleteJadwalUP() {
-        editor.remove(TGL_UP);
-        editor.remove(WAKTU_UP);
-        editor.remove(RUANG_UP);
-        editor.remove(PENGUJI1_UP);
-        editor.remove(PENGUJI2_UP);
-        editor.remove(NILAI_UP);
-        editor.commit();
-    }
+    public String getTglUP() { return sharedPreferences.getString(TGL_UP, ""); }
 
-    public static String getTglUP() { return sharedPreferences.getString(TGL_UP, ""); }
-    public static String getWktUP() { return sharedPreferences.getString(WAKTU_UP, ""); }
-    public static String getRuangUP() { return sharedPreferences.getString(RUANG_UP, ""); }
-    public static String getPengji1UP() { return sharedPreferences.getString(PENGUJI1_UP, ""); }
-    public static String getPengji2UP() { return sharedPreferences.getString(PENGUJI2_UP, ""); }
-
-    public static void setNilaiUp(String nilaiUp) {
+    public void setNilaiUp(String nilaiUp) {
         editor.putString(NILAI_UP, nilaiUp);
         editor.commit();
     }
-    public static String getNilaiUP() { return sharedPreferences.getString(NILAI_UP, ""); }
-
+    public String getNilaiUP() { return sharedPreferences.getString(NILAI_UP, ""); }
 
     // set dan get data jadwal Komprehensif
-    public static void setJadwalKOMPRE(String tgl, String waktu, String ruang,
+    public void setJadwalKOMPRE(String tgl, String waktu, String ruang,
                                        String penguji1, String penguji2) {
         editor.putString(TGL_KOMPRE, tgl);
         editor.putString(WAKTU_KOMPRE, waktu);
@@ -183,25 +151,13 @@ public class SessionConfig {
         editor.commit();
     }
 
-    public static String getTglKOMPRE() { return sharedPreferences.getString(TGL_KOMPRE, ""); }
-    public static String getWktKOMPRE() { return sharedPreferences.getString(WAKTU_KOMPRE, ""); }
-    public static String getRuangKOMPRE() { return sharedPreferences.getString(RUANG_KOMPRE, ""); }
-    public static String getPengji1KOMPRE() { return sharedPreferences.getString(PENGUJI1_KOMPRE, ""); }
-    public static String getPengji2KOMPRE() { return sharedPreferences.getString(PENGUJI2_KOMPRE, ""); }
+    public String getTglKOMPRE() { return sharedPreferences.getString(TGL_KOMPRE, ""); }
 
-    public static void setNilaiKompre(String nilaiKompre) {
+    public void setNilaiKompre(String nilaiKompre) {
         editor.putString(NILAI_KOMPRE, nilaiKompre);
         editor.commit();
     }
-    public static String getNilaiKompre() { return sharedPreferences.getString(NILAI_KOMPRE, ""); }
 
-    public static void deleteJadwalKOMPRE() {
-        editor.remove(TGL_KOMPRE);
-        editor.remove(WAKTU_KOMPRE);
-        editor.remove(RUANG_KOMPRE);
-        editor.remove(PENGUJI1_KOMPRE);
-        editor.remove(PENGUJI2_KOMPRE);
-        editor.remove(NILAI_KOMPRE);
-        editor.commit();
-    }
+    public String getNilaiKompre() { return sharedPreferences.getString(NILAI_KOMPRE, ""); }
+
 }
