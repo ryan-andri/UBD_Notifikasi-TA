@@ -1,6 +1,5 @@
 package ryanandri.ubdnotifikasita.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +73,7 @@ public class NilaiFragment extends Fragment {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    JSONArray arrJson = jsonObject.getJSONArray("nilai_ujian");
+                    JSONArray arrJson = jsonObject.getJSONArray("jadwal_ujian");
                     jsonObject = arrJson.getJSONObject(0);
 
                     String nilai_up = jsonObject.getString("nilai_up");
@@ -114,13 +113,11 @@ public class NilaiFragment extends Fragment {
 
         if (!sesiTglUP.isEmpty()) {
             tglUP.setText(sesiTglUP);
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
             FirebaseMessaging.getInstance().subscribeToTopic("nilai_up");
         }
 
         if(!sesiTglKompre.isEmpty()) {
             tglKompre.setText(sesiTglKompre);
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
             FirebaseMessaging.getInstance().subscribeToTopic("nilai_kompre");
         }
 
@@ -133,7 +130,6 @@ public class NilaiFragment extends Fragment {
                 statusUP.setText("TIDAK LULUS");
 
             FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_up");
-            FirebaseMessaging.getInstance().subscribeToTopic("jadwal_kompre");
         }
 
         // status kompre
@@ -144,7 +140,6 @@ public class NilaiFragment extends Fragment {
             else
                 statusKompre.setText("TIDAK LULUS");
 
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
             FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_kompre");
         }
     }

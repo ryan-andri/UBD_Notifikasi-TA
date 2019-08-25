@@ -32,7 +32,7 @@ import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class BerandaFragment extends Fragment {
     private Context context;
-    private TextView namaMahasiswa, nimMahasiswa, sksMahasiswa, pbb1, pbb2;
+    private TextView namaMahasiswa, judul_penelitian, nimMahasiswa, pbb1, pbb2;
     private SessionConfig sessionConfig;
     private SwipeRefreshLayout swipeRefreshLayout;
     private VolleySingleExecute volleySingleExecute;
@@ -55,7 +55,7 @@ public class BerandaFragment extends Fragment {
 
         namaMahasiswa = view.findViewById(R.id.mhsNAMA);
         nimMahasiswa = view.findViewById(R.id.mhsNIM);
-        sksMahasiswa = view.findViewById(R.id.mhsSKS);
+        judul_penelitian = view.findViewById(R.id.judulPenelitian);
         pbb1 = view.findViewById(R.id.pembimbing1);
         pbb2 = view.findViewById(R.id.pembimbing2);
 
@@ -117,18 +117,18 @@ public class BerandaFragment extends Fragment {
                     String success = jsonObject.getString("success");
                     if (success.equals("1")) {
                         String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
-                        int jmlSks = 0;
-                        JSONArray arrJson = jsonObject.getJSONArray("data");
+                        String judul_penelitian = "";
+                        JSONArray arrJson = jsonObject.getJSONArray("data_login");
                         for (int i = 0; i < arrJson.length(); i++) {
                             jsonObject = arrJson.getJSONObject(i);
-                            namaMhs = jsonObject.getString("nama_mhs");
-                            jmlSks = jsonObject.getInt("total_sks");
-                            pembimbing1 = jsonObject.getString("nama_pbb1");
-                            pembimbing2 = jsonObject.getString("nama_pbb2");
+                            namaMhs = jsonObject.getString("nama");
+                            judul_penelitian = jsonObject.getString("judul_penelitian");
+                            pembimbing1 = jsonObject.getString("pembimbing_1");
+                            pembimbing2 = jsonObject.getString("pembimbing_2");
                         }
 
                         sessionConfig.setNamaMHS(namaMhs);
-                        sessionConfig.setJumlahSKS(jmlSks);
+                        sessionConfig.setJudulPenelitian(judul_penelitian);
                         sessionConfig.setPembimbing1(pembimbing1);
                         sessionConfig.setPembimbing2(pembimbing2);
 
@@ -156,16 +156,13 @@ public class BerandaFragment extends Fragment {
     private void setDataProfile() {
         String sesiNama = sessionConfig.getNamaMHS();
         String sesiNim = sessionConfig.getNIM();
-        int sesiSks = sessionConfig.getJumlahSKS();
+        String sesiJudul = sessionConfig.getJudulPenelitian();
         String sesiPbb1 = sessionConfig.getPembimbing1();
         String sesiPbb2 = sessionConfig.getPembimbing2();
 
-        // hentikan notifikasi pembimbing jika sudah ada pembimbing
-        if (!sesiPbb1.isEmpty()) FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
-
         namaMahasiswa.setText(sesiNama);
         nimMahasiswa.setText(sesiNim);
-        sksMahasiswa.setText(String.valueOf(sesiSks));
+        judul_penelitian.setText(sesiJudul);
         pbb1.setText(sesiPbb1);
         pbb2.setText(sesiPbb2);
     }
@@ -179,7 +176,6 @@ public class BerandaFragment extends Fragment {
     }
 
     private void unsubNotifikasi() {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("pembimbing");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_up");

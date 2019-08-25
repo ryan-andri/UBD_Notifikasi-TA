@@ -21,11 +21,7 @@ public class SessionConfig {
     // pembimbing
     private static String PEMBIMBING1 = "pembimbing1";
     private static String PEMBIMBING2 = "pembimbing2";
-
-    // Judul
-    private static String JUDUL1 = "judul1";
-    private static String JUDUL2 = "judul2";
-    private static String JUDUL3 = "judul3";
+    private static String JUDUL_PENELITIAN = "judul_penelitian";
 
     // jadwal proposal
     private static String TGL_UP = "tanggal_up";
@@ -101,6 +97,15 @@ public class SessionConfig {
         editor.commit();
     }
 
+    public void setJudulPenelitian(String judul) {
+        editor.putString(JUDUL_PENELITIAN, judul);
+        editor.commit();
+    }
+
+    public String getJudulPenelitian() {
+        return sharedPreferences.getString(JUDUL_PENELITIAN, "");
+    }
+
     public String getPembimbing1() {
         return sharedPreferences.getString(PEMBIMBING1, "");
     }
@@ -114,12 +119,6 @@ public class SessionConfig {
         editor.putInt(JML_SKS, sks);
         editor.commit();
     }
-
-    public int getJumlahSKS() {
-       return sharedPreferences.getInt(JML_SKS, 0);
-    }
-
-    public String getJudul1() { return sharedPreferences.getString(JUDUL1, ""); }
 
     // set dan get data jadwal proposal
     public void setJadwalUP(String tgl, String waktu, String ruang,
@@ -138,6 +137,7 @@ public class SessionConfig {
         editor.putString(NILAI_UP, nilaiUp);
         editor.commit();
     }
+
     public String getNilaiUP() { return sharedPreferences.getString(NILAI_UP, ""); }
 
     // set dan get data jadwal Komprehensif

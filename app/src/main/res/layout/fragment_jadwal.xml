@@ -22,8 +22,8 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp"
                     android:gravity="center"
                     android:text="@string/UP"
                     android:textStyle="bold"
@@ -40,31 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp">
-
-                <!-- Tanggal -->
-                <TextView
-                    android:text="Judul Penelitian"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:id="@+id/judulUp"
-                    android:text="Judul Penelitian"
-                    android:textSize="16sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorGreyLight"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="8dp" />
 
                 <!-- Tanggal -->
                 <TextView
@@ -201,8 +176,8 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp"
                     android:gravity="center"
                     android:text="@string/UK"
                     android:textStyle="bold"
@@ -218,31 +193,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp">
-
-                <!-- Tanggal -->
-                <TextView
-                    android:text="Judul Penelitian"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:id="@+id/judulUk"
-                    android:text="Judul Penelitian"
-                    android:textSize="16sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorGreyLight"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="8dp" />
 
                 <!-- Tanggal -->
                 <TextView

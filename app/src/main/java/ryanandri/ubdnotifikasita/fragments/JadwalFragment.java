@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,16 +86,17 @@ public class JadwalFragment extends Fragment {
                     // jadwal Ujian Proposal
                     String tgl_up = jsonObject.getString("tanggal_up");
                     String waktu_up = jsonObject.getString("waktu_up");
-                    String ruangan_up = jsonObject.getString("ruangan_up");
-                    String penguji1_up = jsonObject.getString("penguji1_up");
-                    String penguji2_up = jsonObject.getString("penguji2_up");
+                    String ruangan_up = jsonObject.getString("ruang_up");
+                    String penguji1_up = jsonObject.getString("penguji_1_up");
+                    String penguji2_up = jsonObject.getString("penguji_2_up");
+                    String nilai_up = jsonObject.getString("nilai_up");
 
                     // jadwal Ujian Komprehensif
                     String tanggal_kompre = jsonObject.getString("tanggal_kompre");
                     String waktu_kompre = jsonObject.getString("waktu_kompre");
-                    String ruangan_kompre = jsonObject.getString("ruangan_kompre");
-                    String penguji1_kompre = jsonObject.getString("penguji1_kompre");
-                    String penguji2_kompre = jsonObject.getString("penguji2_kompre");
+                    String ruangan_kompre = jsonObject.getString("ruang_kompre");
+                    String penguji1_kompre = jsonObject.getString("penguji_1_kompre");
+                    String penguji2_kompre = jsonObject.getString("penguji_2_kompre");
 
                     sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
                             penguji1_up, penguji2_up);
@@ -103,23 +105,31 @@ public class JadwalFragment extends Fragment {
 
                     // set Jadwal Ujian UP
                     if (!tgl_up.isEmpty()) {
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
+                        FirebaseMessaging.getInstance().subscribeToTopic("nilai_up");
                         setJadwalUP(tgl_up, waktu_up,
-                                ruangan_up, penguji1_up, penguji2_up, refreh);
+                                ruangan_up, penguji1_up, penguji2_up);
                     } else {
+                        FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                         setJadwalUP("Belum Ada", "Belum Ada",
-                                "Belum Ada","Belum Ada", "Belum Ada", refreh);
+                                "Belum Ada","Belum Ada", "Belum Ada");
                     }
 
                     // set Jadwal Ujian UK
                     if (!tanggal_kompre.isEmpty()) {
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
+                        FirebaseMessaging.getInstance().subscribeToTopic("nilai_kompre");
                         setJadwalKompre(tanggal_kompre, waktu_kompre,
-                                ruangan_kompre, penguji1_kompre, penguji2_kompre, refreh);
+                                ruangan_kompre, penguji1_kompre, penguji2_kompre);
                     } else {
+                        if (!nilai_up.isEmpty())
+                            FirebaseMessaging.getInstance().subscribeToTopic("jadwal_kompre");
+
                         setJadwalKompre("Belum Ada", "Belum Ada",
-                                "Belum Ada","Belum Ada", "Belum Ada", refreh);
+                                "Belum Ada","Belum Ada", "Belum Ada");
                     }
 
-                    swipeRefreshLayoutJadwal.setRefreshing(false);
+                    if (refreh) swipeRefreshLayoutJadwal.setRefreshing(false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -135,22 +145,20 @@ public class JadwalFragment extends Fragment {
     }
 
     private void setJadwalUP(String tgl, String wkt,
-                             String ruang, String pgj1, String pgj2, boolean refresh) {
+                             String ruang, String pgj1, String pgj2) {
         tglUP.setText(tgl);
         wktUP.setText(wkt);
         rgnUP.setText(ruang);
         pgj1UP.setText(pgj1);
         pgj2UP.setText(pgj2);
-
     }
 
     private void setJadwalKompre(String tgl, String wkt,
-                                 String ruang, String pgj1, String pgj2, boolean refresh) {
+                                 String ruang, String pgj1, String pgj2) {
         tglUK.setText(tgl);
         wktUK.setText(wkt);
         rgnUK.setText(ruang);
         pgj1UK.setText(pgj1);
         pgj2UK.setText(pgj2);
     }
-
 }

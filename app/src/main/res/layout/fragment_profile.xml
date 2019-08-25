@@ -88,7 +88,7 @@
 
                 <!-- SKS -->
                 <TextView
-                    android:text="Total SKS"
+                    android:text="Judul Penelitian"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
@@ -98,8 +98,8 @@
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
-                    android:id="@+id/mhsSKS"
-                    android:text="0"
+                    android:id="@+id/judulPenelitian"
+                    android:text="Pengembangan Sistem Notifikasi Tugas Akhir Universitas Bina Darma Berbasis Mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"/>

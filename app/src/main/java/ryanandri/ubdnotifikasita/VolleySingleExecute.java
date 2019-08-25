@@ -49,7 +49,7 @@ public class VolleySingleExecute {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", nimTrim);
+                params.put("nim", nimTrim);
                 params.put("password", passTrim);
                 return params;
             }
@@ -80,7 +80,7 @@ public class VolleySingleExecute {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", nimTrim);
+                params.put("nim", nimTrim);
                 return params;
             }
         };
@@ -93,7 +93,7 @@ public class VolleySingleExecute {
     public void asyncNilai(final String nim, final NilaiCallBack interfaceRespones) {
         final String nimTrim = nim.trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.nilai_ujian,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.jadwal_ujian,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -110,7 +110,7 @@ public class VolleySingleExecute {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("nim_mhs", nimTrim);
+                params.put("nim", nimTrim);
                 return params;
             }
         };
@@ -121,7 +121,7 @@ public class VolleySingleExecute {
 
     // async nilai fragment
     public void asyncNotifikasiList(final NotifikasiCallBack interfaceRespones) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.ambil_data_notifikasi,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.data_notifikasi,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {

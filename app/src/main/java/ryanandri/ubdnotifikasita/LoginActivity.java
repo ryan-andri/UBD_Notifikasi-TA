@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,25 +91,25 @@ public class LoginActivity extends AppCompatActivity {
                     String success = jsonObject.getString("success");
                     if (success.equals("1")) {
                         String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
-                        int jmlSks = 0;
-                        JSONArray arrJson = jsonObject.getJSONArray("data");
+                        String judul_penelitian = "";
+                        JSONArray arrJson = jsonObject.getJSONArray("data_login");
                         for (int i = 0; i < arrJson.length(); i++) {
                             jsonObject = arrJson.getJSONObject(i);
-                            namaMhs = jsonObject.getString("nama_mhs");
-                            jmlSks = jsonObject.getInt("total_sks");
-                            pembimbing1 = jsonObject.getString("nama_pbb1");
-                            pembimbing2 = jsonObject.getString("nama_pbb2");
+                            namaMhs = jsonObject.getString("nama");
+                            judul_penelitian = jsonObject.getString("judul_penelitian");
+                            pembimbing1 = jsonObject.getString("pembimbing_1");
+                            pembimbing2 = jsonObject.getString("pembimbing_2");
                         }
 
                         sessionConfig.setNamaMHS(namaMhs);
-                        sessionConfig.setJumlahSKS(jmlSks);
+                        sessionConfig.setJudulPenelitian(judul_penelitian);
                         sessionConfig.setPembimbing1(pembimbing1);
                         sessionConfig.setPembimbing2(pembimbing2);
 
                         // simpan sesi pengguna jika sukses login
                         sessionConfig.setUserLogin(nim, pass);
 
-                        menujuMainActivity(pembimbing1, pembimbing2);
+                        menujuMainActivity();
                     } else {
                         sessionConfig.setUserLogout();
                         loadLoadingProgress(false);
@@ -131,10 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void menujuMainActivity(String pembimbing1, String pembimbing2) {
-        if (pembimbing1.isEmpty() && pembimbing2.isEmpty())
-            FirebaseMessaging.getInstance().subscribeToTopic("pembimbing");
-
+    public void menujuMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
