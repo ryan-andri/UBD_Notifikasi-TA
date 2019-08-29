@@ -44,12 +44,15 @@
             </intent-filter>
         </service>
 
-        <activity android:windowSoftInputMode="adjustPan" android:screenOrientation="portrait"
-            android:name=".MainActivity" android:theme="@style/AppTheme">
+        <activity android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme">
         </activity>
 
         <activity
-            android:name=".ExpandNotif" android:screenOrientation="portrait" android:theme="@style/AppTheme">
+            android:name=".ExpandNotif"
+            android:screenOrientation="portrait" android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="ExpandNotifikasi" />
                 <category android:name="android.intent.category.DEFAULT" />

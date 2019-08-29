@@ -26,6 +26,7 @@ import ryanandri.ubdnotifikasita.ListItemNotifikasi;
 import ryanandri.ubdnotifikasita.R;
 import ryanandri.ubdnotifikasita.VolleySingleExecute;
 import ryanandri.ubdnotifikasita.adapter.NotifikasiAdapter;
+import ryanandri.ubdnotifikasita.adapter.RecycleViewDecoration;
 import ryanandri.ubdnotifikasita.interfaces.NotifikasiCallBack;
 
 public class NotifikasiFragment extends Fragment {
@@ -50,6 +51,7 @@ public class NotifikasiFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.refreshListNotifikasi);
 
         recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new RecycleViewDecoration(view.getContext()));
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         // lakukakan sync list notifikasi

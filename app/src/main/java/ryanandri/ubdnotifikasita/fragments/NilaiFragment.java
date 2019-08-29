@@ -124,21 +124,16 @@ public class NilaiFragment extends Fragment {
         // status UP
         if (!sesiNilaiUP.isEmpty()) {
             nilaiUP.setText(sesiNilaiUP);
-            if (sesiNilaiUP.equals("A") | sesiNilaiUP.equals("B") | sesiNilaiUP.equals("C"))
-                statusUP.setText("LULUS");
-            else
-                statusUP.setText("TIDAK LULUS");
-
+            statusUP.setText((sesiNilaiUP.equals("A") | sesiNilaiUP.equals("B") | sesiNilaiUP.equals("C")) ?
+                        "LULUS" : "TIDAK LULUS");
             FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_up");
         }
 
         // status kompre
         if (!sesiNilaiKompre.isEmpty()) {
             nilaiKompre.setText(sesiNilaiKompre);
-            if (sesiNilaiKompre.equals("A") | sesiNilaiKompre.equals("B") | sesiNilaiKompre.equals("C"))
-                statusKompre.setText("LULUS");
-            else
-                statusKompre.setText("TIDAK LULUS");
+            statusKompre.setText((sesiNilaiKompre.equals("A") | sesiNilaiKompre.equals("B") | sesiNilaiKompre.equals("C")) ?
+                    "LULUS" : "TIDAK LULUS");
 
             FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_kompre");
         }
