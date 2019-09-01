@@ -78,9 +78,13 @@ public class NilaiFragment extends Fragment {
 
                     String nilai_up = jsonObject.getString("nilai_up");
                     String nilai_kompre = jsonObject.getString("nilai_kompre");
+                    String pelaksanaan_up = jsonObject.getString("pelaksanaan_up");
+                    String pelaksanaan_kompre = jsonObject.getString("pelaksanaan_kompre");
 
                     sessionConfig.setNilaiUp(nilai_up);
+                    sessionConfig.setPelaksanaanUP(pelaksanaan_up);
                     sessionConfig.setNilaiKompre(nilai_kompre);
+                    sessionConfig.setPelaksanaanKompre(pelaksanaan_kompre);
 
                     if (refresh)
                         swipeRefreshLayout.setRefreshing(false);
@@ -110,15 +114,21 @@ public class NilaiFragment extends Fragment {
         String sesiNilaiUP = sessionConfig.getNilaiUP();
         String sesiTglKompre = sessionConfig.getTglKOMPRE();
         String sesiNilaiKompre = sessionConfig.getNilaiKompre();
+        String sesiPelaksanaanUp = sessionConfig.getPelaksanaanUP();
+        String sesiPelaksanaanKompre = sessionConfig.getPelaksanaanKompre();
 
         if (!sesiTglUP.isEmpty()) {
             tglUP.setText(sesiTglUP);
-            FirebaseMessaging.getInstance().subscribeToTopic("nilai_up");
+            if (sesiPelaksanaanUp.equals("sudah")) {
+                FirebaseMessaging.getInstance().subscribeToTopic("nilai_up");
+            }
         }
 
         if(!sesiTglKompre.isEmpty()) {
             tglKompre.setText(sesiTglKompre);
-            FirebaseMessaging.getInstance().subscribeToTopic("nilai_kompre");
+            if (sesiPelaksanaanKompre.equals("sudah")) {
+                FirebaseMessaging.getInstance().subscribeToTopic("nilai_kompre");
+            }
         }
 
         // status UP

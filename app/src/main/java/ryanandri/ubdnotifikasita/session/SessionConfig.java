@@ -16,7 +16,6 @@ public class SessionConfig {
     private static String NIM = "nim";
     private static String NAMA_MHS = "nama_mahasiswa";
     private static String PASSWORD = "password";
-    private static String JML_SKS = "sks";
 
     // pembimbing
     private static String PEMBIMBING1 = "pembimbing1";
@@ -38,6 +37,9 @@ public class SessionConfig {
     private static String PENGUJI1_KOMPRE = "penguji1_kompre";
     private static String PENGUJI2_KOMPRE = "penguji2_kompre";
     private static String NILAI_KOMPRE = "nilai_kompre";
+
+    private static String PELAKSANAAN_UP = "pelaksanaan_up";
+    private static String PELAKSANAAN_KOMPRE = "pelaksanaan_kompre";
 
     private SessionConfig() {}
 
@@ -114,12 +116,6 @@ public class SessionConfig {
         return sharedPreferences.getString(PEMBIMBING2, "");
     }
 
-    // set dan get jumlah sks
-    public void setJumlahSKS(int sks) {
-        editor.putInt(JML_SKS, sks);
-        editor.commit();
-    }
-
     // set dan get data jadwal proposal
     public void setJadwalUP(String tgl, String waktu, String ruang,
                                    String penguji1, String penguji2) {
@@ -160,4 +156,16 @@ public class SessionConfig {
 
     public String getNilaiKompre() { return sharedPreferences.getString(NILAI_KOMPRE, ""); }
 
+
+    public void setPelaksanaanUP(String pelaksanaan) {
+        editor.putString(PELAKSANAAN_UP, pelaksanaan);
+        editor.commit();
+    }
+    public String getPelaksanaanUP() { return sharedPreferences.getString(PELAKSANAAN_UP, ""); }
+
+    public void setPelaksanaanKompre(String pelaksanaan) {
+        editor.putString(PELAKSANAAN_KOMPRE, pelaksanaan);
+        editor.commit();
+    }
+    public String getPelaksanaanKompre() { return sharedPreferences.getString(PELAKSANAAN_KOMPRE, ""); }
 }

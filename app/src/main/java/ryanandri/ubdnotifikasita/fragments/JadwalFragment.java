@@ -89,6 +89,7 @@ public class JadwalFragment extends Fragment {
                     String ruangan_up = jsonObject.getString("ruang_up");
                     String penguji1_up = jsonObject.getString("penguji_1_up");
                     String penguji2_up = jsonObject.getString("penguji_2_up");
+                    String pelaksanaan_up = jsonObject.getString("pelaksanaan_up");
                     String nilai_up = jsonObject.getString("nilai_up");
 
                     // jadwal Ujian Komprehensif
@@ -97,6 +98,7 @@ public class JadwalFragment extends Fragment {
                     String ruangan_kompre = jsonObject.getString("ruang_kompre");
                     String penguji1_kompre = jsonObject.getString("penguji_1_kompre");
                     String penguji2_kompre = jsonObject.getString("penguji_2_kompre");
+                    String pelaksanaan_kompre = jsonObject.getString("pelaksanaan_kompre");
 
                     sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
                             penguji1_up, penguji2_up);
@@ -106,7 +108,9 @@ public class JadwalFragment extends Fragment {
                     // set Jadwal Ujian UP
                     if (!tgl_up.isEmpty()) {
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
-                        FirebaseMessaging.getInstance().subscribeToTopic("nilai_up");
+                        if (pelaksanaan_up.equals("sudah")) {
+                            FirebaseMessaging.getInstance().subscribeToTopic("nilai_up");
+                        }
                         setJadwalUP(tgl_up, waktu_up,
                                 ruangan_up, penguji1_up, penguji2_up);
                     } else {
@@ -118,7 +122,9 @@ public class JadwalFragment extends Fragment {
                     // set Jadwal Ujian UK
                     if (!tanggal_kompre.isEmpty()) {
                         FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
-                        FirebaseMessaging.getInstance().subscribeToTopic("nilai_kompre");
+                        if (pelaksanaan_kompre.equals("sudah")) {
+                            FirebaseMessaging.getInstance().subscribeToTopic("nilai_kompre");
+                        }
                         setJadwalKompre(tanggal_kompre, waktu_kompre,
                                 ruangan_kompre, penguji1_kompre, penguji2_kompre);
                     } else {

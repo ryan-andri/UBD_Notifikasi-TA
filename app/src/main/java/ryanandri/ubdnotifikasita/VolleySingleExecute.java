@@ -32,7 +32,7 @@ public class VolleySingleExecute {
         final String nimTrim = nim.trim();
         final String passTrim = pass.trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.login,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+"login.php",
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -63,7 +63,7 @@ public class VolleySingleExecute {
     public void asyncJadwal(final String nim, final JadwalCallBack interfaceRespones) {
         final String nimTrim = nim.trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.jadwal_ujian,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+"jadwal_ujian.php",
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -93,7 +93,7 @@ public class VolleySingleExecute {
     public void asyncNilai(final String nim, final NilaiCallBack interfaceRespones) {
         final String nimTrim = nim.trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+Constant.jadwal_ujian,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.URL+"jadwal_ujian.php",
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
@@ -121,7 +121,7 @@ public class VolleySingleExecute {
 
     // async nilai fragment
     public void asyncNotifikasiList(final NotifikasiCallBack interfaceRespones) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+Constant.data_notifikasi,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constant.URL+"list_notifikasi.php",
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {

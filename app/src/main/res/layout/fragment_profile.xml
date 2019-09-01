@@ -100,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/judulPenelitian"
-                    android:text="Pengembangan Sistem Notifikasi Tugas Akhir Universitas Bina Darma Berbasis Mobile"
+                    android:text="Judul Penelitian"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"/>
