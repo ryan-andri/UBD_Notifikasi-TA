@@ -13,7 +13,6 @@ import android.widget.EditText;
 
 import com.android.volley.VolleyError;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,18 +87,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    String success = jsonObject.getString("success");
-                    if (success.equals("1")) {
-                        String namaMhs = "", pembimbing1 = "", pembimbing2 = "";
-                        String judul_penelitian = "";
-                        JSONArray arrJson = jsonObject.getJSONArray("data_login");
-                        for (int i = 0; i < arrJson.length(); i++) {
-                            jsonObject = arrJson.getJSONObject(i);
-                            namaMhs = jsonObject.getString("nama");
-                            judul_penelitian = jsonObject.getString("judul_penelitian");
-                            pembimbing1 = jsonObject.getString("pembimbing_1");
-                            pembimbing2 = jsonObject.getString("pembimbing_2");
-                        }
+                    if (!jsonObject.getBoolean("error")) {
+                        JSONObject loginJson = jsonObject.getJSONObject("login");
+                        String namaMhs = loginJson.getString("nama");
+                        String judul_penelitian = loginJson.getString("judul_penelitian");
+                        String pembimbing1 = loginJson.getString("pembimbing_1");
+                        String pembimbing2 = loginJson.getString("pembimbing_2");
 
                         sessionConfig.setNamaMHS(namaMhs);
                         sessionConfig.setJudulPenelitian(judul_penelitian);
@@ -113,12 +106,12 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         sessionConfig.setUserLogout();
                         loadLoadingProgress(false);
-                        tampilkanSnackBar("Nim atau Password salah, silahkan hubungi PPM.");
+                        tampilkanSnackBar(jsonObject.getString("message"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     loadLoadingProgress(false);
-                    tampilkanSnackBar("Nim atau Password salah, silahkan hubungi PPM.");
+                    tampilkanSnackBar("Koneksi bermasalah");
                 }
             }
 

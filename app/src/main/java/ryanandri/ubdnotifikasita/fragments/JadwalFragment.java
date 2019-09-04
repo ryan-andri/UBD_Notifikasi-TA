@@ -80,25 +80,25 @@ public class JadwalFragment extends Fragment {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    JSONArray arrJson = jsonObject.getJSONArray("jadwal_ujian");
-                    jsonObject = arrJson.getJSONObject(0);
 
                     // jadwal Ujian Proposal
-                    String tgl_up = jsonObject.getString("tanggal_up");
-                    String waktu_up = jsonObject.getString("waktu_up");
-                    String ruangan_up = jsonObject.getString("ruang_up");
-                    String penguji1_up = jsonObject.getString("penguji_1_up");
-                    String penguji2_up = jsonObject.getString("penguji_2_up");
-                    String pelaksanaan_up = jsonObject.getString("pelaksanaan_up");
-                    String nilai_up = jsonObject.getString("nilai_up");
+                    JSONObject dataUP = jsonObject.getJSONObject("jadwal_up");
+                    String tgl_up = dataUP.getString("tanggal");
+                    String waktu_up = dataUP.getString("waktu");
+                    String ruangan_up = dataUP.getString("ruang");
+                    String penguji1_up = dataUP.getString("penguji_1");
+                    String penguji2_up = dataUP.getString("penguji_2");
+                    String pelaksanaan_up = dataUP.getString("pelaksanaan");
+                    String nilai_up = dataUP.getString("nilai");
 
                     // jadwal Ujian Komprehensif
-                    String tanggal_kompre = jsonObject.getString("tanggal_kompre");
-                    String waktu_kompre = jsonObject.getString("waktu_kompre");
-                    String ruangan_kompre = jsonObject.getString("ruang_kompre");
-                    String penguji1_kompre = jsonObject.getString("penguji_1_kompre");
-                    String penguji2_kompre = jsonObject.getString("penguji_2_kompre");
-                    String pelaksanaan_kompre = jsonObject.getString("pelaksanaan_kompre");
+                    JSONObject dataKompre = jsonObject.getJSONObject("jadwal_kompre");
+                    String tanggal_kompre = dataKompre.getString("tanggal");
+                    String waktu_kompre = dataKompre.getString("waktu");
+                    String ruangan_kompre = dataKompre.getString("ruang");
+                    String penguji1_kompre = dataKompre.getString("penguji_1");
+                    String penguji2_kompre = dataKompre.getString("penguji_2");
+                    String pelaksanaan_kompre = dataKompre.getString("pelaksanaan");
 
                     sessionConfig.setJadwalUP(tgl_up, waktu_up, ruangan_up,
                             penguji1_up, penguji2_up);

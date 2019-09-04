@@ -14,7 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.android.volley.VolleyError;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,13 +72,14 @@ public class NilaiFragment extends Fragment {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    JSONArray arrJson = jsonObject.getJSONArray("jadwal_ujian");
-                    jsonObject = arrJson.getJSONObject(0);
 
-                    String nilai_up = jsonObject.getString("nilai_up");
-                    String nilai_kompre = jsonObject.getString("nilai_kompre");
-                    String pelaksanaan_up = jsonObject.getString("pelaksanaan_up");
-                    String pelaksanaan_kompre = jsonObject.getString("pelaksanaan_kompre");
+                    JSONObject dataUP = jsonObject.getJSONObject("jadwal_up");
+                    String nilai_up = dataUP.getString("nilai");
+                    String pelaksanaan_up = dataUP.getString("pelaksanaan");
+
+                    JSONObject dataKompre = jsonObject.getJSONObject("jadwal_kompre");
+                    String nilai_kompre = dataKompre.getString("nilai");
+                    String pelaksanaan_kompre = dataKompre.getString("pelaksanaan");
 
                     sessionConfig.setNilaiUp(nilai_up);
                     sessionConfig.setPelaksanaanUP(pelaksanaan_up);
