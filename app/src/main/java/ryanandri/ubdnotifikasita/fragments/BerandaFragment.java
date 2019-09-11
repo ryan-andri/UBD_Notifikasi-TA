@@ -108,7 +108,7 @@ public class BerandaFragment extends Fragment {
     }
 
     private void lakukanRefreshData(final String nim, final String pass) {
-        volleySingleExecute.asyncLoginFetchData(nim, pass, new LoginCallBack() {
+        volleySingleExecute.asyncLoginFetchData(nim, pass, sessionConfig.ambilFbToken(), new LoginCallBack() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -161,17 +161,9 @@ public class BerandaFragment extends Fragment {
     }
 
     private void logout() {
-        unsubNotifikasi();
         sessionConfig.setUserLogout();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
         ((Activity) context).finish();
-    }
-
-    private void unsubNotifikasi() {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_up");
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("nilai_kompre");
     }
 }

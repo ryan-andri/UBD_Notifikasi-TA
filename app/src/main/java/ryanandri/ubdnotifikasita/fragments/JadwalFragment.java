@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -107,30 +105,17 @@ public class JadwalFragment extends Fragment {
 
                     // set Jadwal Ujian UP
                     if (!tgl_up.isEmpty()) {
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_up");
-                        if (pelaksanaan_up.equals("sudah")) {
-                            FirebaseMessaging.getInstance().subscribeToTopic("nilai_up");
-                        }
-                        setJadwalUP(tgl_up, waktu_up,
-                                ruangan_up, penguji1_up, penguji2_up);
+                        setJadwalUP(tgl_up, waktu_up, ruangan_up, penguji1_up, penguji2_up);
                     } else {
-                        FirebaseMessaging.getInstance().subscribeToTopic("jadwal_up");
                         setJadwalUP("Belum Ada", "Belum Ada",
                                 "Belum Ada","Belum Ada", "Belum Ada");
                     }
 
                     // set Jadwal Ujian UK
                     if (!tanggal_kompre.isEmpty()) {
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("jadwal_kompre");
-                        if (pelaksanaan_kompre.equals("sudah")) {
-                            FirebaseMessaging.getInstance().subscribeToTopic("nilai_kompre");
-                        }
                         setJadwalKompre(tanggal_kompre, waktu_kompre,
                                 ruangan_kompre, penguji1_kompre, penguji2_kompre);
                     } else {
-                        if (!nilai_up.isEmpty())
-                            FirebaseMessaging.getInstance().subscribeToTopic("jadwal_kompre");
-
                         setJadwalKompre("Belum Ada", "Belum Ada",
                                 "Belum Ada","Belum Ada", "Belum Ada");
                     }

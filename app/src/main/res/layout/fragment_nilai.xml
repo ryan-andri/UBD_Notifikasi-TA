@@ -21,8 +21,8 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
-                    android:layout_marginTop="50dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="40dp"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -34,8 +34,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -44,7 +44,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="10dp"
                     android:text="PROPOSAL"
                     android:textSize="18sp"
                     android:layout_width="match_parent"
@@ -52,7 +52,7 @@
 
                 <!-- Tanggal -->
                 <TextView
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="2dp"
                     android:text="Tanggal"
                     android:textSize="16sp"
@@ -71,7 +71,7 @@
 
                 <!-- Nilai -->
                 <TextView
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="2dp"
                     android:text="Nilai"
                     android:textSize="16sp"
@@ -81,6 +81,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:layout_marginBottom="10dp"
                     android:id="@+id/nilaiUjianUP"
                     android:text="Belum Ada"
                     android:textSize="14sp"
@@ -88,9 +89,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <!-- Nilai -->
+                <!-- Status -->
                 <TextView
-                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="2dp"
                     android:text="Status"
                     android:textSize="16sp"
@@ -100,6 +100,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:layout_marginBottom="10dp"
                     android:id="@+id/statusUP"
                     android:text="Belum Ada"
                     android:textSize="14sp"
@@ -108,7 +109,7 @@
                     android:layout_height="wrap_content" />
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -126,7 +127,7 @@
 
                 <!-- Tanggal -->
                 <TextView
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="2dp"
                     android:text="Tanggal"
                     android:textSize="16sp"
@@ -145,7 +146,7 @@
 
                 <!-- Nilai -->
                 <TextView
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="2dp"
                     android:text="Nilai"
                     android:textStyle="bold"
@@ -155,6 +156,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:layout_marginBottom="10dp"
                     android:id="@+id/nilaiUjianKompre"
                     android:text="Belum Ada"
                     android:textSize="14sp"
@@ -164,7 +166,6 @@
 
                 <!-- Status -->
                 <TextView
-                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="2dp"
                     android:text="Status"
                     android:textSize="16sp"
@@ -174,6 +175,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:layout_marginBottom="10dp"
                     android:id="@+id/statusKompre"
                     android:text="Belum Ada"
                     android:textSize="14sp"
@@ -182,7 +184,7 @@
                     android:layout_height="wrap_content" />
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:id="@+id/divider2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

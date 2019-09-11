@@ -26,7 +26,7 @@ public class VolleySingleExecute {
     }
 
     // async login activity
-    public void asyncLoginFetchData(final String nim, final String pass,
+    public void asyncLoginFetchData(final String nim, final String pass, final String token,
                                     final LoginCallBack interfaceRespones) {
 
         final String nimTrim = nim.trim();
@@ -51,6 +51,7 @@ public class VolleySingleExecute {
                 Map<String, String> params = new HashMap<>();
                 params.put("nim", nimTrim);
                 params.put("password", passTrim);
+                params.put("token_fb", token);
                 return params;
             }
         };
@@ -128,6 +129,7 @@ public class VolleySingleExecute {
                         interfaceRespones.onSuccess(response);
                     }
                 },
+
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {

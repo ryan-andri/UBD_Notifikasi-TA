@@ -41,6 +41,8 @@ public class SessionConfig {
     private static String PELAKSANAAN_UP = "pelaksanaan_up";
     private static String PELAKSANAAN_KOMPRE = "pelaksanaan_kompre";
 
+    private static String FIREBASE_TOKEN = "firebase_token";
+
     private SessionConfig() {}
 
     @SuppressLint("CommitPrefEdits")
@@ -168,4 +170,11 @@ public class SessionConfig {
         editor.commit();
     }
     public String getPelaksanaanKompre() { return sharedPreferences.getString(PELAKSANAAN_KOMPRE, ""); }
+
+    public void simpanFbToken(String token) {
+        editor.putString(FIREBASE_TOKEN, token);
+        editor.commit();
+    }
+
+    public String ambilFbToken() { return sharedPreferences.getString(FIREBASE_TOKEN, ""); }
 }

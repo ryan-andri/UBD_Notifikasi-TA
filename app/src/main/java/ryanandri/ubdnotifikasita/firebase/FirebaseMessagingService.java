@@ -9,18 +9,23 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import ryanandri.ubdnotifikasita.ExpandNotif;
 import ryanandri.ubdnotifikasita.R;
+import ryanandri.ubdnotifikasita.session.SessionConfig;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        String title = remoteMessage.getData().get("title");
-        String tanggal = remoteMessage.getData().get("tanggal");
-        String isi = remoteMessage.getData().get("isi");
-        TampilkanNotifikasi(title, isi, tanggal);
+        // jangan kirim notifikasi klau tidak login
+        SessionConfig sessionConfig = SessionConfig.getInstance(this);
+        if (sessionConfig.IsLogin()) {
+            String title = remoteMessage.getData().get("title");
+            String tanggal = remoteMessage.getData().get("tanggal");
+            String isi = remoteMessage.getData().get("isi");
+            TampilkanNotifikasi(title, isi, tanggal);
+        }
     }
 
-    public void TampilkanNotifikasi(String title, String Isi, String tanggal) {
+    private void TampilkanNotifikasi(String title, String Isi, String tanggal) {
         Intent intent = new Intent(getApplicationContext(), ExpandNotif.class);
         intent.putExtra("head", title);
         intent.putExtra("tgl", tanggal);
@@ -45,5 +50,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(1, nBuilder.build());
+    }
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
     }
 }
